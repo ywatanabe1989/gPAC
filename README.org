@@ -1,10 +1,6 @@
 #+TITLE: ./torchPAC/README.org
 #+AUTHOR: ywatanabe
-#+DATE: 2024-11-06 09:21:01
-
-
-
-
+#+DATE: 2024-11-06 10:50:32
 
 * TorchPAC: Fast and Learnable calculation of Phase-Amplitude Coupling
 
@@ -23,4 +19,5 @@ See [[./docs/installation.md][installation guide]]
 
 ** Contact
 Yusuke Watanabe (Yusuke.Watanabe@unimelb.edu.au)
+
 
