@@ -59,8 +59,8 @@ class BandPassFilter(BaseFilter1D):
 
         kernels = zero_pad(filters)
         kernels = ensure_even_len(kernels)
-        kernels = torch.tensor(kernels).clone().detach()
-        # kernels = kernels.clone().detach().requires_grad_(True)
+        # Use clone().detach() directly instead of torch.tensor() to avoid warning
+        kernels = kernels.clone().detach()
         return kernels
 
 # EOF
