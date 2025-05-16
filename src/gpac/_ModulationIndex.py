@@ -55,8 +55,12 @@ class ModulationIndex(nn.Module):
         n_bins = len(phase_bin_cutoffs) - 1
         cutoffs = phase_bin_cutoffs.to(pha.device, pha.dtype)
 
-        # Use torch.bucketize
-        bin_indices = torch.bucketize(pha, cutoffs, right=False)
+        # Ensure input tensors are contiguous to avoid performance warning
+        pha_cont = pha.contiguous() if not pha.is_contiguous() else pha
+        cutoffs_cont = cutoffs.contiguous() if not cutoffs.is_contiguous() else cutoffs
+        
+        # Use torch.bucketize with contiguous tensors 
+        bin_indices = torch.bucketize(pha_cont, cutoffs_cont, right=False)
         # Adjust indices and clamp
         bin_indices = (bin_indices - 1).clamp_(min=0, max=n_bins - 1)
 
