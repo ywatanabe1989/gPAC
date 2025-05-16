@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-04-25 17:59:05 (ywatanabe)"
+# Timestamp: "2025-05-14 11:45:32 (ywatanabe)"
 # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_pac.py
 # ----------------------------------------
 import os
@@ -12,7 +12,7 @@ __DIR__ = os.path.dirname(__FILE__)
 
 import math
 import warnings
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import torch
@@ -46,6 +46,7 @@ class PAC(nn.Module):
         amp_prob: bool = False,
         mi_n_bins: int = 18,
         filter_cycle: int = 3,
+        return_dist: bool = False,
     ):
         super().__init__()
 
@@ -57,6 +58,7 @@ class PAC(nn.Module):
         self.trainable = trainable
         self.filter_cycle = filter_cycle
         self.mi_n_bins = mi_n_bins
+        self.return_dist = return_dist
 
         # 2. Validate and Store Permutation Setting
         self.n_perm = None
@@ -164,16 +166,36 @@ class PAC(nn.Module):
         highs = torch.max(mid_hz + widths, lows + 0.1)
         return torch.stack([lows, highs], dim=-1)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
         """
         Performs the full PAC calculation pipeline with improved gradient flow.
         
-        Returns:
-            torch.Tensor: PAC values with shape (B, C, F_pha, F_amp) where:
+        Args:
+            x: Input signal tensor with shape (B, C, Seg, Time)
                 - B is batch size
                 - C is number of channels
+                - Seg is number of segments
+                - Time is length of time series
+        
+        Returns:
+            Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]: 
+                - When return_dist=False or n_perm is None: 
+                  PAC values tensor with shape (B, C, F_pha, F_amp) or (B, C, Seg, F_pha, F_amp)
+                  if averaging across segments was not performed
+                
+                - When return_dist=True and n_perm is not None: 
+                  Tuple of (PAC values, surrogate distributions) where:
+                  * PAC values has shape (B, C, F_pha, F_amp) or (B, C, Seg, F_pha, F_amp)
+                  * surrogate distributions has shape (n_perm, B, C, F_pha, F_amp) or 
+                    (n_perm, B, C, Seg, F_pha, F_amp)
+                
+            Where:
+                - B is batch size
+                - C is number of channels
+                - Seg is number of segments (if not averaged)
                 - F_pha is number of phase frequency bands
                 - F_amp is number of amplitude frequency bands
+                - n_perm is number of permutations
         """
         # 1. Input Preparation
         x = ensure_4d_input(x)
@@ -251,14 +273,28 @@ class PAC(nn.Module):
                 mask = torch.isfinite(pac_z)
                 pac_z = torch.where(mask, pac_z, torch.zeros_like(pac_z))
                 result = pac_z
+                
+                # Store surrogate distribution if requested
+                if self.return_dist:
+                    # Make a copy of surrogate_pacs to avoid modification from potential in-place operations
+                    surrogate_dist = surrogate_pacs.clone()
             else:
                 result = observed_pac
                 
             # 8. Average across segments if there are multiple segments
             # This maintains the channel dimension to be compatible with the classifier
             if n_segments > 1:
+                # Take the mean across the segment dimension (dim=3)
                 result = result.mean(dim=3)  # Average across segments
                 
+                # Also average the surrogate distribution across segments if it exists
+                if self.return_dist and self.n_perm is not None and 'surrogate_dist' in locals():
+                    # The segment dimension is at index 4 in the surrogate distribution
+                    surrogate_dist = surrogate_dist.mean(dim=4)  # Average segments in distribution
+            
+            # Return distribution if requested and permutation testing was performed
+            if self.return_dist and self.n_perm is not None and 'surrogate_dist' in locals():
+                return result, surrogate_dist
             return result
 
     def _generate_surrogates_with_grad(
@@ -271,6 +307,9 @@ class PAC(nn.Module):
         Note: For reproducible test results, we use fixed surrogate values that 
         ensure the permutation test has the expected statistical properties.
         In a real analysis, permutation tests should use genuine random shifts.
+        
+        Returns:
+            torch.Tensor: Surrogate PAC values with shape (n_perm, B, C, F_pha, F_amp)
         """
         # Get dimensions B, C, F_amp, Seg, Time_core
         batch_size, n_chs, n_amp_bands, n_segments, time_core = amp.shape
@@ -347,7 +386,13 @@ def calculate_pac(
     device: Optional[str | torch.device] = None,
     chunk_size: Optional[int] = None,
     average_channels: bool = False,
-) -> Tuple[torch.Tensor, np.ndarray, np.ndarray]:
+    return_dist: bool = False,
+) -> Union[
+    # Standard return (no distribution): pac_values, pha_freqs, amp_freqs
+    Tuple[torch.Tensor, np.ndarray, np.ndarray],  
+    # With distribution: pac_values, surrogate_dist, pha_freqs, amp_freqs
+    Tuple[torch.Tensor, torch.Tensor, np.ndarray, np.ndarray]  
+]:
     """
     High-level function to calculate Phase-Amplitude Coupling (PAC).
     
@@ -369,13 +414,124 @@ def calculate_pac(
         device: Computation device ("cuda", "cpu", or torch.device)
         chunk_size: Process in chunks of this size (None for no chunking)
         average_channels: Whether to average across channels in the output
+        return_dist: Whether to return the full distribution of surrogate PAC values
         
     Returns:
-        Tuple containing:
-            - PAC values tensor with shape (B, C, F_pha, F_amp) or (B, F_pha, F_amp)
-              if average_channels=True
-            - Phase frequencies as numpy array
-            - Amplitude frequencies as numpy array
+        When return_dist=False:
+            Tuple containing:
+                - PAC values tensor with shape (B, C, F_pha, F_amp) or (B, F_pha, F_amp)
+                  if average_channels=True
+                - Phase frequencies as numpy array
+                - Amplitude frequencies as numpy array
+                
+        When return_dist=True and n_perm is not None:
+            Tuple containing:
+                - PAC values tensor with shape (B, C, F_pha, F_amp) or (B, F_pha, F_amp)
+                - Surrogate distribution tensor with shape (n_perm, B, C, F_pha, F_amp)
+                  or (n_perm, B, F_pha, F_amp) if average_channels=True
+                - Phase frequencies as numpy array
+                - Amplitude frequencies as numpy array
+                
+    Examples:
+        Basic PAC calculation:
+        
+        >>> import torch
+        >>> import numpy as np
+        >>> from gpac import calculate_pac
+        >>> 
+        >>> # Generate sample data: 1 channel, 10 second signal at 1000 Hz
+        >>> fs = 1000
+        >>> t = np.arange(0, 10, 1/fs)
+        >>> pha_freq = 5  # Hz 
+        >>> amp_freq = 80  # Hz
+        >>> 
+        >>> # Create signal with PAC: phase of 5 Hz modulates amplitude of 80 Hz
+        >>> pha = np.sin(2 * np.pi * pha_freq * t)
+        >>> amp = np.sin(2 * np.pi * amp_freq * t)
+        >>> signal = np.sin(2 * np.pi * pha_freq * t) + (1 + 0.8 * pha) * amp * 0.2
+        >>> signal = signal.reshape(1, 1, 1, -1)  # [batch, channel, segment, time]
+        >>> 
+        >>> # Standard PAC calculation
+        >>> pac_values, pha_freqs, amp_freqs = calculate_pac(
+        ...     signal, 
+        ...     fs=fs,
+        ...     pha_start_hz=2, 
+        ...     pha_end_hz=20,
+        ...     pha_n_bands=10,
+        ...     amp_start_hz=60,
+        ...     amp_end_hz=120,
+        ...     amp_n_bands=10,
+        ...     n_perm=200  # Use permutation testing
+        ... )
+        
+        Get the full permutation test distribution:
+        
+        >>> # Get the distribution of surrogate values
+        >>> pac_values, surrogate_dist, pha_freqs, amp_freqs = calculate_pac(
+        ...     signal, 
+        ...     fs=fs,
+        ...     pha_start_hz=2, 
+        ...     pha_end_hz=20, 
+        ...     pha_n_bands=10,
+        ...     amp_start_hz=60,
+        ...     amp_end_hz=120,
+        ...     amp_n_bands=10,
+        ...     n_perm=200,  
+        ...     return_dist=True  # Return the full distribution
+        ... )
+        >>> 
+        >>> # Visualize the PAC values
+        >>> import matplotlib.pyplot as plt
+        >>> 
+        >>> # Plot the PAC values
+        >>> plt.figure(figsize=(10, 4))
+        >>> plt.subplot(121)
+        >>> plt.imshow(pac_values[0, 0], aspect='auto', origin='lower')
+        >>> plt.xlabel('Amplitude Frequency (Hz)')
+        >>> plt.ylabel('Phase Frequency (Hz)')
+        >>> plt.title('PAC Z-Scores')
+        >>> plt.colorbar(label='Z-score')
+        >>> 
+        >>> # Get indices of max coupling
+        >>> max_idx = pac_values[0, 0].argmax()
+        >>> max_pha_idx, max_amp_idx = np.unravel_index(max_idx, pac_values[0, 0].shape)
+        >>> 
+        >>> # Plot the surrogate distribution for the max coupling
+        >>> plt.subplot(122)
+        >>> surrogate_values = surrogate_dist[:, 0, 0, max_pha_idx, max_amp_idx].numpy()
+        >>> observed_value = pac_values[0, 0, max_pha_idx, max_amp_idx].item()
+        >>> plt.hist(surrogate_values, bins=20, alpha=0.8)
+        >>> plt.axvline(observed_value, color='r', linestyle='--', 
+        ...             label=f'Observed: {observed_value:.2f}')
+        >>> plt.xlabel('PAC Value')
+        >>> plt.ylabel('Count')
+        >>> plt.title('Surrogate Distribution')
+        >>> plt.legend()
+        >>> plt.tight_layout()
+        >>> plt.show()
+        
+        Custom statistical analysis using the surrogate distribution:
+        
+        >>> # Calculate p-values manually
+        >>> def calculate_pvalues(observed, surrogates):
+        ...     # One-sided p-value: proportion of surrogates >= observed
+        ...     return ((surrogates >= observed).sum(axis=0) / len(surrogates))
+        >>> 
+        >>> # Convert tensors to numpy arrays
+        >>> pac_array = pac_values[0, 0].numpy()
+        >>> surr_array = surrogate_dist[:, 0, 0].numpy()
+        >>> 
+        >>> # Calculate p-values
+        >>> pvalues = calculate_pvalues(pac_array, surr_array)
+        >>> 
+        >>> # Apply multiple comparison correction (FDR)
+        >>> from statsmodels.stats.multitest import multipletests
+        >>> pvals_flat = pvalues.flatten()
+        >>> significant, pvals_corr, _, _ = multipletests(pvals_flat, method='fdr_bh')
+        >>> pvals_corr = pvals_corr.reshape(pvalues.shape)
+        >>> 
+        >>> # Find significant couplings after correction
+        >>> significant_mask = pvals_corr < 0.05
     """
     # 1. Device Handling
     if device is None:
@@ -423,6 +579,7 @@ def calculate_pac(
         amp_prob=amp_prob,
         mi_n_bins=mi_n_bins,
         filter_cycle=filter_cycle,
+        return_dist=return_dist,
     ).to(resolved_device)
 
     if not trainable:
@@ -434,16 +591,45 @@ def calculate_pac(
         chunk_size is not None and chunk_size > 0 and num_traces > chunk_size
     )
 
+    # Validate return_dist and n_perm combination
+    if return_dist and n_perm is None:
+        warnings.warn(
+            "return_dist=True has no effect when n_perm is None. "
+            "No distribution will be returned."
+        )
+        return_dist = False
+    
+    # Validate n_perm when it's provided
+    if n_perm is not None and n_perm < 10:
+        warnings.warn(
+            f"Using n_perm={n_perm} which is very low for permutation testing. "
+            "Consider using at least 200 for stable statistical results."
+        )
+        
+    # Additional warning for return_dist with low permutation count
+    if return_dist and n_perm is not None and n_perm < 50:
+        warnings.warn(
+            f"Using n_perm={n_perm} with return_dist=True may not provide "
+            "a reliable distribution for statistical analysis. "
+            "Consider using at least 100-200 permutations."
+        )
+
     if not process_in_chunks:
         grad_context = torch.enable_grad() if trainable else torch.no_grad()
         with grad_context:
-            pac_results = model(signal_4d)
+            result = model(signal_4d)
+            # Extract surrogate distribution if it was returned
+            if isinstance(result, tuple) and len(result) == 2:
+                pac_results, surrogate_dist = result
+            else:
+                pac_results = result
     else:
         print(
             f"Processing {num_traces} traces in chunks of size {chunk_size}..."
         )
         num_chunks = math.ceil(num_traces / chunk_size)
         all_pac_results_chunks = []
+        all_surrogate_dist_chunks = [] if return_dist and n_perm is not None else None
         signal_flat = signal_4d.reshape(num_traces, seq_len)
 
         grad_context = torch.enable_grad() if trainable else torch.no_grad()
@@ -457,8 +643,16 @@ def calculate_pac(
                 signal_chunk = signal_flat[start_idx:end_idx].reshape(
                     current_chunk_trace_count, 1, 1, seq_len
                 )
-                chunk_pac = model(signal_chunk)
-                all_pac_results_chunks.append(chunk_pac)
+                chunk_result = model(signal_chunk)
+                
+                # Handle distribution if returned
+                if isinstance(chunk_result, tuple) and len(chunk_result) == 2:
+                    chunk_pac, chunk_surrogate = chunk_result
+                    all_pac_results_chunks.append(chunk_pac)
+                    if all_surrogate_dist_chunks is not None:
+                        all_surrogate_dist_chunks.append(chunk_surrogate)
+                else:
+                    all_pac_results_chunks.append(chunk_result)
 
                 if resolved_device.type == "cuda":
                     torch.cuda.empty_cache()
@@ -472,11 +666,43 @@ def calculate_pac(
             n_segments,
         ) + result_shape_suffix
         pac_results = pac_results_flat.view(target_shape_unavg)
+        
+        # Surrogate distributions handling for chunked processing
+        surrogate_dist = None
+        if all_surrogate_dist_chunks is not None and len(all_surrogate_dist_chunks) > 0:
+            try:
+                # Concatenate surrogate distributions along the appropriate dimension (batch dim=1)
+                surrogate_dist_flat = torch.cat(all_surrogate_dist_chunks, dim=1)
+                
+                # Get the shape suffix to reconstruct the full tensor
+                dist_shape_suffix = surrogate_dist_flat.shape[3:]  # Skip n_perm, flat_batch, flat_chan dims
+                
+                # Create the target shape for the reshaped distribution
+                target_shape_dist = (
+                    surrogate_dist_flat.shape[0],  # n_perm
+                    batch_size,
+                    n_chs,
+                    n_segments,
+                ) + dist_shape_suffix
+                
+                # Reshape to the target shape
+                surrogate_dist = surrogate_dist_flat.view(target_shape_dist)
+            except Exception as e:
+                warnings.warn(
+                    f"Error reshaping surrogate distributions in chunked mode: {e}. "
+                    "Returning PAC values without distribution."
+                )
+                # Make sure we don't return a partial/broken distribution
+                surrogate_dist = None
+                return_dist = False
+        
         print("Chunk processing complete.")
 
     # Average across channels if requested
     if average_channels and pac_results.shape[1] > 1:
         pac_results = pac_results.mean(dim=1)
+        if surrogate_dist is not None and surrogate_dist.shape[2] > 1:
+            surrogate_dist = surrogate_dist.mean(dim=2)
 
     # 5. Prepare Outputs
     # Ensure frequencies are numpy arrays on CPU
@@ -490,6 +716,10 @@ def calculate_pac(
     else:
         freqs_amp_np = model.AMP_MIDS_HZ.cpu().numpy()
 
-    return pac_results, freqs_pha_np, freqs_amp_np
+    # Return appropriate output based on whether distribution was requested and available
+    if return_dist and surrogate_dist is not None:
+        return pac_results, surrogate_dist, freqs_pha_np, freqs_amp_np
+    else:
+        return pac_results, freqs_pha_np, freqs_amp_np
 
 # EOF
