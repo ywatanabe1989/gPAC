@@ -12,22 +12,101 @@ description = "GPU-Accelerated Phase-Amplitude Coupling calculation using PyTorc
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.8"
+keywords = ["neuroscience", "signal-processing", "pytorch", "phase-amplitude-coupling", "gpu"]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License", # Or your chosen license
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
-    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
     "torch>=1.9.0",
-    "numpy",
-    "scipy",
-    "torchaudio>=0.9.0", # Specify a version known to have sinc_impulse_response if needed
+    "numpy>=1.19.0",
+    "scipy>=1.7.0",
+    "torchaudio>=0.9.0",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/[your_username]/gPAC" # Replace
-"Repository" = "https://github.com/[your_username]/gPAC" # Replace
-"Bug Tracker" = "https://github.com/[your_username]/gPAC/issues" # Replace
+"Homepage" = "https://github.com/ywatanabe1989/gPAC"
+"Repository" = "https://github.com/ywatanabe1989/gPAC"
+"Bug Tracker" = "https://github.com/ywatanabe1989/gPAC/issues"
+"Documentation" = "https://github.com/ywatanabe1989/gPAC#readme"
+"Changelog" = "https://github.com/ywatanabe1989/gPAC/releases"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+    "mypy>=0.800",
+    "pre-commit>=2.0",
+]
+testing = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "pytest-xdist>=2.0",
+]
+linting = [
+    "black>=21.0",
+    "flake8>=3.8",
+    "mypy>=0.800",
+    "pre-commit>=2.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "gpu: marks tests as requiring GPU (deselect with '-m \"not gpu\"')",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.pytest_cache
+    | \.venv
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/.old/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]

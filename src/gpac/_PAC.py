@@ -1,22 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-05-17 15:51:33 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_PAC.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
-from torch.utils.data import Dataset
-
 import warnings
 from typing import Optional, Tuple, Union
 
 import torch
 import torch.nn as nn
+from torch.utils.data import Dataset
 
 from ._BandPassFilter import BandPassFilter
 from ._DifferenciableBandPassFilter import DifferentiableBandPassFilter
@@ -66,9 +53,7 @@ class PAC(nn.Module):
             if not isinstance(n_perm, int) or n_perm < 1:
                 raise ValueError("n_perm must be a positive integer or None.")
             if amp_prob:
-                warnings.warn(
-                    "Permutation testing skipped when amp_prob=True."
-                )
+                warnings.warn("Permutation testing skipped when amp_prob=True.")
             else:
                 self.n_perm = n_perm
 
@@ -217,9 +202,7 @@ class PAC(nn.Module):
         x = x.to(target_dtype)
 
         # Set gradient tracking context
-        grad_context = (
-            torch.enable_grad() if self.trainable else torch.no_grad()
-        )
+        grad_context = torch.enable_grad() if self.trainable else torch.no_grad()
         with grad_context:
 
             # 2. Bandpass Filtering
@@ -249,15 +232,10 @@ class PAC(nn.Module):
             # 5. Optional: Remove Edge Artifacts
             edge_len = max(0, current_seq_len // 8)
             time_slice = slice(None)
-            if (
-                edge_len > 0
-                and (current_seq_len - 2 * edge_len) > self.mi_n_bins
-            ):
+            if edge_len > 0 and (current_seq_len - 2 * edge_len) > self.mi_n_bins:
                 time_slice = slice(edge_len, -edge_len)
             elif edge_len > 0:
-                warnings.warn(
-                    f"Signal too short after edge trim. Skipping trimming."
-                )
+                warnings.warn(f"Signal too short after edge trim. Skipping trimming.")
 
             pha_core = pha[..., time_slice]
             amp_core = amp[..., time_slice]
@@ -353,9 +331,7 @@ class PAC(nn.Module):
 
             for _ in range(self.n_perm):
                 shift_shape = (batch_size, n_chs, n_amp_bands, n_segments)
-                shifts = torch.randint(
-                    1, time_core, size=shift_shape, device=device
-                )
+                shifts = torch.randint(1, time_core, size=shift_shape, device=device)
                 shifted_indices = (
                     indices.view(1, 1, 1, 1, -1) - shifts.unsqueeze(-1)
                 ) % time_core
@@ -418,5 +394,3 @@ class SyntheticPACDataset(Dataset):
             return signal, label, meta
 
         return signal, label
-
-# EOF

@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-05-17 18:05:19 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_SyntheticDataGenerator.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_SyntheticDataGenerator.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
 from typing import Dict, List, Optional, Tuple
 
 import matplotlib.pyplot as plt
@@ -135,10 +123,7 @@ class SyntheticDataGenerator:
         }
 
         # Limit to requested number of classes
-        return {
-            class_id: class_defs[class_id]
-            for class_id in range(min(n_classes, 5))
-        }
+        return {class_id: class_defs[class_id] for class_id in range(min(n_classes, 5))}
 
     def _get_params(self) -> Dict:
         """
@@ -183,9 +168,7 @@ class SyntheticDataGenerator:
         phase_signal = np.sin(2 * np.pi * pha_freq * time)
 
         # Create amplitude Modulation based on phase
-        Modulation = (
-            1 + coupling_strength * np.cos(2 * np.pi * pha_freq * time)
-        ) / 2
+        Modulation = (1 + coupling_strength * np.cos(2 * np.pi * pha_freq * time)) / 2
 
         # Create carrier signal (fast oscillation)
         carrier = np.sin(2 * np.pi * amp_freq * time)
@@ -259,9 +242,7 @@ class SyntheticDataGenerator:
             # Create channels and segments
             for channel_idx in range(n_channels):
                 # Add channel variation
-                channel_noise = np.random.normal(
-                    0, channel_var, len(pac_signal)
-                )
+                channel_noise = np.random.normal(0, channel_var, len(pac_signal))
                 channel_signal = pac_signal + channel_noise
 
                 for segment_idx in range(n_segments):
@@ -274,9 +255,7 @@ class SyntheticDataGenerator:
                             channel_signal + segment_noise
                         )
                     else:
-                        signals[sample_idx, channel_idx, segment_idx] = (
-                            channel_signal
-                        )
+                        signals[sample_idx, channel_idx, segment_idx] = channel_signal
 
             # Store metadata
             metadata["pha_freqs"][sample_idx] = pha_freq
@@ -292,9 +271,7 @@ class SyntheticDataGenerator:
 
         return signals, metadata
 
-    def _generate_dataset_dict(
-        self, custom_params: Optional[Dict] = None
-    ) -> Dict:
+    def _generate_dataset_dict(self, custom_params: Optional[Dict] = None) -> Dict:
         """
         Generate a complete synthetic PAC dataset for multiple classes.
         """
@@ -358,9 +335,7 @@ class SyntheticDataGenerator:
             ]:
                 all_metadata[key][start_idx:end_idx] = metadata[key]
 
-            all_metadata["class_labels"][start_idx:end_idx] = metadata[
-                "class_labels"
-            ]
+            all_metadata["class_labels"][start_idx:end_idx] = metadata["class_labels"]
             all_metadata["class_names"][start_idx:end_idx] = class_name
 
         # Shuffle the dataset
@@ -406,9 +381,7 @@ class SyntheticDataGenerator:
             "coupling_strengths": torch.tensor(
                 data["metadata"]["coupling_strengths"], dtype=torch.float32
             ),
-            "class_names": data["metadata"][
-                "class_names"
-            ],  # Keep as numpy array
+            "class_names": data["metadata"]["class_names"],  # Keep as numpy array
         }
 
         # Create stratified split indices
@@ -453,9 +426,7 @@ class SyntheticDataGenerator:
         train_dataset = SyntheticPACDataset(
             signals=signals_tensor[train_indices],
             labels=labels_tensor[train_indices],
-            metadata={
-                k: v[train_indices] for k, v in metadata_tensors.items()
-            },
+            metadata={k: v[train_indices] for k, v in metadata_tensors.items()},
         )
 
         val_dataset = SyntheticPACDataset(
@@ -606,4 +577,3 @@ if __name__ == "__main__":
     # pac_dataset = data_generator.generate_and_split(custom_params={}, train_ratio=0.7, val_ratio=0.15)
     # dataset = data_generator._generate_dataset_dict(custom_params={})
 
-# EOF

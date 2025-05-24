@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-04-25 17:31:43 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_ModulationIndex.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_ModulationIndex.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
 import warnings
 
 import numpy as np
@@ -58,8 +46,8 @@ class ModulationIndex(nn.Module):
         # Ensure input tensors are contiguous to avoid performance warning
         pha_cont = pha.contiguous() if not pha.is_contiguous() else pha
         cutoffs_cont = cutoffs.contiguous() if not cutoffs.is_contiguous() else cutoffs
-        
-        # Use torch.bucketize with contiguous tensors 
+
+        # Use torch.bucketize with contiguous tensors
         bin_indices = torch.bucketize(pha_cont, cutoffs_cont, right=False)
         # Adjust indices and clamp
         bin_indices = (bin_indices - 1).clamp_(min=0, max=n_bins - 1)
@@ -84,9 +72,7 @@ class ModulationIndex(nn.Module):
                 f"Input tensors must be 5D. Got pha:{pha.ndim}, amp:{amp.ndim}"
             )
         if pha.shape[0:2] != amp.shape[0:2] or pha.shape[3:] != amp.shape[3:]:
-            raise ValueError(
-                f"Dimensions mismatch. pha:{pha.shape}, amp:{amp.shape}"
-            )
+            raise ValueError(f"Dimensions mismatch. pha:{pha.shape}, amp:{amp.shape}")
 
         # 2. Prepare Tensors
         compute_dtype = torch.float16 if self.fp16 else torch.float32
@@ -112,9 +98,7 @@ class ModulationIndex(nn.Module):
         amp_float = amp_expanded.float()
 
         # Sum amplitudes over time dimension (dim 5)
-        amp_sums_in_bins = (pha_masks_float * amp_float).sum(
-            dim=5, keepdim=True
-        )
+        amp_sums_in_bins = (pha_masks_float * amp_float).sum(dim=5, keepdim=True)
         # Count samples per bin over time dimension (dim 5)
         counts_in_bins = pha_masks_float.sum(dim=5, keepdim=True)
         # Calculate mean amplitude per bin
@@ -161,4 +145,4 @@ class ModulationIndex(nn.Module):
 
             return MI.to(output_dtype)
 
-# EOF
+

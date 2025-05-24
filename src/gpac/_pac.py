@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-05-18 22:32:29 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_pac.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_pac.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
 import math
 import warnings
 from typing import Optional, Tuple, Union
@@ -531,9 +519,7 @@ def calculate_pac(
     """
     # 1. Device Handling
     if device is None:
-        resolved_device = torch.device(
-            "cuda" if torch.cuda.is_available() else "cpu"
-        )
+        resolved_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     elif isinstance(device, str):
         resolved_device = torch.device(device)
     else:
@@ -545,9 +531,7 @@ def calculate_pac(
             dtype = np.float32 if signal.dtype == np.float64 else signal.dtype
             signal_tensor = torch.from_numpy(signal.astype(dtype))
         except TypeError as e:
-            raise TypeError(
-                f"Could not convert numpy array to tensor: {e}"
-            ) from e
+            raise TypeError(f"Could not convert numpy array to tensor: {e}") from e
     elif isinstance(signal, torch.Tensor):
         signal_tensor = signal
     else:
@@ -620,27 +604,20 @@ def calculate_pac(
             else:
                 pac_results = result
     else:
-        print(
-            f"Processing {num_traces} traces in chunks of size {chunk_size}..."
-        )
-        num_chunks = math.ceil(num_traces / chunk_size)
+        print(f"Processing {num_traces} traces in chunks of size {chunk_size}...")
+        # Process in chunks while preserving original structure
         all_pac_results_chunks = []
-        all_surrogate_dist_chunks = (
-            [] if return_dist and n_perm is not None else None
-        )
-        signal_flat = signal_4d.reshape(num_traces, seq_len)
+        all_surrogate_dist_chunks = [] if return_dist and n_perm is not None else None
 
         grad_context = torch.enable_grad() if trainable else torch.no_grad()
         with grad_context:
-            for i_chunk in range(num_chunks):
-                start_idx = i_chunk * chunk_size
-                end_idx = min((i_chunk + 1) * chunk_size, num_traces)
-                current_chunk_trace_count = end_idx - start_idx
+            # Process batch chunks to avoid memory issues
+            for batch_start in range(0, batch_size, chunk_size):
+                batch_end = min(batch_start + chunk_size, batch_size)
+                current_chunk_batch_size = batch_end - batch_start
 
-                # Reshape chunk for model: (ChunkTraces, 1 Chan, 1 Seg, Time)
-                signal_chunk = signal_flat[start_idx:end_idx].reshape(
-                    current_chunk_trace_count, 1, 1, seq_len
-                )
+                # Extract chunk preserving original structure: (ChunkBatch, C, Seg, Time)
+                signal_chunk = signal_4d[batch_start:batch_end]
                 chunk_result = model(signal_chunk)
 
                 # Handle distribution if returned
@@ -655,49 +632,20 @@ def calculate_pac(
                 if resolved_device.type == "cuda":
                     torch.cuda.empty_cache()
 
-        # Concatenate and reshape results
-        pac_results_flat = torch.cat(all_pac_results_chunks, dim=0)
-        result_shape_suffix = pac_results_flat.shape[2:]
-        target_shape_unavg = (
-            batch_size,
-            n_chs,
-            n_segments,
-        ) + result_shape_suffix
-        pac_results = pac_results_flat.view(target_shape_unavg)
+        # Concatenate results from chunks
+        pac_results = torch.cat(all_pac_results_chunks, dim=0)
 
         # Surrogate distributions handling for chunked processing
         surrogate_dist = None
-        if (
-            all_surrogate_dist_chunks is not None
-            and len(all_surrogate_dist_chunks) > 0
-        ):
+        if all_surrogate_dist_chunks is not None and len(all_surrogate_dist_chunks) > 0:
             try:
-                # Concatenate surrogate distributions along the appropriate dimension (batch dim=1)
-                surrogate_dist_flat = torch.cat(
-                    all_surrogate_dist_chunks, dim=1
-                )
-
-                # Get the shape suffix to reconstruct the full tensor
-                dist_shape_suffix = surrogate_dist_flat.shape[
-                    3:
-                ]  # Skip n_perm, flat_batch, flat_chan dims
-
-                # Create the target shape for the reshaped distribution
-                target_shape_dist = (
-                    surrogate_dist_flat.shape[0],  # n_perm
-                    batch_size,
-                    n_chs,
-                    n_segments,
-                ) + dist_shape_suffix
-
-                # Reshape to the target shape
-                surrogate_dist = surrogate_dist_flat.view(target_shape_dist)
+                # Concatenate surrogate distributions along the batch dimension
+                surrogate_dist = torch.cat(all_surrogate_dist_chunks, dim=1)
             except Exception as e:
                 warnings.warn(
-                    f"Error reshaping surrogate distributions in chunked mode: {e}. "
+                    f"Error concatenating surrogate distributions in chunked mode: {e}. "
                     "Returning PAC values without distribution."
                 )
-                # Make sure we don't return a partial/broken distribution
                 surrogate_dist = None
                 return_dist = False
 
@@ -727,4 +675,4 @@ def calculate_pac(
     else:
         return pac_results, freqs_pha_np, freqs_amp_np
 
-# EOF
+
