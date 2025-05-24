@@ -1,2 +1,0 @@
-time,package,init_time_mean_sec,init_time_std_sec,init_time_nn,calc_time_mean_sec,calc_time_std_sec,calc_time_nn,batch_size,n_chs,n_segments,t_sec,fs,pha_n_bands,amp_n_bands,chunk_size,n_perm,fp16,n_calc,no_grad,in_place,trainable,device,use_threads,package,seq_len
-2024-11-05 05:37:23.017286,mngs.dsp,0.002,0.002,2,0.143,0.011,10,64,2,2,1,512,10,10,1,,False,10,False,False,False,cpu,False,mngs,512

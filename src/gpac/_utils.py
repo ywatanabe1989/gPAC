@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-04-25 17:38:25 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_utils.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_utils.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
 import torch
 import torch.nn.functional as F
 import numpy as np
@@ -71,9 +59,7 @@ def ensure_3d(x: torch.Tensor) -> torch.Tensor:
     elif x.ndim == 3:
         return x
     else:
-        raise ValueError(
-            f"Unsupported dimensions: {x.ndim}. Expected 1, 2, or 3."
-        )
+        raise ValueError(f"Unsupported dimensions: {x.ndim}. Expected 1, 2, or 3.")
 
 
 @torch_fn
@@ -112,9 +98,7 @@ def _zero_pad_1d(x: torch.Tensor, target_length: int) -> torch.Tensor:
     current_length = x.shape[0]
     padding_needed = target_length - current_length
     if padding_needed < 0:
-        warnings.warn(
-            f"Truncating 1D tensor from {current_length} to {target_length}."
-        )
+        warnings.warn(f"Truncating 1D tensor from {current_length} to {target_length}.")
         return x[:target_length]
     elif padding_needed == 0:
         return x
@@ -139,9 +123,7 @@ def zero_pad(tensors: list[torch.Tensor], dim: int = 0) -> torch.Tensor:
         warnings.warn("Encountered 0-dim tensor in zero_pad.")
         tensors = [t.unsqueeze(0) if t.ndim == 0 else t for t in tensors]
     if not all(t.ndim > 0 for t in tensors):
-        raise ValueError(
-            "Cannot pad tensors with 0 dimensions after handling."
-        )
+        raise ValueError("Cannot pad tensors with 0 dimensions after handling.")
 
     try:
         max_len = max(t.shape[-1] for t in tensors)
@@ -168,9 +150,7 @@ def zero_pad(tensors: list[torch.Tensor], dim: int = 0) -> torch.Tensor:
                 padding_left,
                 padding_right,
             ]
-            padded_tensors.append(
-                F.pad(tensor_item, tuple(pad_tuple), "constant", 0.0)
-            )
+            padded_tensors.append(F.pad(tensor_item, tuple(pad_tuple), "constant", 0.0))
 
     try:
         return torch.stack(padded_tensors, dim=dim)
@@ -195,9 +175,7 @@ def _estimate_filter_type(low_hz, high_hz, is_bandstop):
     if has_high and high_hz < 0:
         raise FilterParameterError("high_hz must be non-negative.")
     if has_low and has_high and low_hz >= high_hz:
-        raise FilterParameterError(
-            f"low_hz ({low_hz}) must be < high_hz ({high_hz})."
-        )
+        raise FilterParameterError(f"low_hz ({low_hz}) must be < high_hz ({high_hz}).")
     if has_low and has_high:
         return "bandstop" if is_bandstop else "bandpass"
     elif not has_low and has_high:
@@ -221,9 +199,7 @@ def _determine_cutoff_frequencies(filter_mode, low_hz, high_hz):
         return low_hz
     elif filter_mode in ["bandpass", "bandstop"]:
         if low_hz is None or high_hz is None:
-            raise FilterParameterError(
-                f"low_hz and high_hz needed for {filter_mode}"
-            )
+            raise FilterParameterError(f"low_hz and high_hz needed for {filter_mode}")
         return [low_hz, high_hz]
     else:
         raise FilterParameterError(f"Invalid filter mode: {filter_mode}")
@@ -232,18 +208,14 @@ def _determine_cutoff_frequencies(filter_mode, low_hz, high_hz):
 def _determine_low_freq_for_order(filter_mode, low_hz, high_hz):
     if filter_mode in ["highpass", "bandpass", "bandstop"]:
         if low_hz is None:
-            raise FilterParameterError(
-                f"low_hz needed for {filter_mode} order calc"
-            )
+            raise FilterParameterError(f"low_hz needed for {filter_mode} order calc")
         low_freq = low_hz
     elif filter_mode == "lowpass":
         if high_hz is None:
             raise FilterParameterError("high_hz needed for lowpass order calc")
         low_freq = max(high_hz / 10.0, 0.1)
     else:
-        raise FilterParameterError(
-            f"Invalid filter mode for order calc: {filter_mode}"
-        )
+        raise FilterParameterError(f"Invalid filter mode for order calc: {filter_mode}")
     return max(low_freq, 0.1)
 
 
@@ -258,9 +230,7 @@ def _determine_filter_order(fs, low_freq_for_order, sig_len, cycle):
 
 
 @torch_fn
-def design_filter(
-    sig_len, fs, low_hz=None, high_hz=None, cycle=3, is_bandstop=False
-):
+def design_filter(sig_len, fs, low_hz=None, high_hz=None, cycle=3, is_bandstop=False):
     """Designs a Hamming FIR filter using scipy.firwin."""
     fs_f = float(fs)
     if fs_f <= 0:
@@ -290,9 +260,7 @@ def design_filter(
     else:
         raise FilterParameterError("Cutoff calculation failed.")
 
-    low_freq_ref = _determine_low_freq_for_order(
-        filter_mode, low_hz_f, high_hz_f
-    )
+    low_freq_ref = _determine_low_freq_for_order(filter_mode, low_hz_f, high_hz_f)
     order = _determine_filter_order(fs_f, low_freq_ref, sig_len, cycle)
     numtaps = to_odd(order + 1)
 
@@ -332,9 +300,7 @@ def init_bandpass_filters(
     device="cpu",
 ) -> tuple[torch.Tensor, torch.nn.Parameter, torch.nn.Parameter]:
     """Initializes learnable parameters and initial sinc filters."""
-    resolved_device = (
-        torch.device(device) if isinstance(device, str) else device
-    )
+    resolved_device = torch.device(device) if isinstance(device, str) else device
     target_dtype = torch.float32
 
     pha_mids_init = torch.linspace(
@@ -380,7 +346,7 @@ def build_bandpass_filters(
     # Add dummy identity operation to ensure gradient flow
     dummy_scale = torch.ones_like(pha_mids, requires_grad=True)
     pha_mids_scaled = pha_mids * dummy_scale
-    
+
     dtype = pha_mids.dtype
     fs_tensor = torch.tensor(fs, device=device, dtype=dtype)
     nyq = fs_tensor / 2.0
@@ -389,33 +355,31 @@ def build_bandpass_filters(
     def _define_freq_edges(mids, factor):
         factor_tensor = torch.tensor(factor, device=device, dtype=dtype)
         widths = mids / factor_tensor
-        
+
         # Create gradient-preserving clamp operation using where
         # Use float tensor to avoid copy warning
         min_val = epsilon.clone().detach()
         max_val = (nyq - epsilon).clone().detach()
-        
+
         # Compute lows with gradient-preserving clamp
         lows_raw = mids - widths
         lows_mask = lows_raw < min_val
         lows = torch.where(lows_mask, min_val, lows_raw)
-        
+
         # Compute highs with gradient-preserving clamp
         highs_raw = mids + widths
         highs_mask = highs_raw > max_val
         highs = torch.where(highs_mask, max_val, highs_raw)
-        
+
         # Make sure highs are always > lows
         min_highs = lows + epsilon
         highs_too_low_mask = highs < min_highs
         highs = torch.where(highs_too_low_mask, min_highs, highs)
-        
+
         return lows, highs
 
     def _determine_sinc_order(low_hz_tensor, fs, sig_len, cycle):
-        min_low_hz = (
-            low_hz_tensor.min().item() if low_hz_tensor.numel() > 0 else 0.1
-        )
+        min_low_hz = low_hz_tensor.min().item() if low_hz_tensor.numel() > 0 else 0.1
         min_low_hz = max(min_low_hz, 0.1)
         order = cycle * int(fs / min_low_hz)
         max_practical_order = max(3, sig_len // 3)
@@ -426,25 +390,23 @@ def build_bandpass_filters(
     def _calculate_sinc_filters(lows_hz, highs_hz, order):
         lows_norm = lows_hz / nyq
         highs_norm = highs_hz / nyq
-        
+
         # Use a dummy identity operation to ensure gradient flow for phase parameters
         dummy_factor = torch.ones_like(lows_norm)
         lows_norm = lows_norm * dummy_factor
         highs_norm = highs_norm * dummy_factor
-        
+
         # Ensure we have a gradient path for both low and high parameters
-        irs_lp_high = sinc_impulse_response(
-            cutoff=highs_norm, window_size=order
-        )
+        irs_lp_high = sinc_impulse_response(cutoff=highs_norm, window_size=order)
         irs_lp_low = sinc_impulse_response(cutoff=lows_norm, window_size=order)
-        
+
         # Make BP filter with an addition to preserve gradients
         irs_bp = irs_lp_high - irs_lp_low
-        
+
         # Ensure output is connected to inputs for gradient purposes
         dummy_scale = torch.ones([1], device=irs_bp.device, requires_grad=True)
         irs_bp = irs_bp * dummy_scale
-        
+
         return irs_bp
 
     # --- Main logic for build_bandpass_filters ---
@@ -464,7 +426,9 @@ def build_bandpass_filters(
     pha_bp_filters = torch.empty((0, order), device=device, dtype=dtype)
     if pha_lows.numel() > 0:
         # Ensure backward gradient flow by scaling with dummy variables
-        dummy_pha_scale = torch.ones([1], device=device, dtype=dtype, requires_grad=True)
+        dummy_pha_scale = torch.ones(
+            [1], device=device, dtype=dtype, requires_grad=True
+        )
         pha_bp_filters = _calculate_sinc_filters(pha_lows, pha_highs, order)
         pha_bp_filters = pha_bp_filters * dummy_pha_scale
 
@@ -475,4 +439,4 @@ def build_bandpass_filters(
     all_filters = torch.cat([pha_bp_filters, amp_bp_filters], dim=0)
     return all_filters.to(dtype=dtype, device=device)
 
-# EOF
+

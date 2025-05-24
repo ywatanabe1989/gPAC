@@ -1,17 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-04-25 19:04:07 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_BandPassFilter.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_BandPassFilter.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_BandPassFilter.py
-
 import torch
 
 from ._BaseFilter1D import BaseFilter1D
@@ -63,4 +49,4 @@ class BandPassFilter(BaseFilter1D):
         kernels = kernels.clone().detach()
         return kernels
 
-# EOF
+

@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-04-25 18:12:27 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_DifferenciableBandPassFilter.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_DifferenciableBandPassFilter.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
 import torch
 import torch.nn as nn
 
@@ -19,6 +7,7 @@ from ._utils import (
     init_bandpass_filters,
 )
 from ._BaseFilter1D import BaseFilter1D
+
 
 class DifferentiableBandPassFilter(BaseFilter1D):
     def __init__(
@@ -95,4 +84,4 @@ class DifferentiableBandPassFilter(BaseFilter1D):
         )
         return super().forward(x=x, t=t, edge_len=edge_len)
 
-# EOF
+

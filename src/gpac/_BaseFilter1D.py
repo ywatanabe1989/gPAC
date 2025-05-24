@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Timestamp: "2025-04-25 18:12:11 (ywatanabe)"
-# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_BaseFilter1D.py
-# ----------------------------------------
-import os
-__FILE__ = (
-    "./src/gpac/_BaseFilter1D.py"
-)
-__DIR__ = os.path.dirname(__FILE__)
-# ----------------------------------------
-
 import warnings
 from abc import ABC, abstractmethod
 
@@ -18,6 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ._utils import ensure_3d
+
 
 class BaseFilter1D(nn.Module):
     def __init__(self, fp16=False, in_place=False):
@@ -156,4 +145,4 @@ class BandPassFilter(BaseFilter1D):
         # kernels = kernels.clone().detach().requires_grad_(True)
         return kernels
 
-# EOF
+
