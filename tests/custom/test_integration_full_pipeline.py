@@ -6,7 +6,7 @@ import pytest
 import torch
 import numpy as np
 import gpac
-from gpac._pac import PAC, calculate_pac
+from gpac import PAC, calculate_pac
 from gpac._utils import TORCHAUDIO_SINC_AVAILABLE
 
 

@@ -123,7 +123,11 @@ class TestPACIntegration:
         pac_standard = gpac.PAC(
             seq_len=seq_len,
             fs=fs,
+            pha_start_hz=2.0,
+            pha_end_hz=20.0,
             pha_n_bands=5,
+            amp_start_hz=30.0,
+            amp_end_hz=100.0,  # Keep below Nyquist (128 Hz) 
             amp_n_bands=5,
             filtfilt_mode=False
         )
@@ -131,7 +135,11 @@ class TestPACIntegration:
         pac_filtfilt = gpac.PAC(
             seq_len=seq_len,
             fs=fs,
+            pha_start_hz=2.0,
+            pha_end_hz=20.0,
             pha_n_bands=5,
+            amp_start_hz=30.0,
+            amp_end_hz=100.0,  # Keep below Nyquist (128 Hz)
             amp_n_bands=5,
             filtfilt_mode=True
         )
@@ -164,7 +172,11 @@ class TestPACIntegration:
         pac_no_edge = gpac.PAC(
             seq_len=seq_len,
             fs=fs,
+            pha_start_hz=2.0,
+            pha_end_hz=20.0,
             pha_n_bands=5,
+            amp_start_hz=30.0,
+            amp_end_hz=100.0,  # Keep below Nyquist (128 Hz)
             amp_n_bands=5,
             edge_mode=None
         )
@@ -172,7 +184,11 @@ class TestPACIntegration:
         pac_reflect = gpac.PAC(
             seq_len=seq_len,
             fs=fs,
+            pha_start_hz=2.0,
+            pha_end_hz=20.0,
             pha_n_bands=5,
+            amp_start_hz=30.0,
+            amp_end_hz=100.0,  # Keep below Nyquist (128 Hz)
             amp_n_bands=5,
             edge_mode='reflect'
         )
@@ -193,7 +209,11 @@ class TestPACIntegration:
         pac_model = gpac.PAC(
             seq_len=seq_len,
             fs=fs,
+            pha_start_hz=2.0,
+            pha_end_hz=20.0,
             pha_n_bands=5,
+            amp_start_hz=30.0,
+            amp_end_hz=100.0,  # Keep below Nyquist (128 Hz)
             amp_n_bands=5,
             n_perm=20,  # Small number for testing
             return_dist=True
@@ -216,15 +236,21 @@ class TestPACIntegration:
         signal = torch.randn(2, 2, seq_len)  # (batch, channel, time)
         
         # Use calculate_pac function
-        pac_values = gpac.calculate_pac(
+        pac_values, pha_freqs, amp_freqs = gpac.calculate_pac(
             signal,
             fs=fs,
+            pha_start_hz=2.0,
+            pha_end_hz=20.0,
             pha_n_bands=5,
+            amp_start_hz=30.0,
+            amp_end_hz=100.0,  # Keep below Nyquist (128 Hz)
             amp_n_bands=5
         )
         
         # Check output
         assert pac_values.shape == (2, 2, 5, 5)
+        assert len(pha_freqs) == 5
+        assert len(amp_freqs) == 5
         
     def test_device_compatibility(self, setup_pac):
         """Test GPU/CPU compatibility."""
