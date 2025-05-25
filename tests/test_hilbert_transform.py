@@ -29,7 +29,7 @@ class TestHilbertTransform:
         hilbert_module, seq_len = setup_hilbert
         
         # Check if initialized
-        assert hilbert_module.seq_len == seq_len
+        assert hilbert_module.initial_seq_len == seq_len
         assert hilbert_module.dim == -1
         
     def test_analytic_signal(self, setup_hilbert):
@@ -74,8 +74,8 @@ class TestHilbertTransform:
         analytic = hilbert_module(signal)
         phase = analytic[..., 0]
         
-        # Check phase unwrapping
-        phase_unwrapped = torch.unwrap(phase[0, 0], dim=-1)
+        # Check phase unwrapping (using numpy since torch.unwrap may not be available)
+        phase_unwrapped = np.unwrap(phase[0, 0].numpy())
         
         # Phase should increase linearly with slope = 2*pi*freq/fs
         expected_slope = 2 * np.pi * freq / fs
