@@ -1,11 +1,11 @@
 <!-- ---
-!-- Timestamp: 2025-05-17 07:14:04
+!-- Timestamp: 2025-05-24 19:55:17
 !-- Author: ywatanabe
-!-- File: /ssh:ywatanabe@sp:/home/ywatanabe/.dotfiles/.claude/to_claude/guidelines/guidelines_programming_elisp_rules.md
+!-- File: /home/ywatanabe/.dotfiles/.claude/to_claude/guidelines/guidelines-programming-Elisp-Rules.md
 !-- --- -->
 
 ## Debugging Elisp
-Parentheses mismatch is often cause of errors. Please use `./docs/to_claude/tools/elisp_check_parens.sh`. This will find parentheses mismatch and show problematic line.
+Parentheses mismatch is often cause of errors. Please use `./docs/to_claude/bin/elisp_check_parens.sh`. This will find parentheses mismatch and show problematic line.
 
 ## Require and Provide
 - DO NEVER INCLUDE SLASH (`/`) in `require` and `provide` statements.

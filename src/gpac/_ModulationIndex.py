@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Timestamp: "2025-05-25 11:56:39 (ywatanabe)"
+# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_ModulationIndex.py
+# ----------------------------------------
+import os
+__FILE__ = (
+    "./src/gpac/_ModulationIndex.py"
+)
+__DIR__ = os.path.dirname(__FILE__)
+# ----------------------------------------
+
 import warnings
 
 import numpy as np
@@ -11,16 +23,16 @@ class ModulationIndex(nn.Module):
 
     def __init__(
         self,
-        n_bins: int = 18,  # Number of phase bins
-        fp16: bool = False,  # Use float16 for intermediate/output calculations if True
-        amp_prob: bool = False,  # If True, return amplitude probabilities instead of MI
+        n_bins: int = 18,
+        fp16: bool = False,
+        amp_prob: bool = False,
     ):
         super().__init__()
         if not isinstance(n_bins, int) or n_bins <= 0:
             raise ValueError("n_bins must be a positive integer.")
         self.n_bins = n_bins
         self.fp16 = fp16
-        self.amp_prob = amp_prob  # Flag to return probabilities or MI
+        self.amp_prob = amp_prob
 
         # Define phase bin edges from -pi to pi
         bin_edges = torch.linspace(-np.pi, np.pi, n_bins + 1)
@@ -45,7 +57,9 @@ class ModulationIndex(nn.Module):
 
         # Ensure input tensors are contiguous to avoid performance warning
         pha_cont = pha.contiguous() if not pha.is_contiguous() else pha
-        cutoffs_cont = cutoffs.contiguous() if not cutoffs.is_contiguous() else cutoffs
+        cutoffs_cont = (
+            cutoffs.contiguous() if not cutoffs.is_contiguous() else cutoffs
+        )
 
         # Use torch.bucketize with contiguous tensors
         bin_indices = torch.bucketize(pha_cont, cutoffs_cont, right=False)
@@ -59,9 +73,9 @@ class ModulationIndex(nn.Module):
 
     def forward(
         self,
-        pha: torch.Tensor,  # Phase tensor, shape e.g., (B, C, F_pha, Seg, Time)
-        amp: torch.Tensor,  # Amplitude tensor, shape e.g., (B, C, F_amp, Seg, Time)
-        epsilon: float = 1e-9,  # Small value for numerical stability
+        pha: torch.Tensor,
+        amp: torch.Tensor,
+        epsilon: float = 1e-9,
     ) -> torch.Tensor:
         """
         Computes Modulation Index or Amplitude Distribution.
@@ -72,7 +86,9 @@ class ModulationIndex(nn.Module):
                 f"Input tensors must be 5D. Got pha:{pha.ndim}, amp:{amp.ndim}"
             )
         if pha.shape[0:2] != amp.shape[0:2] or pha.shape[3:] != amp.shape[3:]:
-            raise ValueError(f"Dimensions mismatch. pha:{pha.shape}, amp:{amp.shape}")
+            raise ValueError(
+                f"Dimensions mismatch. pha:{pha.shape}, amp:{amp.shape}"
+            )
 
         # 2. Prepare Tensors
         compute_dtype = torch.float16 if self.fp16 else torch.float32
@@ -98,7 +114,9 @@ class ModulationIndex(nn.Module):
         amp_float = amp_expanded.float()
 
         # Sum amplitudes over time dimension (dim 5)
-        amp_sums_in_bins = (pha_masks_float * amp_float).sum(dim=5, keepdim=True)
+        amp_sums_in_bins = (pha_masks_float * amp_float).sum(
+            dim=5, keepdim=True
+        )
         # Count samples per bin over time dimension (dim 5)
         counts_in_bins = pha_masks_float.sum(dim=5, keepdim=True)
         # Calculate mean amplitude per bin
@@ -112,9 +130,7 @@ class ModulationIndex(nn.Module):
 
         if self.amp_prob:
             # Return Amplitude Probabilities averaged over segments (dim 4)
-            result = amp_probs.squeeze(5).mean(
-                dim=4
-            )  # Shape: (B, C, F_pha, F_amp, n_bins)
+            result = amp_probs.squeeze(5).mean(dim=4)
             return result.to(output_dtype)
         else:
             # Calculate Modulation Index (MI)
@@ -126,15 +142,13 @@ class ModulationIndex(nn.Module):
             # Sum (P * log(P)) over bins dimension (dim -1)
             kl_div_part = (amp_probs * torch.log(amp_probs + epsilon)).sum(
                 dim=-1
-            )  # Shape: (B, C, F_pha, F_amp, Seg, 1)
+            )
 
             # Calculate MI = (log(N) + sum(P*log(P))) / log(N)
-            MI = (
-                log_n_bins + kl_div_part
-            ) / log_n_bins  # Shape: (B, C, F_pha, F_amp, Seg, 1)
+            MI = (log_n_bins + kl_div_part) / log_n_bins
 
-            # Average MI over segments (dim 4), remove sum dim (dim 5)
-            MI = MI.squeeze(5).mean(dim=4)  # Shape: (B, C, F_pha, F_amp)
+            # Remove sum dim (dim 5)
+            MI = MI.squeeze(5).mean(dim=4)
 
             # Handle potential NaNs
             if torch.isnan(MI).any():
@@ -145,4 +159,4 @@ class ModulationIndex(nn.Module):
 
             return MI.to(output_dtype)
 
-
+# EOF
