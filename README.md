@@ -1,84 +1,176 @@
-<!-- ---
-!-- Timestamp: 2025-05-25 10:18:09
-!-- Author: ywatanabe
-!-- File: /ssh:sp:/home/ywatanabe/proj/gPAC/README.md
-!-- --- -->
-
 # gPAC: GPU-Accelerated Phase-Amplitude Coupling
 
 `gPAC` is a PyTorch-based package for efficient computation of Phase-Amplitude Coupling (PAC) using Modulation Index (MI) with GPU acceleration.
 
-## Key Features
+## 🚀 Key Results
 
-- **GPU Acceleration**: 5-100x faster Modulation Index (MI) computation via PyTorch/CUDA
-- **TensorPAC Compatibility**: Uses identical filter design (3 cycles for phase, 6 for amplitude) for easy comparison
-- **Differentiable Filters**: Optional gradient flow for integration with deep learning models
-- **Synthetic Data Generation**: Built-in tools for generating test signals with known PAC properties
-- **Statistical Analysis**: Permutation testing and surrogate distributions for validation
-- **Return Full Distributions**: Access complete surrogate data for custom statistical analyses
+<div align="center">
+  <img src="benchmarks/figures/hres_mres_comparison_improved.png" alt="PAC Comparison" width="100%">
+  
+  **gPAC achieves 28-63x speedup over TensorPAC while maintaining high accuracy (r=0.898)**
+</div>
 
-## Demo
+## ✨ Key Features
 
-![PAC Analysis Demo](docs/demo.gif)
+- **GPU Acceleration**: 28-63x faster than TensorPAC through PyTorch/CUDA optimization
+- **Sequential Filtfilt**: Novel implementation that's 1.2x faster than averaging while matching scipy.signal.filtfilt
+- **TensorPAC Compatibility**: Supports 'hres'/'mres' frequency specifications for direct comparison
+- **Modular Design**: Use components independently (filtering, Hilbert, MI calculation)
+- **Statistical Analysis**: Built-in permutation testing and surrogate distributions
+- **Differentiable**: Optional gradient flow for deep learning integration
 
-The animation above shows gPAC computing Modulation Index (MI) with different frequency resolutions. Each frequency band combination is **independent**, making PAC computation perfectly suited for GPU parallelization.
+## 📊 Performance Comparison
 
-## Why GPU Acceleration Works
+| Method | Time (ms) | Speedup | Correlation |
+|--------|-----------|---------|-------------|
+| TensorPAC (wavelet) | 76 | 1x | - |
+| TensorPAC (hilbert) | 169 | 1x | - |
+| **gPAC (hilbert+filtfilt)** | **3** | **28-63x** | **0.898** |
 
-![Parallelization Diagram](docs/parallelization_diagram.png)
+## 🎯 Why GPU Acceleration Works
 
-Each frequency band combination requires no communication with other calculations, allowing thousands of GPU cores to compute different frequency pairs simultaneously.
+<div align="center">
+  <img src="docs/parallelization_diagram.png" alt="Parallelization" width="80%">
+</div>
 
-## Comparison with tensorpac
+Each frequency band combination is **independent**, allowing thousands of GPU cores to compute different frequency pairs simultaneously.
 
-![PAC Analysis Comparison](docs/pac_analysis.gif)
-
-### Demo Image
-- **Top**: Input Synthetic Signal with known PAC coupling
-- **Bottom left**: PAC calculated by gPAC
-- **Bottom center**: PAC calculated by Tensorpac  
-- **Bottom right**: Difference (PAC calculated by gPAC - that of Tensorpac)
-
-Both methods calculate Modulation Index (MI) using identical settings, demonstrating compatibility while gPAC provides significant speed improvements through GPU acceleration. Red dashed boxes show ground truth coupling ranges.
-
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 # Installation
+pip install gpac  # Coming soon to PyPI
+
+# Or install from source
 git clone https://github.com/ywatanabe1989/gPAC.git
 cd gPAC
 pip install -e .
 ```
 
+### Basic Usage
+
 ```python
-# Basic usage
-import torch
 import gpac
-import numpy as np
+import torch
 
-# Create example data (batch_size, channels, segments, time)
-signal = torch.randn(2, 4, 1, 1024)
+# Generate sample data
+signal = torch.randn(1, 1, 2048)  # (batch, channel, time)
+fs = 512  # Sampling frequency
 
-# Calculate PAC with GPU acceleration
-pac_values, pha_freqs, amp_freqs = gpac.calculate_pac(
-    signal=signal,
-    fs=256.0,         # Sampling frequency
-    pha_n_bands=10,   # Number of phase bands
-    amp_n_bands=10,   # Number of amplitude bands
-    device="cuda",    # Use GPU
-    n_perm=200,       # Permutation testing
+# Calculate PAC using TensorPAC-compatible settings
+pac_values = gpac.calculate_pac(
+    signal, 
+    fs=fs,
+    pha_n_bands=50,  # 'hres' equivalent
+    amp_n_bands=30,  # 'mres' equivalent
+    filtfilt_mode=True,  # Sequential filtering (faster & more accurate)
+    edge_mode='reflect'  # scipy.signal.filtfilt compatibility
 )
 ```
 
-## Documentation
+### Advanced Usage with Full Control
 
-For detailed usage examples and API reference, see:
-- `examples/` directory for sample scripts
-- `src/gpac/README.md` for implementation details
-- Docstrings in the source code for function parameters
+```python
+# Initialize PAC module with custom parameters
+pac_model = gpac.PAC(
+    seq_len=signal.shape[-1],
+    fs=fs,
+    pha_start_hz=2.0,    # Phase: 2-20 Hz
+    pha_end_hz=20.0,
+    pha_n_bands=50,      # 50 phase bands ('hres')
+    amp_start_hz=60.0,   # Amplitude: 60-160 Hz  
+    amp_end_hz=160.0,
+    amp_n_bands=30,      # 30 amplitude bands ('mres')
+    filtfilt_mode=True,  # Use sequential filtfilt
+    edge_mode='reflect', # Edge padding
+    n_perm=100,          # Permutation testing
+    return_dist=True     # Return surrogate distribution
+)
 
-## Contact
+# Move to GPU
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+pac_model = pac_model.to(device)
+signal = signal.to(device)
 
-Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+# Calculate PAC with statistical testing
+pac_zscore, surrogate_dist = pac_model(signal)
+```
 
-<!-- EOF -->
+## 🧪 Modular Components
+
+Use individual components for custom pipelines:
+
+```python
+from gpac import CombinedBandPassFilter, Hilbert, ModulationIndex
+
+# 1. Bandpass filtering only
+filter_module = CombinedBandPassFilter(
+    pha_bands=torch.tensor([[4., 8.], [8., 12.]]),
+    amp_bands=torch.tensor([[60., 80.], [80., 100.]]),
+    fs=512, seq_len=2048
+)
+filtered = filter_module(signal)
+
+# 2. Hilbert transform only
+hilbert_module = Hilbert(seq_len=2048)
+analytic = hilbert_module(filtered)  # Returns (phase, amplitude)
+
+# 3. Modulation Index only
+mi_module = ModulationIndex(n_bins=18)
+mi_values = mi_module(phase, amplitude)
+```
+
+## 📈 Benchmarks
+
+Run comprehensive benchmarks:
+
+```bash
+cd benchmarks/comparison_scripts
+python test_hres_mres_comparison_improved.py
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run specific module tests
+pytest tests/test_bandpass_filter.py -v
+pytest tests/test_hilbert_transform.py -v
+pytest tests/test_modulation_index.py -v
+pytest tests/test_pac_integration.py -v
+```
+
+## 📚 Documentation
+
+- [Sequential Filtfilt Implementation](docs/sequential_filtfilt_results.md)
+- [TensorPAC Compatibility Guide](docs/tensorpac_compatibility.md)
+- [API Reference](docs/api_reference.md) (coming soon)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please see our [contributing guidelines](CONTRIBUTING.md).
+
+## 📖 Citation
+
+If you use gPAC in your research, please cite:
+
+```bibtex
+@software{watanabe2025gpac,
+  author = {Watanabe, Yusuke},
+  title = {gPAC: GPU-Accelerated Phase-Amplitude Coupling},
+  year = {2025},
+  url = {https://github.com/ywatanabe1989/gPAC}
+}
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- TensorPAC team for the reference implementation
+- PyTorch team for the excellent deep learning framework
+- The neuroscience community for PAC methodology development
