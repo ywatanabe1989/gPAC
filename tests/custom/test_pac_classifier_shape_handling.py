@@ -2,7 +2,7 @@ import pytest
 import torch
 import torch.nn as nn
 
-from gpac._pac import PAC
+from gpac import PAC
 
 
 class TestPACClassifierShapeHandling:

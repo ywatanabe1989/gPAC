@@ -1,5 +1,11 @@
-# Add your tests here
+import pytest
+import torch
+import sys
+import os
 
+# Add path for gpac imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+from gpac._utils import *
 
 if __name__ == "__main__":
     import os
@@ -11,17 +17,6 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------------
 # Start of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_utils.py
 # --------------------------------------------------------------------------------
-# #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
-# # Timestamp: "2025-04-25 17:38:25 (ywatanabe)"
-# # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_utils.py
-# # ----------------------------------------
-# import os
-# 
-# __FILE__ = "./src/gpac/_utils.py"
-# __DIR__ = os.path.dirname(__FILE__)
-# # ----------------------------------------
-# 
 # import torch
 # import torch.nn.functional as F
 # import numpy as np
@@ -464,7 +459,6 @@ if __name__ == "__main__":
 #     return all_filters.to(dtype=dtype, device=device)
 # 
 # 
-# # EOF
 
 # --------------------------------------------------------------------------------
 # End of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_utils.py

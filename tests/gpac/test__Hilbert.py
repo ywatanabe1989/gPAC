@@ -1,5 +1,11 @@
-# Add your tests here
+import pytest
+import torch
+import sys
+import os
 
+# Add path for gpac imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+from gpac._Hilbert import Hilbert
 
 if __name__ == "__main__":
     import os
@@ -11,17 +17,6 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------------
 # Start of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py
 # --------------------------------------------------------------------------------
-# #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
-# # Timestamp: "2025-04-25 19:05:40 (ywatanabe)"
-# # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py
-# # ----------------------------------------
-# import os
-# 
-# __FILE__ = "./src/gpac/_Hilbert.py"
-# __DIR__ = os.path.dirname(__FILE__)
-# # ----------------------------------------
-# 
 # import warnings
 # 
 # import torch
@@ -158,7 +153,6 @@ if __name__ == "__main__":
 #         return out.to(output_dtype)
 # 
 # 
-# # EOF
 
 # --------------------------------------------------------------------------------
 # End of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py

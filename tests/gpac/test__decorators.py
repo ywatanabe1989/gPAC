@@ -1,5 +1,11 @@
-# Add your tests here
+import pytest
+import torch
+import sys
+import os
 
+# Add path for gpac imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+from gpac._decorators import torch_fn
 
 if __name__ == "__main__":
     import os
@@ -11,17 +17,6 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------------
 # Start of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_decorators.py
 # --------------------------------------------------------------------------------
-# #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
-# # Timestamp: "2025-04-25 17:31:42 (ywatanabe)"
-# # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_decorators.py
-# # ----------------------------------------
-# import os
-# 
-# __FILE__ = "./src/gpac/_decorators.py"
-# __DIR__ = os.path.dirname(__FILE__)
-# # ----------------------------------------
-# 
 # import warnings
 # 
 # import numpy as np
@@ -58,9 +53,9 @@ if __name__ == "__main__":
 #                     dtype = np.float32 if arg.dtype == np.float64 else arg.dtype
 #                     tensor_arg = torch.from_numpy(arg.astype(dtype))
 #                     processed_args.append(tensor_arg.to(device))
-#                 except TypeError as error:
+#                 except TypeError as e:
 #                     warnings.warn(
-#                         f"Warning: Could not convert numpy array arg in '{func.__name__}' to tensor: {error}. Passing as is."
+#                         f"Warning: Could not convert numpy array arg in '{func.__name__}' to tensor: {e}. Passing as is."
 #                     )
 #                     processed_args.append(arg)
 #             elif isinstance(arg, torch.Tensor):
@@ -76,9 +71,9 @@ if __name__ == "__main__":
 #                     dtype = np.float32 if value.dtype == np.float64 else value.dtype
 #                     tensor_value = torch.from_numpy(value.astype(dtype))
 #                     processed_kwargs[key] = tensor_value.to(device)
-#                 except TypeError as error:
+#                 except TypeError as e:
 #                     warnings.warn(
-#                         f"Warning: Could not convert numpy array kwarg '{key}' in '{func.__name__}' to tensor: {error}. Passing as is."
+#                         f"Warning: Could not convert numpy array kwarg '{key}' in '{func.__name__}' to tensor: {e}. Passing as is."
 #                     )
 #                     processed_kwargs[key] = value
 #             elif isinstance(value, torch.Tensor):
@@ -102,9 +97,6 @@ if __name__ == "__main__":
 #             return convert_to_numpy_if_needed(result)
 # 
 #     return wrapper
-# 
-# 
-# # EOF
 
 # --------------------------------------------------------------------------------
 # End of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_decorators.py

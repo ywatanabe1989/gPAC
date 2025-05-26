@@ -1,133 +1,164 @@
-# TensorPAC Compatibility Mode for gPAC
+# TensorPAC Compatibility Guide
 
 ## Overview
 
-gPAC now includes a TensorPAC-compatible mode that matches TensorPAC's filter implementation and default parameters for fair comparisons between the libraries.
+gPAC provides a compatibility module to match TensorPAC's behavior and output scale. This is important because:
 
-## Key Features
+1. **Scale Difference**: gPAC values are typically 4-12x smaller than TensorPAC values
+2. **Frequency Ranges**: TensorPAC uses specific default frequency ranges
+3. **Band Configuration**: Common configurations use many frequency bands (e.g., 50x30)
 
-### 1. TensorPAC's Custom FIR1 Implementation
-- Uses TensorPAC's custom `fir1` filter design instead of scipy's `firwin`
-- Produces identical filter coefficients to TensorPAC
-- Filter lengths match exactly between libraries
-
-### 2. Matched Cycle Parameters
-- **Phase filters**: 3 cycles (default)
-- **Amplitude filters**: 6 cycles (default)
-- This matches TensorPAC's default `cycle=(3, 6)` parameter
-
-### 3. Filter Design Differences
-
-| Feature | Standard gPAC | TensorPAC-Compatible gPAC | TensorPAC |
-|---------|---------------|---------------------------|-----------|
-| Filter Implementation | scipy.firwin | Custom fir1 | Custom fir1 |
-| Default Cycles | 3 for both | (3, 6) | (3, 6) |
-| Filter Length | Odd (to_odd) | Matches TensorPAC | Variable |
-| Zero-padding | Yes (FFT efficiency) | Minimal | No (filtfilt) |
-| GPU Optimization | Full | Reduced | N/A |
-
-## Usage
-
-### Basic Example
+## Quick Start
 
 ```python
-import gpac
-import torch
+from gpac import calculate_pac_tensorpac_compat
 
-# Create TensorPAC-compatible PAC model
-model = gpac.PAC_TensorPACCompatible(
-    seq_len=1024,
-    fs=512,
-    pha_n_bands=10,
-    amp_n_bands=10,
-    n_perm=None,
-    trainable=False
-)
-
-# Or use the convenience function
-model = gpac.create_tensorpac_compatible_pac(
-    seq_len=1024,
-    fs=512
-)
-
-# Process signal (same API as standard gPAC)
-signal = torch.randn(1, 1, 1, 1024)
-pac_result = model(signal)
+# Calculate PAC with TensorPAC-compatible scaling
+pac, f_pha, f_amp = calculate_pac_tensorpac_compat(signal, fs=1000)
 ```
 
-### Comparison with Standard gPAC
+## Available Configurations
+
+### 'compatible' (Default, Recommended)
+- **Phase bands**: 50
+- **Amplitude bands**: 30
+- **Phase range**: 1.5-25 Hz
+- **Amplitude range**: 52.5-180 Hz
+- **Scale factor**: 12x
+
+### 'hres' (High Resolution)
+- **Phase bands**: 50
+- **Amplitude bands**: 50
+- **Phase range**: 1.5-25 Hz
+- **Amplitude range**: 52.5-180 Hz
+- **Scale factor**: 8x
+
+### 'medium'
+- **Phase bands**: 30
+- **Amplitude bands**: 30
+- **Phase range**: 1.5-25 Hz
+- **Amplitude range**: 52.5-180 Hz
+- **Scale factor**: 6.5x
+
+### 'standard'
+- **Phase bands**: 10
+- **Amplitude bands**: 10
+- **Phase range**: 2-20 Hz
+- **Amplitude range**: 60-160 Hz
+- **Scale factor**: 5x
+
+## Usage Examples
+
+### Basic Usage
 
 ```python
-# Standard gPAC
-standard_model = gpac.PAC(
-    seq_len=1024,
-    fs=512,
-    filter_cycle=3  # Single cycle parameter
+import numpy as np
+from gpac import calculate_pac_tensorpac_compat
+
+# Create test signal
+fs = 1000  # Sampling frequency
+t = np.arange(2000) / fs
+signal = (1 + 0.5 * np.sin(2*np.pi*5*t)) * np.sin(2*np.pi*70*t)
+
+# Calculate PAC with default 50x30 configuration
+pac, pha_freqs, amp_freqs = calculate_pac_tensorpac_compat(signal, fs)
+
+print(f"PAC shape: {pac.shape}")  # (50, 30)
+print(f"Max PAC: {pac.max():.3f}")  # Scaled to match TensorPAC
+```
+
+### Using Different Configurations
+
+```python
+# High-resolution 50x50
+pac_hres, f_pha, f_amp = calculate_pac_tensorpac_compat(
+    signal, fs, config='hres'
 )
 
-# TensorPAC-compatible gPAC
-compatible_model = gpac.PAC_TensorPACCompatible(
-    seq_len=1024,
-    fs=512,
-    filter_cycle_pha=3,  # Phase cycle
-    filter_cycle_amp=6   # Amplitude cycle
+# Standard 10x10
+pac_std, f_pha, f_amp = calculate_pac_tensorpac_compat(
+    signal, fs, config='standard'
 )
 ```
 
-## Implementation Details
+### Getting Unscaled Values
 
-### Filter Resolution
-Both implementations achieve similar frequency resolution:
-- Resolution ≈ fs / (cycle × f_low) Hz
-- Lower frequencies → longer filters → better frequency resolution
-- Higher frequencies → shorter filters → better temporal resolution
+```python
+# Get both scaled and unscaled values
+pac_scaled, f_pha, f_amp, pac_raw = calculate_pac_tensorpac_compat(
+    signal, fs, return_unscaled=True
+)
 
-### Example Filter Lengths (fs=512 Hz, seq_len=2048)
+print(f"Raw gPAC max: {pac_raw.max():.6f}")
+print(f"Scaled max: {pac_scaled.max():.6f}")
+print(f"Scale factor: {pac_scaled.max() / pac_raw.max():.1f}x")
+```
 
-| Band | Frequency Range | Filter Length |
-|------|----------------|---------------|
-| Delta | 2-4 Hz | 683 samples |
-| Theta | 6-10 Hz | 256 samples |
-| Alpha | 8-12 Hz | 193 samples |
-| Beta | 13-30 Hz | 118 samples |
-| Gamma | 60-120 Hz | 25 samples |
+### Custom Scaling
 
-### Trade-offs
+```python
+# Use custom scale factor
+pac, f_pha, f_amp = calculate_pac_tensorpac_compat(
+    signal, fs, custom_scale=10.0
+)
+```
 
-**GPU Efficiency vs. Compatibility:**
-- Standard gPAC uses zero-padding for FFT efficiency on GPU
-- TensorPAC-compatible mode uses minimal padding to match TensorPAC
-- This may slightly reduce GPU performance but ensures exact compatibility
+### Comparing with TensorPAC
 
-**Edge Handling:**
-- gPAC uses convolution with 'same' padding
-- TensorPAC uses filtfilt with different edge handling
-- Results may differ slightly at signal edges
+```python
+from gpac import compare_with_tensorpac
 
-## When to Use TensorPAC-Compatible Mode
+# Requires TensorPAC to be installed
+results = compare_with_tensorpac(signal, fs, config='compatible')
 
-Use this mode when:
-1. **Comparing results** directly with TensorPAC
-2. **Reproducing published results** that used TensorPAC
-3. **Validating algorithms** across implementations
-4. **Benchmarking performance** with matched parameters
+if 'error' not in results:
+    print(f"TensorPAC max: {results['tensorpac_max']:.3f}")
+    print(f"gPAC scaled max: {results['gpac_max_scaled']:.3f}")
+    print(f"Actual scale factor: {results['actual_scale_factor']:.1f}x")
+```
 
-Use standard gPAC when:
-1. **Maximum GPU performance** is needed
-2. **Training neural networks** with PAC (trainable mode)
-3. **Processing large batches** of data
-4. **Real-time applications** requiring speed
+## Important Notes
 
-## Validation Results
+1. **Scale Factors**: The scale factors are empirically determined and may vary slightly depending on the signal characteristics.
 
-Filter comparison shows:
-- Identical filter lengths between TensorPAC and compatible mode
-- Nearly identical frequency responses
-- Slight differences in PAC results due to implementation details
+2. **Frequency Ranges**: The default ranges (1.5-25 Hz for phase, 52.5-180 Hz for amplitude) match TensorPAC's 'hres' configuration.
 
-The correlation between results varies depending on the signal, but the implementations are functionally equivalent for most practical purposes.
+3. **Filter Settings**: The compatibility module uses `filtfilt_mode=True` for better filter matching with TensorPAC.
+
+4. **Performance**: Using many frequency bands (e.g., 50x30) requires more computation. Consider using fewer bands for faster processing if high resolution is not needed.
+
+## Migration from TensorPAC
+
+If you're migrating from TensorPAC:
+
+```python
+# TensorPAC code:
+from tensorpac import Pac
+pac_obj = Pac(idpac=(2,0,0), f_pha='hres', f_amp='hres')
+pac_tp = pac_obj.filterfit(fs, signal)
+
+# Equivalent gPAC code:
+from gpac import calculate_pac_tensorpac_compat
+pac_gp, f_pha, f_amp = calculate_pac_tensorpac_compat(
+    signal, fs, config='hres'
+)
+```
+
+## Technical Details
+
+The compatibility module addresses several differences between gPAC and TensorPAC:
+
+1. **Filter Implementation**: Different filter designs lead to slightly different frequency responses
+2. **Amplitude Extraction**: Minor differences in how amplitude is computed from analytic signals
+3. **Normalization**: Subtle differences in the modulation index calculation
+4. **GPU Acceleration**: gPAC uses PyTorch for GPU support, while TensorPAC uses NumPy
+
+Despite these differences, the compatibility module ensures that:
+- PAC patterns are preserved
+- Peak locations are consistent
+- Values are on the same scale for comparison
 
 ## References
 
-- TensorPAC: https://github.com/EtienneCmb/tensorpac
-- Original fir1 implementation adapted from TensorPAC's spectral module
+- TensorPAC: Combrisson et al. (2020). Tensorpac: An open-source Python toolbox for tensor-based phase-amplitude coupling measurement in electrophysiological brain signals. PLoS Comput Biol.
+- Tort et al. (2010). Measuring phase-amplitude coupling between neuronal oscillations of different frequencies. J Neurophysiol.

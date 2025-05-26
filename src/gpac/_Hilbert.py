@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Timestamp: "2025-05-26 01:39:02 (ywatanabe)"
+# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py
+# ----------------------------------------
+import os
+__FILE__ = (
+    "./src/gpac/_Hilbert.py"
+)
+__DIR__ = os.path.dirname(__FILE__)
+# ----------------------------------------
 import warnings
 
 import torch
@@ -12,7 +23,9 @@ class Hilbert(nn.Module):
 
     def __init__(
         self,
-        seq_len: (int | None) = None,  # Optional: Sequence length for precomputation
+        seq_len: (
+            int | None
+        ) = None,  # Optional: Sequence length for precomputation
         dim: int = -1,  # Dimension along which to apply the transform
         fp16: bool = False,  # Use float16 output where appropriate
     ):
@@ -49,8 +62,14 @@ class Hilbert(nn.Module):
         self, num_samples: int, device: torch.device, dtype: torch.dtype
     ) -> torch.Tensor:
         """Gets or computes the Heaviside function for the given length."""
-        if self.heaviside_freq is None or self.heaviside_freq.shape[0] != num_samples:
-            if self.initial_seq_len is not None and num_samples != self.initial_seq_len:
+        if (
+            self.heaviside_freq is None
+            or self.heaviside_freq.shape[0] != num_samples
+        ):
+            if (
+                self.initial_seq_len is not None
+                and num_samples != self.initial_seq_len
+            ):
                 warnings.warn(
                     f"Input sequence length ({num_samples}) differs from Hilbert initialization length ({self.initial_seq_len}). Recomputing dynamically."
                 )
@@ -103,7 +122,9 @@ class Hilbert(nn.Module):
             x_real = x.to(fft_dtype)
 
         # 2. Get Heaviside Step Function
-        heaviside_u = self._get_heaviside_for_length(current_seq_len, device, fft_dtype)
+        heaviside_u = self._get_heaviside_for_length(
+            current_seq_len, device, fft_dtype
+        )
 
         # 3. Perform FFT
         xf = fft(x_real, n=current_seq_len, dim=self.dim)
@@ -133,4 +154,4 @@ class Hilbert(nn.Module):
 
         return out.to(output_dtype)
 
-
+# EOF

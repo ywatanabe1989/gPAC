@@ -1,5 +1,11 @@
-# Add your tests here
+import pytest
+import torch
+import sys
+import os
 
+# Add path for gpac imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+from gpac._SyntheticDataGenerator import SyntheticDataGenerator, SyntheticPACDataset
 
 if __name__ == "__main__":
     import os
@@ -11,17 +17,6 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------------
 # Start of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_SyntheticDataGenerator.py
 # --------------------------------------------------------------------------------
-# #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
-# # Timestamp: "2025-05-17 18:05:19 (ywatanabe)"
-# # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_SyntheticDataGenerator.py
-# # ----------------------------------------
-# import os
-# 
-# __FILE__ = "./src/gpac/_SyntheticDataGenerator.py"
-# __DIR__ = os.path.dirname(__FILE__)
-# # ----------------------------------------
-# 
 # from typing import Dict, List, Optional, Tuple
 # 
 # import matplotlib.pyplot as plt
@@ -601,7 +596,6 @@ if __name__ == "__main__":
 #     # pac_dataset = data_generator.generate_and_split(custom_params={}, train_ratio=0.7, val_ratio=0.15)
 #     # dataset = data_generator._generate_dataset_dict(custom_params={})
 # 
-# # EOF
 
 # --------------------------------------------------------------------------------
 # End of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_SyntheticDataGenerator.py

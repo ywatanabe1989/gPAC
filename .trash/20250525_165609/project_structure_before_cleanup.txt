@@ -1,0 +1,2421 @@
+.
+├── benchmarks
+│   ├── analysis_scripts
+│   │   ├── analyze_filter_differences.py
+│   │   ├── deep_investigation_differences.py
+│   │   ├── investigate_filtfilt_detail.py
+│   │   └── verify_hres_mres_bands.py
+│   ├── comparison_scripts
+│   │   ├── benchmark_sequential_simple.py
+│   │   ├── fair_comparison.py
+│   │   ├── test_hres_mres_comparison_improved.py
+│   │   └── test_mi_comparison.py
+│   └── figures
+│       ├── hres_mres_comparison_improved.png
+│       ├── mi_comparison.png
+│       ├── pac_model_comparison.png
+│       └── readme_demo_output.png
+├── .claude
+│   ├── mcp-config.json
+│   ├── settings.json
+│   ├── settings.local.json
+│   └── to_claude
+│       ├── examples
+│       │   └── emacs-hello-world
+│       │       ├── ELISP-TEST-REPORT-20250513-012234-48-PASSED-49-TOTAL-97-PERCENT.org
+│       │       └── tests
+│       │           ├── test-ehw-core
+│       │           │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-4-TOTAL-0-PERCENT.org
+│       │           ├── test-ehw-friends
+│       │           │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-34-TOTAL-0-PERCENT.org
+│       │           ├── test-ehw-prep
+│       │           │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-5-TOTAL-0-PERCENT.org
+│       │           └── test-ehw-utils
+│       │               └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-4-TOTAL-0-PERCENT.org
+│       └── guidelines
+│           └── .old
+│               └── guidelines_programming_test-driven_development.md
+├── cleanup_temp_files.sh
+├── debug_differences.py
+├── dist
+│   ├── torch_pac-0.1.0-py3-none-any.whl
+│   └── torch_pac-0.1.0.tar.gz
+├── .dockerignore
+├── docs
+│   ├── .old
+│   │   ├── _demo_frame.png
+│   │   ├── demo_frame.png
+│   │   ├── _demo.gif
+│   │   ├── demo.gif
+│   │   ├── _demo.png
+│   │   ├── examples
+│   │   │   └── emacs-hello-world
+│   │   │       ├── ELISP-TEST-REPORT-20250513-012234-48-PASSED-49-TOTAL-97-PERCENT.org
+│   │   │       ├── LATEST-ELISP-REPORT.org -> ELISP-TEST-REPORT-20250513-012234-48-PASSED-49-TOTAL-97-PERCENT.org
+│   │   │       ├── README.md
+│   │   │       ├── run_tests.sh
+│   │   │       └── tests
+│   │   │           ├── test-ehw-core
+│   │   │           │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-4-TOTAL-0-PERCENT.org
+│   │   │           ├── test-ehw-friends
+│   │   │           │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-34-TOTAL-0-PERCENT.org
+│   │   │           ├── test-ehw-prep
+│   │   │           │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-5-TOTAL-0-PERCENT.org
+│   │   │           └── test-ehw-utils
+│   │   │               └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-4-TOTAL-0-PERCENT.org
+│   │   ├── guidelines
+│   │   │   ├── guidelines_command_permission_rules.md
+│   │   │   ├── guidelines_general.md
+│   │   │   ├── guidelines_notification_rules.md
+│   │   │   ├── guidelines_programming_custom_python_rules.md
+│   │   │   ├── guidelines_programming_elisp_rules.md
+│   │   │   ├── guidelines_programming_general_rules.md
+│   │   │   ├── guidelines_programming_refactoring_rules.md
+│   │   │   ├── guidelines_programming_shell_scripting_rules.md
+│   │   │   ├── guidelines_programming_test_driven_workflow_rules.md
+│   │   │   ├── guidelines_programming_version_control_rules.md
+│   │   │   ├── guidelines_project_management_rules.md
+│   │   │   ├── guidelines_reporting_rules.md
+│   │   │   └── .old
+│   │   │       └── guidelines_programming_test-driven_development.md
+│   │   ├── _installation.md
+│   │   ├── _pac_analysis.png
+│   │   ├── _pac_computation_flow.png
+│   │   ├── _pac_demo.png
+│   │   └── tools
+│   │       ├── count_parens.sh
+│   │       ├── find_incorrect_require_provide_statements.sh
+│   │       ├── render_mermaid.sh
+│   │       ├── replace_and_rename.sh
+│   │       ├── run_tests_elisp.sh
+│   │       ├── sync_elisp_tdd.sh
+│   │       ├── view_repo.sh
+│   │       └── wsl2-buzzer.sh
+│   ├── parallelization_diagram.png
+│   ├── readme_demo_output.png
+│   ├── readme_demo_output.png.tar.gz
+│   ├── real_world_data_sources.md
+│   ├── sequential_filtfilt_results.md
+│   ├── tensorpac_compatibility.md
+│   ├── to_claude
+│   │   ├── bin
+│   │   │   ├── claude_emacs_server.sh
+│   │   │   ├── elisp_check_parens.sh
+│   │   │   ├── elisp-ci
+│   │   │   │   ├── elisp-ci
+│   │   │   │   ├── elisp-ci-simple
+│   │   │   │   └── README.md
+│   │   │   ├── find_incorrect_require_provide_statements.sh
+│   │   │   ├── render_mermaid.sh
+│   │   │   ├── replace_and_rename.sh
+│   │   │   ├── run_tests_elisp.sh
+│   │   │   ├── run_tests_elisp_v02.sh
+│   │   │   ├── run_tests_python_pip_package.sh
+│   │   │   ├── safe_rm.sh
+│   │   │   ├── .safe_rm.sh.log
+│   │   │   ├── sync_elisp_tdd.sh
+│   │   │   ├── view_repo.sh
+│   │   │   └── wsl2-buzzer.sh
+│   │   ├── examples
+│   │   │   ├── emacs-hello-world
+│   │   │   │   ├── ELISP-TEST-REPORT-20250513-012234-48-PASSED-49-TOTAL-97-PERCENT.org
+│   │   │   │   ├── LATEST-ELISP-REPORT.org -> ELISP-TEST-REPORT-20250513-012234-48-PASSED-49-TOTAL-97-PERCENT.org
+│   │   │   │   ├── README.md
+│   │   │   │   ├── run_tests.sh
+│   │   │   │   └── tests
+│   │   │   │       ├── test-ehw-core
+│   │   │   │       │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-4-TOTAL-0-PERCENT.org
+│   │   │   │       ├── test-ehw-friends
+│   │   │   │       │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-34-TOTAL-0-PERCENT.org
+│   │   │   │       ├── test-ehw-prep
+│   │   │   │       │   └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-5-TOTAL-0-PERCENT.org
+│   │   │   │       └── test-ehw-utils
+│   │   │   │           └── ELISP-TEST-REPORT-20250512-235622-0-SUCCESS-4-TOTAL-0-PERCENT.org
+│   │   │   ├── example-mngs-project
+│   │   │   │   ├── config
+│   │   │   │   │   ├── MNIST.yaml
+│   │   │   │   │   └── PATH.yaml
+│   │   │   │   ├── data
+│   │   │   │   │   └── .gitkeep
+│   │   │   │   ├── .gitignore
+│   │   │   │   ├── README.md
+│   │   │   │   └── scripts
+│   │   │   │       └── mnist
+│   │   │   │           ├── clf_svm.py
+│   │   │   │           ├── download.py
+│   │   │   │           ├── main.sh
+│   │   │   │           ├── plot_conf_mat.py
+│   │   │   │           ├── plot_digits.py
+│   │   │   │           └── plot_umap_space.py
+│   │   │   └── README.md
+│   │   └── guidelines
+│   │       ├── beauty-of-testing.md
+│   │       ├── .claude
+│   │       │   ├── mcp-config.json
+│   │       │   └── settings.json
+│   │       ├── guidelines-command-rm.md
+│   │       ├── guidelines-command-tree.md
+│   │       ├── guidelines-elisp-parentheses-problem.md
+│   │       ├── guidelines-programming-Bug-Report-Rules.md
+│   │       ├── guidelines-programming-Elisp-Rules.md
+│   │       ├── guidelines-programming-Feature-Request-Rules.md
+│   │       ├── guidelines-programming-Python-Django-Rules.md
+│   │       ├── guidelines-programming-Python-General-Rules.md
+│   │       ├── guidelines-programming-Refactoring-Rules.md
+│   │       ├── guidelines-programming-Shell-Scripting-Rules.md
+│   │       ├── guidelines-Project-Management-Rules.md
+│   │       ├── guidelines-Reporting-Rules.md
+│   │       ├── guidelines-Timeline-Gantt-Chart-Rules.md
+│   │       ├── IMPORTANT-guidelines-Command-Permissions-and-Autonomous-Attitude.md
+│   │       ├── IMPORTANT-guidelines-Keep-it-Simple-Stupid.md
+│   │       ├── IMPORTANT-guidelines-programming-Art-of-Readable-Code-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Clean-Code-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Cleanup-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Elisp-CI-Framework-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Emacs-Server-and-Discussion-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-General-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Python-MNGS-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Test-Driven-Workflow-Rules.md
+│   │       ├── IMPORTANT-guidelines-programming-Version-Control-Rules.md
+│   │       ├── IMPORTANT-guidelines-Scientific-Rules.md
+│   │       ├── memo.md
+│   │       ├── prompt-templates
+│   │       │   ├── Alternative.md
+│   │       │   ├── BluePrint.md
+│   │       │   ├── Correct.md
+│   │       │   ├── DebugPrint.md
+│   │       │   ├── Email.md
+│   │       │   ├── General.md
+│   │       │   ├── Life.md
+│   │       │   ├── Mermaid.md
+│   │       │   ├── Paraphrase.md
+│   │       │   ├── ProgrammingGuidelines.md
+│   │       │   ├── Programming.md
+│   │       │   ├── ProgrammingRelentlessly.md
+│   │       │   ├── ProgrammingSort.md
+│   │       │   ├── ProgrammingTest.md
+│   │       │   ├── Remember.md
+│   │       │   ├── ScientificGuidelines.md
+│   │       │   ├── SciWriteAbstract.md
+│   │       │   ├── SciWriteDiscussion.md
+│   │       │   ├── SciWriteIntroduction.md
+│   │       │   ├── SciWrite.md
+│   │       │   ├── SciWriteMethods.md
+│   │       │   ├── template.md
+│   │       │   └── Visa.md
+│   │       └── README.md
+│   └── .update_package.sh.log
+├── .env -> /home/ywatanabe/.env
+├── examples
+│   ├── _comparison_with_mngs.py
+│   ├── create_parallelization_diagram.py
+│   ├── .old
+│   │   ├── 04_advanced_statistical_analysis.py
+│   │   ├── advanced_pac_analysis.py
+│   │   ├── basic_pac_analysis.py
+│   │   ├── call_gpac_func.py
+│   │   ├── data
+│   │   │   └── figures
+│   │   │       ├── advanced_pac_analysis.png -> ../../advanced_pac_example_out/data/figures/advanced_pac_analysis.png
+│   │   │       ├── pac_analysis_results.png -> ../../basic_pac_example_out/data/figures/pac_analysis_results.png
+│   │   │       ├── pac_generator_results.png -> ../../basic_pac_example_out/data/figures/pac_generator_results.png
+│   │   │       ├── pac_parameter_distributions.png -> ../../synthetic_data_example_out/data/figures/pac_parameter_distributions.png
+│   │   │       ├── pac_signal_examples.png -> ../../synthetic_data_example_out/data/figures/pac_signal_examples.png
+│   │   │       └── pac_training_loss.png -> ../../synthetic_data_example_out/data/figures/pac_training_loss.png
+│   │   ├── examples
+│   │   │   ├── advanced_pac_example_out
+│   │   │   │   ├── FINISHED_SUCCESS
+│   │   │   │   │   ├── 2025Y-05M-19D-09h29m41s_yEiG
+│   │   │   │   │   │   └── logs
+│   │   │   │   │   │       ├── stderr.log
+│   │   │   │   │   │       └── stdout.log
+│   │   │   │   │   ├── 2025Y-05M-19D-09h31m13s_ov72
+│   │   │   │   │   │   └── logs
+│   │   │   │   │   │       ├── stderr.log
+│   │   │   │   │   │       └── stdout.log
+│   │   │   │   │   ├── 2025Y-05M-19D-09h32m17s_maZI
+│   │   │   │   │   │   └── logs
+│   │   │   │   │   │       ├── stderr.log
+│   │   │   │   │   │       └── stdout.log
+│   │   │   │   │   └── 2025Y-05M-19D-09h36m55s_y3WJ
+│   │   │   │   │       └── logs
+│   │   │   │   │           ├── stderr.log
+│   │   │   │   │           └── stdout.log
+│   │   │   │   └── RUNNING
+│   │   │   │       ├── 2025Y-05M-19D-09h29m41s_yEiG
+│   │   │   │       │   └── logs
+│   │   │   │       ├── 2025Y-05M-19D-09h31m13s_ov72
+│   │   │   │       │   └── logs
+│   │   │   │       ├── 2025Y-05M-19D-09h32m17s_maZI
+│   │   │   │       │   └── logs
+│   │   │   │       └── 2025Y-05M-19D-09h36m55s_y3WJ
+│   │   │   │           └── logs
+│   │   │   ├── basic_pac_example_out
+│   │   │   │   ├── FINISHED_SUCCESS
+│   │   │   │   │   ├── 2025Y-05M-19D-09h30m47s_SYNn
+│   │   │   │   │   │   └── logs
+│   │   │   │   │   │       ├── stderr.log
+│   │   │   │   │   │       └── stdout.log
+│   │   │   │   │   └── 2025Y-05M-19D-09h31m51s_jVjl
+│   │   │   │   │       └── logs
+│   │   │   │   │           ├── stderr.log
+│   │   │   │   │           └── stdout.log
+│   │   │   │   └── RUNNING
+│   │   │   │       ├── 2025Y-05M-19D-09h29m23s_hbSK
+│   │   │   │       │   └── logs
+│   │   │   │       │       ├── stderr.log
+│   │   │   │       │       └── stdout.log
+│   │   │   │       ├── 2025Y-05M-19D-09h30m47s_SYNn
+│   │   │   │       │   └── logs
+│   │   │   │       ├── 2025Y-05M-19D-09h31m51s_jVjl
+│   │   │   │       │   └── logs
+│   │   │   │       └── 2025Y-05M-19D-09h36m26s_YZ68
+│   │   │   │           └── logs
+│   │   │   │               ├── stderr.log
+│   │   │   │               └── stdout.log
+│   │   │   └── synthetic_data_example_out
+│   │   │       ├── FINISHED_SUCCESS
+│   │   │       │   ├── 2025Y-05M-19D-09h28m43s_6ylr
+│   │   │       │   │   └── logs
+│   │   │       │   │       ├── stderr.log
+│   │   │       │   │       └── stdout.log
+│   │   │       │   ├── 2025Y-05M-19D-09h32m41s_ZQC3
+│   │   │       │   │   └── logs
+│   │   │       │   │       ├── stderr.log
+│   │   │       │   │       └── stdout.log
+│   │   │       │   └── 2025Y-05M-19D-09h37m29s_uq4y
+│   │   │       │       └── logs
+│   │   │       │           ├── stderr.log
+│   │   │       │           └── stdout.log
+│   │   │       └── RUNNING
+│   │   │           ├── 2025Y-05M-19D-09h28m43s_6ylr
+│   │   │           │   └── logs
+│   │   │           ├── 2025Y-05M-19D-09h32m41s_ZQC3
+│   │   │           │   └── logs
+│   │   │           └── 2025Y-05M-19D-09h37m29s_uq4y
+│   │   │               └── logs
+│   │   └── synthetic_data_example.py
+│   ├── _performance_demo.py
+│   ├── readme_demo_edge_mode.py
+│   ├── readme_demo_edge_simple.py
+│   ├── readme_demo_filtfilt.py
+│   ├── readme_demo.py
+│   ├── readme_demo.py.tar.gz
+│   ├── readme_demo_with_edge_mode.py
+│   ├── .run_all.sh.log
+│   └── SyntheticDataGenerator_out
+│       └── FINISHED_SUCCESS
+│           ├── 2025Y-05M-19D-09h03m41s_Ieu6
+│           │   └── logs
+│           │       ├── stderr.log
+│           │       └── stdout.log
+│           ├── 2025Y-05M-19D-09h08m36s_YSHn
+│           │   └── logs
+│           │       ├── stderr.log
+│           │       └── stdout.log
+│           └── 2025Y-05M-19D-09h25m31s_l9bX
+│               └── logs
+│                   ├── stderr.log
+│                   └── stdout.log
+├── filtfilt_comparison.png
+├── filtfilt_detailed_comparison.png
+├── .git
+│   ├── COMMIT_EDITMSG
+│   ├── config
+│   ├── FETCH_HEAD
+│   ├── HEAD
+│   ├── hooks
+│   │   ├── functions
+│   │   │   └── git-add-gitignore-template.sh
+│   │   ├── post-init
+│   │   ├── pre-command-hook
+│   │   ├── pre-commit
+│   │   └── pre-push
+│   ├── index
+│   ├── info
+│   ├── logs
+│   │   ├── HEAD
+│   │   └── refs
+│   │       ├── heads
+│   │       │   ├── checkpoint
+│   │       │   │   ├── before-cleanup-2025-0524-140804
+│   │       │   │   └── before-cleanup-20250525-164649
+│   │       │   ├── develop
+│   │       │   ├── feature
+│   │       │   │   ├── add-project-documentation
+│   │       │   │   ├── bug-fix-shape-mismatch-pac-classifier
+│   │       │   │   ├── cleanup-20250525-164649
+│   │       │   │   ├── modernize-package-structure
+│   │       │   │   └── return-dist-option
+│   │       │   └── main
+│   │       ├── remotes
+│   │       │   └── origin
+│   │       │       ├── develop
+│   │       │       ├── feature
+│   │       │       │   └── bug-fix-shape-mismatch-pac-classifier
+│   │       │       ├── HEAD
+│   │       │       └── main
+│   │       └── stash
+│   ├── objects
+│   │   ├── 00
+│   │   │   └── 095d8fd8110865865a1bc2698fd607c47d57b6
+│   │   ├── 01
+│   │   │   ├── 1f7b57823292dacdec5cd243dccba6ddbffca4
+│   │   │   ├── 40910bf95c016d38d11610acdfe626d4a42d47
+│   │   │   └── aa1744e5f6bc86d46da500eeeeb93414ba3d59
+│   │   ├── 02
+│   │   │   ├── 0675dc8281c716b99d11160539937a91adf112
+│   │   │   ├── 64da1d205220e34a63d171d8446075f83afe4a
+│   │   │   └── e678da84a9fadb7d2d2f4af80bd9cd251bb057
+│   │   ├── 03
+│   │   │   ├── 1c2ce86ab0b5575b18d56c74853a21a534a578
+│   │   │   ├── 784c64dfb44c39103eb453230364de5ee5bca5
+│   │   │   ├── 7a821cc34b0bdfd21b9f0e304f0d4e8339e437
+│   │   │   ├── 957050e07e69fc2b298cb0e738c2452ecdc256
+│   │   │   └── cbd8f8bce75dca69620e62b88f1b882645cb0c
+│   │   ├── 04
+│   │   │   ├── b80517eb1e08c31d77795788f9bfcc12947fa1
+│   │   │   └── e02101ea1b16a494f507cb3508716dddf58b66
+│   │   ├── 05
+│   │   │   ├── 00d3e2d666c7055e0572d240d2b98b8846484e
+│   │   │   ├── 62b5528a93d05b858767e0d1d5d591dd0289f4
+│   │   │   ├── affdd7332335f71cff572948287d78df4b8f09
+│   │   │   └── cacfec3cabdb8de632068752f3ce0b5452c19f
+│   │   ├── 06
+│   │   │   └── 7882663c5d8ab7ba30b9868c9fb43c87ff25d6
+│   │   ├── 07
+│   │   │   └── b36c43e2f1c1bb213e85e6e146c565dcbd85b1
+│   │   ├── 08
+│   │   │   ├── 10d866879bce92323d1927c8993b46ec325882
+│   │   │   └── c48a41ea6d3a42156ed1f48fc9ff2a65d96a6e
+│   │   ├── 09
+│   │   │   ├── 34d4ba039f707103cfdf69df9fcac86ec67b12
+│   │   │   └── 552f6424c55eec0ce3fb96d3b526e98525144e
+│   │   ├── 0a
+│   │   │   └── 4a2df8fbed3860075b36dbad4b5399c9c58b52
+│   │   ├── 0b
+│   │   │   ├── 2587f19cdacc01848a00efa7273d58988367c6
+│   │   │   └── 58401d897c5408735279b47ab5a62f98005eaf
+│   │   ├── 0d
+│   │   │   ├── 46731638f4cb5891c540aac20e11f06470428c
+│   │   │   ├── c53bb0f369bc78e855e4676a1a4ca8361cd227
+│   │   │   └── f2d054cf6921a71650bd9ec2a365daf01fa438
+│   │   ├── 0f
+│   │   │   ├── 0dde49ee875cc34dec7a6af550dcbd3fbc40ee
+│   │   │   ├── 1759e7a38714e0ab2f797f9d5ce1a8d3c16301
+│   │   │   └── 7d8a231aee939a60f2e2fc187bb64a0557bb30
+│   │   ├── 11
+│   │   │   ├── 177d3420fdfd633a3aef4e14e0bee0ffbde6a5
+│   │   │   ├── 23512e25637080004c405fab2ad265b7b65540
+│   │   │   ├── 565bc81d1cca47b14831678a29b47fb24716fb
+│   │   │   ├── 86e7db41fd00c403da4456ffb05535946d42c7
+│   │   │   ├── e191f45992e187ab9c1faff79d0839df498778
+│   │   │   └── e528271d5d8d5717f6776217829a4d55a3b44e
+│   │   ├── 12
+│   │   │   ├── 3a72ac08da2804f95623fee55267c253bc1c6d
+│   │   │   ├── 994763f08a65ed45400a6d5b461853009019d7
+│   │   │   ├── ccc651336f691a255065c628b42a85030eed49
+│   │   │   ├── d9b342a63d9b12ee3e572c024e89fd847c8166
+│   │   │   ├── f1b30579866f1d8dc5e968869c77a9660d9ee2
+│   │   │   └── fd5d3b5cb7d6947808db52e6849dd51bbd43dc
+│   │   ├── 13
+│   │   │   ├── 21c2fc41537d506385bbb79c3e6aec33d4056f
+│   │   │   ├── 30bf8a6be08371a16ead5869c50c4d61bb6fb5
+│   │   │   └── d0b829e0955abcb1ea06abadbeed76adcdca20
+│   │   ├── 14
+│   │   │   ├── 62fbd7cf241e28a0d4e587531db6a08938e045
+│   │   │   ├── 7465e54459b3e8268e687cd655a69b21c42328
+│   │   │   └── a18a36af659ed96b4bbf666e2b1667e278d8de
+│   │   ├── 15
+│   │   │   └── ea7ecd775c98c185d79e1c3a2aabd8f418966a
+│   │   ├── 17
+│   │   │   ├── 01b43e21ff3ae64d22ebc169f860b0fdca3f25
+│   │   │   ├── 2f29648761091640a4cbcbd99a6a5239640bb7
+│   │   │   ├── 5aef7dc427a5e8c62ec6365e402889b38500ee
+│   │   │   └── f6df7748c33d997e8c68bb64f5ace5a027cd84
+│   │   ├── 18
+│   │   │   ├── 2e5246b9c231abc6170ad8f7a84726021e2801
+│   │   │   ├── b0c8fd5fb90cfe73e90197f99e2993b9804bc7
+│   │   │   └── e8972df0e3a10395d4b0ab6bb1ca81956d4183
+│   │   ├── 19
+│   │   │   └── c909e224e6e9528b431d1ab27e91288c6098da
+│   │   ├── 1b
+│   │   │   ├── 3dbf3d731468db94eec4abf85e503589d9559f
+│   │   │   ├── 4ab94106766e19f1c9c0a322aea018615d8258
+│   │   │   ├── cf91c375bc5fd4e219ebd550531f40f1340c7e
+│   │   │   ├── cfc4ec31b2896f82afde1027d3d49a36cb1a7f
+│   │   │   └── e9d54cb28ee1b2c3a1b429e28434dcc4c6beef
+│   │   ├── 1c
+│   │   │   ├── 20f6b622285c5301760898dbf8900eff8ac4ef
+│   │   │   ├── f58800a7faedcb42c657b525564da82238de97
+│   │   │   └── f9a7536d2d1727ecdfa6b3b80668015352326c
+│   │   ├── 1d
+│   │   │   ├── 9edb0a72983400629a25fb2ddb472eaadfbb5a
+│   │   │   └── e858ab07e452932f7535e82b6e6451c6d5fc1f
+│   │   ├── 1f
+│   │   │   └── 23606b8ad9208ed6176b329fcc665ad995704c
+│   │   ├── 20
+│   │   │   ├── 58daf95fef5d928b29bb8004515d6c8ab1348d
+│   │   │   ├── 5c53cbbe098aac1cf9115f001d043ea00ee73c
+│   │   │   ├── 7e82cd8543b7e403201db2c48f1506621c7b01
+│   │   │   └── f3dfe2f6546c50e332324683d4e23c8111b013
+│   │   ├── 21
+│   │   │   └── 8bb13f659cbe69fa488b8d1b6a53077a3a231f
+│   │   ├── 22
+│   │   │   ├── 389300c5a938fcae3a8b740fe854093859c9ff
+│   │   │   ├── 3b0c58b38060e993e431750d395e071c218f7e
+│   │   │   ├── 61c0b6bb58533fc8a0e72233405bf66919db20
+│   │   │   ├── 858750b70186a08baf94209dd50026b0ed5d44
+│   │   │   ├── 942aa741ca042e87dcc49832cf2ed9844bb98f
+│   │   │   └── c34fd7d0c211255b9d48124a9f1c56ce0b4eb4
+│   │   ├── 23
+│   │   │   ├── 17c374f2e186cec99c72be476da400d0b9f918
+│   │   │   ├── a6b70309e7daeaf31f52339f8623182cddb241
+│   │   │   ├── badf38661bc578e1e982d8290140b4f1bbe5a6
+│   │   │   └── e6732a33e5dcda9f0010482848315e98f6b330
+│   │   ├── 24
+│   │   │   ├── 6410bcdf89113c8ae64ea30e60dead44384799
+│   │   │   └── 979a281dce166452b8313b69b13b1cba4bb163
+│   │   ├── 25
+│   │   │   └── 274d7c8f417fac6c7409de1a5cf1f8f7d77e63
+│   │   ├── 26
+│   │   │   ├── 51fbc51343525dcf062bacefd00940e8f8e465
+│   │   │   ├── 6cb362e2ffbbc32f99127c8770cbf45513d6ea
+│   │   │   ├── 86e14bcfd435424174db3de67f2d567b59f2b9
+│   │   │   └── e436c06c5448adae596fba0d93a0b550a1c172
+│   │   ├── 27
+│   │   │   └── b56d12f855ee978135433c6cee8d69f607ab6a
+│   │   ├── 28
+│   │   │   ├── 2dacbc73825506c028d11d4cb54199c5d39b51
+│   │   │   └── 5e5d87e0d7ef4ff8c270f1e4de0fcca9a2b2c1
+│   │   ├── 29
+│   │   │   ├── a9f13f85b95cd51da6d2a4a07b1bb5fe418d26
+│   │   │   ├── b051f1c4c906704afa449d5901d11c0d5dc000
+│   │   │   └── f82161344a68b48a766f4c2d36ca598c02c552
+│   │   ├── 2a
+│   │   │   └── 09c895e58152e3a51fb7c6c699df7e1c7fda57
+│   │   ├── 2b
+│   │   │   ├── 2da9bec1278d653fb12749934dda8a900ed3a3
+│   │   │   ├── 41fbaa81c6f55f8c874353c2902672f7c3eacf
+│   │   │   ├── b388197db3add172b2ecddda8683c4e482d301
+│   │   │   └── df25b1e301ce39759792ec6ba71cd4254bd781
+│   │   ├── 2c
+│   │   │   └── 8d5d65fdca647c031c65406bd1f9a3ed37a8eb
+│   │   ├── 2d
+│   │   │   ├── 17924e2e1a4aad38046780c5fa481068d400f6
+│   │   │   ├── 9b57b2dc1b125a9f95251bfb21fd7a445e01a3
+│   │   │   ├── ae4ae6704f9d01c3cb13e7d093db4664bfda05
+│   │   │   └── c7f829830322b88b7ba00c0df18b5c9b5ac98e
+│   │   ├── 2e
+│   │   │   ├── 4df4af88cfa26ef4d3995ca98a37f2f1b87fd7
+│   │   │   ├── 627f8e2bbcdc2c6978eeff7763936aac8a0a26
+│   │   │   └── ae6716a84d2affba1bb9bd04aedf2152ef4a33
+│   │   ├── 2f
+│   │   │   ├── 0d9e75ba6d23b6c8739bafdcfb703098f8e503
+│   │   │   ├── 2380a0b4d402bcdbfeec195345e63aad3ff480
+│   │   │   └── 47436a174d9e8f9d814ef790de26d88e40b061
+│   │   ├── 30
+│   │   │   ├── 83c3ea262430c9e488757543fe8515d7a1386e
+│   │   │   ├── cfdebe5c104e1a19f699c683f6013327c23744
+│   │   │   └── ef881782ec0bc813785f54830ff2e3dcbb2cda
+│   │   ├── 31
+│   │   │   ├── 03efc583ffde28a057db30816a1ca829134039
+│   │   │   ├── 14ba345a45bd6020a944e59c1d7d8bc310dbda
+│   │   │   └── a8c978fd40c88d9cba0d0c9e244d8145c6cdcf
+│   │   ├── 32
+│   │   │   ├── 1dc65f038b2932c88513bbecfa7240637937ab
+│   │   │   └── d6d356d9b050b53a1313f21e6c2f598f9af221
+│   │   ├── 33
+│   │   │   └── 37a06b37bcb484e44d5150c139cccf4964d94c
+│   │   ├── 35
+│   │   │   ├── 7e0993a8e1998de5323b22dd7826e7116e33ba
+│   │   │   ├── 83ac85bdff3aa382fd2a1802ff2d2bc5952baf
+│   │   │   ├── cd3215bef38f519f88ea52369bd95831e1c746
+│   │   │   └── e54177b115a9ea7984ec0a2ec29449df0b9c9f
+│   │   ├── 36
+│   │   │   └── 4d726f62de266939f180e2c507eb902c3b2642
+│   │   ├── 37
+│   │   │   └── 72675def2939ecaaffa6e55f7bdc27f263b9bd
+│   │   ├── 38
+│   │   │   ├── 1d8a8f669a50d87a2cec67bb511371e94a6676
+│   │   │   ├── c216af4736ac6d42d2f2453b0d16bad5fd356e
+│   │   │   └── d64c0272bea1243f1be7bc9fc95bb0f2e2067f
+│   │   ├── 39
+│   │   │   ├── 458e63cd068ede3222a4ee4a5544f41dd5ca6b
+│   │   │   ├── b75b9d087844d7a5bc3f534eac107a49e6899e
+│   │   │   ├── b915931f5775f839c2d2d25455035d9bfe0f68
+│   │   │   └── bb3f2ddc192693cf4f282f408b5d64e596e951
+│   │   ├── 3a
+│   │   │   ├── 1b2fe1570d2b404e8e728aea91db51f0175dcf
+│   │   │   ├── 35aae54d6dd4250033ca9fef353aef08de5d8c
+│   │   │   ├── 6aff1cadf45c94db39adf9b5e5dbe2ec8a30b4
+│   │   │   ├── c6b9c8b81064ec1a0fb575fc94b959eab71429
+│   │   │   ├── e9b17215e3cc5b71c79e4e749660548b90b4cf
+│   │   │   └── ec19001190d97d89b5631228bf694558f15829
+│   │   ├── 3b
+│   │   │   ├── a53938fc0f3294449d656ca025db284ceb769d
+│   │   │   └── aaad6c3be84d75177c91a0dd398dbac325ee94
+│   │   ├── 3c
+│   │   │   ├── 5f3fdf2963965ccce958cc44c667f0d198397d
+│   │   │   ├── 88da02b01ec21d22ab7bf0d14dfd9619c44c13
+│   │   │   └── dcf75a2ee79f0931b798de04185654dccc012f
+│   │   ├── 3d
+│   │   │   └── 021f9216a959c63b7368b0735a0f66708248d1
+│   │   ├── 3e
+│   │   │   ├── 6e69e0ab78f9b35891b1a7e271906b1b08d3bd
+│   │   │   └── 7c5c11affec06e399259770fb174a42c90bb69
+│   │   ├── 3f
+│   │   │   ├── 68e7222be09014931916d475f0013d3aaa90a0
+│   │   │   ├── 76f55a0d9f3613e16a07ea4f2bccd6ffe5849b
+│   │   │   ├── 8fc4f310dfc8767d78008c298e6e7d36111ef5
+│   │   │   ├── a32284030c19efb38d088816c11ab9caa5744a
+│   │   │   ├── bc97d8f6cc062a4744e57c6a80f9e0ddace92e
+│   │   │   ├── ce0b2076653b2b904e03b384dc9b252cb63330
+│   │   │   └── e5e3510e622eac18956fafee24e94f12de949d
+│   │   ├── 40
+│   │   │   └── 40afb1b3edd7c6546c0b05a67bcfdd776097d1
+│   │   ├── 41
+│   │   │   ├── 1a1eff3e69ae3fede1499ac9a3c791c5f48413
+│   │   │   ├── 1f33a819067c82947e7af901daec1d7a312d76
+│   │   │   ├── 347bce3fccb3b965307fb7134913620ecd8a96
+│   │   │   ├── 52a82a2db23541c8906bf34f241dea0f60a022
+│   │   │   ├── 7efac22aef45e033d10cb43baca5aa06efe9a7
+│   │   │   └── e1191fcc9ec85619c33d6655e9cbc5e5493581
+│   │   ├── 42
+│   │   │   ├── 0eebf0eb7a92e03e85c29d21e81a528d78bda6
+│   │   │   └── 14f31c2f1ce4b6ca446b58113689e690077fea
+│   │   ├── 43
+│   │   │   ├── 150ef901a6f224b2462ed2c2f787cb5e03aec5
+│   │   │   ├── 1a227f4623414ddbdcb4b8ca8c949ceaa8c3fc
+│   │   │   ├── 285fe77db5d523cc82d2d5301536b911789b9f
+│   │   │   ├── acf162218e14c036ef2a8431555175cf323deb
+│   │   │   └── c47a6ef0d4926440b24c13c88973f3e21f4ff8
+│   │   ├── 44
+│   │   │   └── 7ec5448d8ea0f0cf1c5d52caad6f21f981b75d
+│   │   ├── 45
+│   │   │   ├── 199fc7951035477ee45453f6687be8f926877d
+│   │   │   └── 92dc9fc659df9c874213a78408e8d286d004ee
+│   │   ├── 47
+│   │   │   ├── 439220a9607e7fdc7164aee2e5cfc7dfbbba27
+│   │   │   └── ed538f52d26813e7e92c600be605e9bf11e2f9
+│   │   ├── 48
+│   │   │   └── 2c9827c65ff899981b44174c34aa1de0941c45
+│   │   ├── 49
+│   │   │   ├── 4dc15bdc9fa220241a27de376fb99a0fd95270
+│   │   │   ├── 50e4b92a0c69255fd5bca6b4fd02360ab79741
+│   │   │   └── 598485f8ac14e8b0b0f6680320878f962bbd5f
+│   │   ├── 4b
+│   │   │   ├── 4e571807c88a3d9f52ddf30e04df77918bb82a
+│   │   │   ├── 6fbc3697b8b8b5cbe49e8ddb0c0f4084ad2256
+│   │   │   └── 9df60062761410abf65dbdcad3ed811d4bb7e1
+│   │   ├── 4c
+│   │   │   ├── 3b6abfead704bbae611bb5d5d0901cc87dce13
+│   │   │   ├── b03496ae7362ed122dc2e4c2fc349426ac3da8
+│   │   │   ├── b94dd955a1962134dddba487e2f2247a36959b
+│   │   │   ├── d6bbf6889b9283fd5060cbfaf5ba0cbf751778
+│   │   │   └── f3efdfd0e2f3a068fc4913f86f37d41150ca56
+│   │   ├── 4d
+│   │   │   ├── 36131960d27f01658b2cbba2d6faf9a390631f
+│   │   │   ├── 79517327315fe21cf2cca39e1d7c9212624388
+│   │   │   ├── 9d876a06495d1aed8abbbb30642c110dbbe5bf
+│   │   │   └── c25f0b51cc40b10487135954e3c4ee03459fc6
+│   │   ├── 4e
+│   │   │   ├── 7cb72acd339fade73d748b96a46631304d1090
+│   │   │   └── cc125c015619f40620cde1ddfc53c6a561d5a9
+│   │   ├── 4f
+│   │   │   ├── 33509579e312a11eabeabcb7dceb48435812e6
+│   │   │   ├── 7e1797d55f0a63817152bed5cccf37ccf088fc
+│   │   │   └── 903df2ce05077b1102cc634d0e7bc161b563a6
+│   │   ├── 50
+│   │   │   ├── 3de35f69971329c3c4dc5491af58f2d5301655
+│   │   │   ├── 49e7d444d3b0b6195bad4f73525a1287d429eb
+│   │   │   ├── 53b9c27dfa3dc77c51bffc7f658b9b3ceb08b9
+│   │   │   ├── 8e11a1c0ec7a9559c2da454ad57efac3a0bf14
+│   │   │   └── ebc6147fd03db37fdcfe45f72762ed9a8cb967
+│   │   ├── 51
+│   │   │   ├── 514afb381e74da7e59dda3ce47a9437cc5fa55
+│   │   │   └── 9b21c75f7cf0b3e2794fe96affa64c0d9a4e6d
+│   │   ├── 52
+│   │   │   ├── 5b372b121c82978b3a1774d79382b0ce29b9f2
+│   │   │   ├── 798aec8b0fde9f1be4a569fa33d01c9d7babb0
+│   │   │   ├── b86ce5bde2d4b437f258f469751c4d3afacd18
+│   │   │   ├── be16ac3fcdb9d099b125b80dda4fb1cf648e34
+│   │   │   └── f38dccb507f3e04fa13257baa3b45b562f5e9a
+│   │   ├── 53
+│   │   │   ├── 54e62922ba2c3fb91ad6a1d70d2c13eebbc406
+│   │   │   ├── 690597981b12b18b5d35de6fc3ec11870f5477
+│   │   │   └── ca3a8dcfd33c3e72dde383469d6c95bab4f21d
+│   │   ├── 54
+│   │   │   ├── 822e782d65b4392157bbb65c5c96b20fd1f0a9
+│   │   │   ├── a325028aae5e8d4bc657be4e81e157adcf31b1
+│   │   │   └── ef66cddc865832b3ad9107026edc4a0d11676c
+│   │   ├── 55
+│   │   │   ├── 147dc7653828ca4aa60295037aedf63a3f5d76
+│   │   │   ├── 204f030a39389fea0d1538ffbea275a39eb43b
+│   │   │   ├── 716a503f43789b374178bc4b79bb7e0523786a
+│   │   │   ├── c82d8216ee5208b0dd1213abc3b24ff67aa465
+│   │   │   └── e7c6b661e31f314eb4e8446508fcb9a01f7361
+│   │   ├── 57
+│   │   │   ├── 47246b477f1433dec58a8ef768a421eb0344e2
+│   │   │   ├── 8943ea07c4f5764919a3591299bb684c4bcac7
+│   │   │   ├── a0d3e92e421d46acbaae11c82fa73057d996b2
+│   │   │   └── fb81f91235f0388b20a6edeeb8c5ee0aaddf59
+│   │   ├── 58
+│   │   │   ├── b9da7ec27f1b2904fd25686010115b7c8de150
+│   │   │   ├── d48d039f597b686ae4b9d5033738eccd5090dd
+│   │   │   └── f24682342ffb011e56387bf53eebe12d0cfd73
+│   │   ├── 59
+│   │   │   ├── 71062a37877938139747cb7d64fdb681801c72
+│   │   │   ├── e20d19ede8c87035ff2f9873d56554760b7b3a
+│   │   │   └── fed30efaeae0b2f5934e59aa69dbd37d44fa7f
+│   │   ├── 5a
+│   │   │   ├── 3976fc00527da656f66a7aa508370e2f01401e
+│   │   │   ├── 4a21639aa7076408d2fd29bef7fbbbc5e7e6af
+│   │   │   ├── acdef653f7cc906475d3e7c66bb2aeac464f44
+│   │   │   ├── ad4c936d538376c67ba3af8696fe24506d6487
+│   │   │   └── e774ad4dfb2be418f3099357a64a80720b58be
+│   │   ├── 5b
+│   │   │   ├── 158e31a8ca3d168a5f6e30b5c4b409006ac108
+│   │   │   ├── 1c6f6d4dd77092d81237c2562fa7af280f5cea
+│   │   │   ├── 4ff39d8bb48b5ed94beaa533bbdb0a7b073360
+│   │   │   └── e2073ca3351f05fc96dac08295d8bd6f18adac
+│   │   ├── 5d
+│   │   │   ├── 0de25adc6c409e84a0ec83d1ac48811b670441
+│   │   │   ├── 433c1e96399a5e2f6a33cc86deeda12bf4c0f5
+│   │   │   ├── 46e2fad15ccdd6c5f4fedc48d98762e2c76f8b
+│   │   │   └── a95d50ae69d2f5183a5385ab8473b7be07014e
+│   │   ├── 5e
+│   │   │   ├── 17111ac46bd81bd674145985818b8bd295eb1f
+│   │   │   ├── 21d60694d8b2dd924d36145800597dfa81f898
+│   │   │   ├── 9805d12773590712fb250ab6ccad203327cdf6
+│   │   │   ├── 98f13f32f9d1bce9b7eefe9544e9aac35bcd62
+│   │   │   └── c3eae2af6cffbfbc7d455130e8a45633453e4d
+│   │   ├── 5f
+│   │   │   └── fb9f184dc32429be798a0673e04341d335572a
+│   │   ├── 60
+│   │   │   ├── 1bdc63db0e4f72445248efd5c07c8eb4a3df02
+│   │   │   ├── 57810465d32d3bd6447f19d765e2353478d152
+│   │   │   └── ebec760be4f2d83db392ccf752063b37a30f4f
+│   │   ├── 61
+│   │   │   ├── 096090e7600185b66bd2b5f3b3ac5f78e29006
+│   │   │   └── 0e64261615bcdd9eb4551d22a9e467d8d55bdd
+│   │   ├── 62
+│   │   │   ├── 3c2637b08e00f5c38140596e90476d72d61b25
+│   │   │   ├── 724cc7bd7303f8ebce52fe70b15811163ca7f4
+│   │   │   └── ec422e3a928de5df8d4b1778b8d17b0e8903bd
+│   │   ├── 64
+│   │   │   ├── abacbdc703eff1b2175393fb001127c989dd90
+│   │   │   ├── e734ed344bab5b3adff4bfdfe4e8c0b9d8fc3e
+│   │   │   └── f2b9620382ae8b0655325d41fc2e82ec4c6b50
+│   │   ├── 67
+│   │   │   ├── 27dd09844945f73225e9c89bc1a1ca0ac7618d
+│   │   │   ├── 63dd8ff78b8311866fe99ae30b9aa3c92c1aa8
+│   │   │   ├── 7e0e3decaa03520f437f21a5d4d419b326da96
+│   │   │   ├── 8afac00d13ecbb1cfd19cf28a40ce59f1175ae
+│   │   │   ├── 9d58b1be4b1c36da721d262a278877cba439ea
+│   │   │   └── cfa99d9f1cacf86f49618b753861e244da529d
+│   │   ├── 68
+│   │   │   ├── 5581c4c7e4bfcf6b294fc25795963a9c112278
+│   │   │   ├── 99d87fc2f79ae6ff118da6ef4e7e1e02e638a9
+│   │   │   └── 9ead6ead5caa52db6d2768d1e6f22450d67109
+│   │   ├── 6b
+│   │   │   └── aa5c4e43e99b82d300c574ddff205d6589963f
+│   │   ├── 6d
+│   │   │   ├── 0d42a33bd94c90d2c33e82caabce86194210bb
+│   │   │   ├── a85fcc04843054dfe4853509ad49e3d837088a
+│   │   │   └── b4bcb95d1ec959f779dbaf012c421c76025d94
+│   │   ├── 6e
+│   │   │   └── 8afac2cae7f9e64d18a0a45c68aed255e98b33
+│   │   ├── 6f
+│   │   │   ├── 45a3d31e6728fb6621007d69ec7297aa419cc4
+│   │   │   ├── d5e3f0874edaf546533d6da14d8fa0cc56bedc
+│   │   │   └── f279a9c73147df3c78239ec4b37d7ed6ab427c
+│   │   ├── 70
+│   │   │   ├── 0b91c97874b74b1fce6f9bb8256671815ee40c
+│   │   │   └── 19050a1188bf6a50c6bc1207d20aacfd6dce7c
+│   │   ├── 71
+│   │   │   ├── e2059c41d29c1bb8a374bf9eff43dadd496d53
+│   │   │   └── ee9b54233ad8dcb8947cefe0577004b22079e2
+│   │   ├── 72
+│   │   │   └── c882a79b3ce13aef791001e7a103c60071f82a
+│   │   ├── 73
+│   │   │   ├── 7c2f66dd070e8d5c0153ec99b52cd5507a0fa5
+│   │   │   ├── 938d9b6319569fd8a4dc4b7ae1a5846e9132ba
+│   │   │   └── da950f4ab7db7e5e28e40dd9ee623d8c52a924
+│   │   ├── 74
+│   │   │   ├── 0ff50c273c1ba31f2641fd3af1e1fe6e307251
+│   │   │   ├── 2d2af0c7673272482bb25781280ef8c047e5c3
+│   │   │   └── bd62204f783ac73867056fb48a742a73b8ea8d
+│   │   ├── 75
+│   │   │   ├── 1bc510ce003096c93848916faecbd4f53e5752
+│   │   │   └── e11d573068d70c06eb039b8f71239437f8036d
+│   │   ├── 76
+│   │   │   ├── a39c71942eb9f5b9b0e1f6e27a3c992fbf09b8
+│   │   │   └── b23e080e65817ae71fc9009cc02f4cc4b26b32
+│   │   ├── 77
+│   │   │   ├── 621f8f580f1b2e43dd55819e375afa80ea8218
+│   │   │   ├── 7663ef293f3a8dadd985b771a9767415962f8f
+│   │   │   ├── 863756ffab1672c70cc1b9cd9814feecb5692f
+│   │   │   └── dc563809d06c3dd116dad6392b497a93a52899
+│   │   ├── 78
+│   │   │   ├── eab1ddab413ea7e36ebeb628d87bcf31db6bfc
+│   │   │   └── fe5eb8ea912426c5d8f26755cbcc7085d3e3db
+│   │   ├── 79
+│   │   │   ├── 31fe63e2b4209121b1998093ae16d2f984b639
+│   │   │   ├── 5554890d2dbdaa26051e0207ffefe2f2d3762a
+│   │   │   ├── 734dd28c64a51ef733cddef19d97001fa4c5c7
+│   │   │   ├── c5acf22ae6ff951bbdf0506638be825d726718
+│   │   │   └── d210d93bff95c099625f8311bc4ea2487fe589
+│   │   ├── 7a
+│   │   │   ├── 5c16768013cfa24c406d632a88aa21a4bc61a6
+│   │   │   ├── b005af3b9d73512cb3610dfc7781819a82adf5
+│   │   │   └── d4e2fe85c22b3b99345820008e3d7d83157bce
+│   │   ├── 7b
+│   │   │   └── 8c5fdf0ac5bc0775de769297485919ef34a91f
+│   │   ├── 7c
+│   │   │   ├── 2740cacd21756203635e070e07630b4c2fb401
+│   │   │   ├── 2d2ca2479cbee8ae3d86918750eccde85c5081
+│   │   │   ├── 5334bf5b9d4f76ecc40fc7efb7677b82d25226
+│   │   │   └── 96a790e093584b0b065de052f77d9e072595ff
+│   │   ├── 7d
+│   │   │   ├── 41f21b019ca612d63491655f94588798507716
+│   │   │   ├── 48213ef4ec33f94f6aabbd008549b996668e7d
+│   │   │   ├── 83879f29315314fb1d3d0c04eae014456dd5a5
+│   │   │   ├── 87447b9194029b69343dd25e3704f43f9814e7
+│   │   │   └── b042c115f26cd89db6e6e81433a406a6e578a5
+│   │   ├── 7e
+│   │   │   ├── 184e81d2d7aada73689522da849f34a99c77ea
+│   │   │   ├── d9cf0c5e4811bfb6cd572e702f194f8b510059
+│   │   │   └── fa0a37e10987ce38e5d57369f70451304e5032
+│   │   ├── 80
+│   │   │   ├── 6eee1c7e56d04fee7ec52e637ec58b66920d6c
+│   │   │   ├── 9b85a9bdcf4fc65cf4e935dc9c28b44f7c4894
+│   │   │   ├── aa87926b2a664a08de8a9751c17b132713f4bf
+│   │   │   ├── c88d1d56a3b0cd6d714dbc841eaebfc4769785
+│   │   │   └── ec5d2e23b7ec3e8eaf948d5f4ddf2b071b89f1
+│   │   ├── 81
+│   │   │   └── d7c59b15813fe0c6dcf16c3afeff44a5e35658
+│   │   ├── 82
+│   │   │   ├── 6ed918cbb2ecfbf8de156f01f07e38f769e994
+│   │   │   ├── 710f26f0dab7cb5265b7741063603d4d2ab315
+│   │   │   ├── 81fd76707a55e55df84bb4ea4d12b740d4a05d
+│   │   │   ├── fceb5d6ed93df763f759d2d1f887475a3f06b6
+│   │   │   └── ff9c860db6ff46f367ec9f00ddcfa18e7d05e4
+│   │   ├── 83
+│   │   │   ├── 5796dee7a9b3ea4eb1f66a66c99e982b169036
+│   │   │   ├── 680d158ce05f389c22cd449d2af774410eaa84
+│   │   │   ├── c243f4a00f00431588873e4bd8509e11f9e5e0
+│   │   │   └── d03f2ae0ebc24e60544bef9303434f4afdb00b
+│   │   ├── 84
+│   │   │   ├── 46d1a5497b04521dfb4281f7564a764d327ebd
+│   │   │   └── d62d05e161e2918bc5a81fad5b8070d3d68cf8
+│   │   ├── 85
+│   │   │   └── 8d99bb3ba120dcdb2a8bbb61e36dc75c6e8e22
+│   │   ├── 86
+│   │   │   ├── 1190c7cc21769f117f536aeb6549866b5a7a7c
+│   │   │   ├── 267d442d28a3361266c95349bf2d3d6514d95e
+│   │   │   ├── 618590a7b6826e4a1314ab0cd8d0ccf2ab4a4d
+│   │   │   ├── 8479b2b9343a6921b7794276a24abfe8c0fcc5
+│   │   │   ├── 90cf4d7fcedc9e642739164e17d5128c13be93
+│   │   │   └── ac9f082892fc814c4f44559e3f2f86e684671a
+│   │   ├── 87
+│   │   │   ├── 182bb9933b7aa8c8f5e6feacdd7cf2173552a9
+│   │   │   ├── 8535f2c6b699befeb3950f215701c89c57aaf6
+│   │   │   ├── 879658f016d17f47fc57259585f8e0c9d96e8a
+│   │   │   └── ab60d89b5ac7f4dabf48ce6781ef6baf3bc690
+│   │   ├── 88
+│   │   │   └── cc50445573f10403fb40b2169aa062dc4f17e3
+│   │   ├── 89
+│   │   │   ├── 14d334f7880f8ed04323de8270eb398fd039da
+│   │   │   ├── 14ddc8d933dacc1777643dfeaef5f7cea5ed61
+│   │   │   └── 36537966f8b67c02243a403ca7a7f946e5a8c1
+│   │   ├── 8a
+│   │   │   └── 908f962879cf870f69f9bddbd6f6d0c89517ed
+│   │   ├── 8b
+│   │   │   └── a4b4040d22d7843d85d40ff6b5f71308937883
+│   │   ├── 8c
+│   │   │   ├── 09c06297ce7327d8809117d3359d435b0f6222
+│   │   │   └── 6850948d96c075cdf097479177ccba3fe62cb1
+│   │   ├── 8d
+│   │   │   ├── 4e33160b129d036f89d21c24b24eaa7625775c
+│   │   │   └── 5410e095bc378841174a6a3fc79e0c2a87efb4
+│   │   ├── 90
+│   │   │   ├── 3f10bf579918fc7f25442a79c1104a6a0ff66e
+│   │   │   ├── ab8e8afd5234ab4cbe883fb5f2b71a759bf966
+│   │   │   └── b85d479a9396613b46fb8a303c9c097ed79e33
+│   │   ├── 91
+│   │   │   ├── 3a67af6efca9b02afe37cbeef4935a944d64be
+│   │   │   ├── 5dc1561f1292016efb19fc6b10d1b455b903f7
+│   │   │   └── c4b58f1a1c39afad837896b19b810e21d7b70d
+│   │   ├── 92
+│   │   │   ├── 0ee933812205e735ac8867fb36a1e9289e5946
+│   │   │   ├── 708ec45239b2abcf41ca2ec9cb30d093b33c02
+│   │   │   └── e79f4c438badb7d6edff13f2c6729ac855c9e3
+│   │   ├── 93
+│   │   │   ├── 4b11c516a0b1717b2b397da8ee648439bdbad7
+│   │   │   ├── 92f06173a7aa9e467faa243c978e6e8ea72a3e
+│   │   │   ├── a7894c636c1ceb22f01cb3cc498ce630e8819f
+│   │   │   └── b7a69fc9d3909efba72364458e7f9bdbdab448
+│   │   ├── 94
+│   │   │   ├── ba444d524c5317345cfc6dda6fa8415f2460d0
+│   │   │   └── e8f9c16de9e3648828d79e2dd202493a5165aa
+│   │   ├── 95
+│   │   │   ├── 038886d6e7684ac8b68db49304340b3e12aee0
+│   │   │   ├── a4c10119069e5cd365beaee6f697ed2b823dc7
+│   │   │   ├── a9e10c251f9dcbff092e51f8f805c22427c6bf
+│   │   │   └── e87177a39c3dd4b222fe2b4897543932153339
+│   │   ├── 96
+│   │   │   ├── 9a0a646ffdd78155ce59efd8e4bded993c8457
+│   │   │   └── af911906fb22db288079a89d0ef9c3540f76aa
+│   │   ├── 97
+│   │   │   ├── 3ef687964fcc677266eae0a1902501e9ad72be
+│   │   │   ├── 427d8946b0054b8943e328d22977913c56eb11
+│   │   │   └── 8f9ddcdd321a7ff3ab4fef29d88e62dcc3faa1
+│   │   ├── 98
+│   │   │   ├── 7e73731f2b7c246315785ea90cff3ff95d1ecc
+│   │   │   └── db4aebc2ed0902b379a916b4331b4e7babe627
+│   │   ├── 99
+│   │   │   └── d36a8fd2a004484ad43aaf0f28b8b12e0624b4
+│   │   ├── 9a
+│   │   │   ├── 5e1e174a016f3a450d6a978a8102ceceb27881
+│   │   │   └── da0f8247191750f6614d402f8c1442ea74c9a4
+│   │   ├── 9b
+│   │   │   ├── 96e259c36c6d4291907d06435fd23679bec3b3
+│   │   │   └── e9cf5b55e09cfd805d1b2ef49560c6176aa647
+│   │   ├── 9c
+│   │   │   ├── 48871fcbd27a1205cb92b01ebf7dcd90a7277e
+│   │   │   ├── 4b7d185c2f78f7d5be3d736adfff61787621c7
+│   │   │   ├── ace568c10ddbd0a33ecfc3c65138dabdceeaec
+│   │   │   └── c8889082395d988ee2a6bed1a72afa3325c9ff
+│   │   ├── 9d
+│   │   │   ├── 572bd9b60acdef76f517daadc920abf72414aa
+│   │   │   ├── 7fb23c00858cf19e5899ec8114edbcb2c441f1
+│   │   │   └── cc2e89d8c78e5a4235dea045f3ac5347ef22db
+│   │   ├── 9e
+│   │   │   └── 50ce53138f55c0ca9aae8465fc22126be4adc1
+│   │   ├── 9f
+│   │   │   ├── c1d8df4af7bc9e52ba98657c6ce9a410e390e5
+│   │   │   └── f4d2a956d9e3330330775f48f5e25fdabf9535
+│   │   ├── a0
+│   │   │   └── 2d794b4b1cfd301273759dabea6ee92ea8ff10
+│   │   ├── a2
+│   │   │   ├── 169b3425db25d3665977fb90bb37adcd8b8a6c
+│   │   │   ├── 79b63a8e7a9c6bba951d6b3a60666c76ba9d59
+│   │   │   ├── 92add7b44d5bec37b5950646a3fde6b6b83c71
+│   │   │   └── a6e2a551d5586067edd991576b651dc4dbaad9
+│   │   ├── a3
+│   │   │   ├── 1474e473fcdf4eb0653c1b7c0bfd1ca8955199
+│   │   │   ├── 170e9079fe8104b58d6af3dc61b23b8dbe7169
+│   │   │   ├── c0c3a7b6a4e53212388fa3c569300be0c8e999
+│   │   │   └── c959253175d6950f7eeecd4d6e61872f05e7d7
+│   │   ├── a4
+│   │   │   ├── 06ce1cb48470cb5e0ce9bfdb6025bcc1842a74
+│   │   │   ├── 2aff7bed4d6617f5604f3ffb6b2012791595eb
+│   │   │   ├── 9905093017d812b648cff9273268ada23296bf
+│   │   │   ├── aa3919b603591b4f01aaf1093aa008bb2877b4
+│   │   │   ├── cfa5582ad0a5e1a644fff8bf14b2bde754da82
+│   │   │   ├── df5185d225a28b244942244db984ec6a566d6c
+│   │   │   └── fc3b1d6291195e34a1237e6d4a9eff56aa7d5a
+│   │   ├── a5
+│   │   │   ├── be8f1c4710ae6ed268e0344a456c19c77d0603
+│   │   │   └── cc323953fb65d4a9569f714fbc93af0abaaf61
+│   │   ├── a6
+│   │   │   ├── 5f4656ba649e707e4d6e215545b64cc6be6b9b
+│   │   │   ├── 99f112075683a93cf723eea5bf3c7e4b9e11e0
+│   │   │   ├── c1cff6f3b19c3cd57bf4a61d4bd04789d9c416
+│   │   │   └── e311a54b6c51d87a3e3d5c3520dfa9cb675d40
+│   │   ├── a7
+│   │   │   └── b9ae1b34f508eb169ab87deac05cf1abc69603
+│   │   ├── a8
+│   │   │   ├── 34c6133fc7fe0d4f6615906843fb6fc9a86d6b
+│   │   │   ├── 59258d69e0a1dbe0be34f7f16468aeb9dbca8b
+│   │   │   ├── 59288bf2278fb733c6c276548364e36e315b3f
+│   │   │   └── d27c4fcd75353d5319ff4f9f595298d157c7c1
+│   │   ├── aa
+│   │   │   ├── 26383af4e008060b3694ea0176e0740b4968e4
+│   │   │   └── e4dfa50e6c40b70e10bab56ca630c0a0b27f1a
+│   │   ├── ab
+│   │   │   └── 3066708661f239e94290314eaeac4d72b875c9
+│   │   ├── ac
+│   │   │   └── 8cdf2577de49f57f9c4f38fcb20bb7def5f863
+│   │   ├── ad
+│   │   │   ├── 15d3ba8b8d3eaa2379dea400c11b8441d72b37
+│   │   │   ├── 5afc57a25f54b9c59b93cf07257adffe543291
+│   │   │   ├── c4a414b86ac7ec9c0c77826facd0a9ff5b48b5
+│   │   │   └── db36a7ceb147901187476b6aaf5eb8953d82f2
+│   │   ├── ae
+│   │   │   ├── 00001e296491e0f4dc58fc4b60353f6b46b7db
+│   │   │   ├── 0acfea1cf5c8b477545cb8ae7dd697f7422903
+│   │   │   ├── 40cdb17091c74998f7dcf219d297822f9b1ec2
+│   │   │   ├── a22055b520c1af469ab0ca02513f8b46d5c76f
+│   │   │   └── e90000a4ed4636882fb4f70b130f9beb4489b1
+│   │   ├── af
+│   │   │   ├── 089b5a5c5d65947bc266ab85b480751002a33f
+│   │   │   ├── 4969a964bb55cb01d74bd3138f9efadf1958a0
+│   │   │   ├── 4bdaa52bbec148f0447d1d079df60d5b905e8a
+│   │   │   ├── 80d500785b826395b7ab3d0894ec24bb9ee548
+│   │   │   └── 9233f87305eaab63075e863d05e9961875e830
+│   │   ├── b0
+│   │   │   ├── 1223f89cf8b899057a79e690bdde8da0a6356e
+│   │   │   ├── 94ffe6e88c68b1abb81faece7b0661b1d1b8d1
+│   │   │   ├── af9a228c8e82fcd98307b14831177adcaf28ca
+│   │   │   ├── c84911768afdf4cbd8595f5f47d23be135c7b5
+│   │   │   ├── cf771572b37a5490cdd30b2b68545276a341b9
+│   │   │   └── e2d63dfffda38ef487b8f518f93d820390973a
+│   │   ├── b1
+│   │   │   └── eac57a67196e16de5629ec5b55537a2d604bdc
+│   │   ├── b2
+│   │   │   ├── 070857372274bd92a9555a00b002c8ccfa8b05
+│   │   │   └── 8caaf1dd0dc99a7329fe643e487a47dd095912
+│   │   ├── b3
+│   │   │   ├── 42b7ef24cdc4a7b38f00191098a7353336da9e
+│   │   │   ├── 4654bf7a4e60fb7f1d7e34d9bf26cf23669279
+│   │   │   ├── 9480f209930ebbc8c294ca44d7e10fecd194c6
+│   │   │   └── bac092013a0228769bec59316db15d647103e0
+│   │   ├── b4
+│   │   │   ├── 8af4bce2d5d887a1ec161e8642161efb6ae07b
+│   │   │   └── e978aa51eb33fcaa8e514a996bf9492be157a9
+│   │   ├── b5
+│   │   │   └── 5c6759c944478ed6fe66e185268d6f93934e4a
+│   │   ├── b6
+│   │   │   ├── 71acfe146dcaeae7a10d16bca378bb3c400973
+│   │   │   ├── 8b0cb188aad5468aa1983dbd5bc3e58b3f65ed
+│   │   │   ├── 95626215a4242333529df8d1bb073c45128cb0
+│   │   │   └── e91446bfb61508565ff9cb95a833981e7eeb27
+│   │   ├── b7
+│   │   │   ├── 029f93646a3c9360a4fea4dbc483b0c1673afe
+│   │   │   ├── 8984aa7a28f8d4b894b02b567cbac9e354f3a5
+│   │   │   └── b4cd3d7e5c81e1d96ed133c0494e162031ce5c
+│   │   ├── b8
+│   │   │   ├── 06f0a2e9d69e6cd944c39c5935a728108c585a
+│   │   │   └── 937036cd32cb59659a1beed1589f4b81fb02cb
+│   │   ├── b9
+│   │   │   ├── 4eba1a8abd601d157ff204b4bfdad383bda2f8
+│   │   │   ├── 5d13515ee9a15b653d6462e239be7fb34011cf
+│   │   │   ├── 8e3906c193f66e751724e5521287e67d7217c0
+│   │   │   ├── af5fde851fe930a7db9bc4256aeb12bca5df25
+│   │   │   ├── bec46e1a9632b1e6bf58cd1f808e433d89af45
+│   │   │   ├── c197ede5a598b9f5d70c7b4b52b95d8a5f9bb5
+│   │   │   └── db2d0cb06eab4dbfe20d03fa4c1792d2c84679
+│   │   ├── ba
+│   │   │   ├── 3ea6fbf32c8529b9c5ec3a59ed307a9ad977c4
+│   │   │   ├── 84e00a3463de3e66bbdfa7f20c4cea525323d9
+│   │   │   └── 8d9ca1bf3b5c9443fe677a5931234bdb3208fe
+│   │   ├── bb
+│   │   │   ├── 32b8e1a98b603e1368c835f43e24ec18b28bb2
+│   │   │   ├── 37187a0f99a7f90928acd2d50b13305e12ddea
+│   │   │   └── 52d91bffa012fc44d7fe0f46eb21fb42ec3463
+│   │   ├── bc
+│   │   │   ├── 3bc51a31ba675158a5ea83e0918bd77d32da00
+│   │   │   └── 9231d350e6a0a69be195423a48d7b10cff6aaa
+│   │   ├── bd
+│   │   │   └── 7e65e9b3fe02b2868858aa3447357a66262cfe
+│   │   ├── c0
+│   │   │   └── e263c0984f13db65f21a0b66c11769dd27b1df
+│   │   ├── c1
+│   │   │   ├── 22423e5c3358205c7e84cfdd0183e413d52df9
+│   │   │   ├── 3046969fa2c750519461f094e41c8680e87457
+│   │   │   └── a6ddc8cf669942c3308df566d48b566afa1646
+│   │   ├── c2
+│   │   │   ├── 8e45fc7bf63613be52b44997dc1a3f5e750234
+│   │   │   ├── a088980032f45ccdc6717a2c04c315d2aebc71
+│   │   │   ├── c2b4a6666ecb1e3f3a361fef92128c982f9c45
+│   │   │   ├── df556370de73342a13bdbc8d33389deb8d359e
+│   │   │   ├── efcc32df26fc387e5d27db285e58de9e936620
+│   │   │   └── f970945caec466b4173e7d0ccf48eff6644b16
+│   │   ├── c3
+│   │   │   ├── 2c6c99495a23deb3271f3c84d9d34e5dac5180
+│   │   │   ├── 39e920a69d45d104a4063f13214c6d0d50f69e
+│   │   │   ├── 9212a50a9410d9ecfcdff0172803c4d09a198e
+│   │   │   └── c5cd60ac5af51700423e77b0fdb9696caa3b13
+│   │   ├── c4
+│   │   │   ├── aa26275d1ef712a253fb53ab0daf3c7721d287
+│   │   │   └── f4ed04a5446ccd92953ec905469e8125a1a4d4
+│   │   ├── c5
+│   │   │   ├── 215d0e9173b5c0c6ff75ef657e541c9c8c1035
+│   │   │   ├── 4010acb40234f23cf09c3d7d714c7d102dbebf
+│   │   │   └── 9506c9b4bd5770134dd45ddf9ad99db3c5333f
+│   │   ├── c6
+│   │   │   └── 9d2b85c82d657dfd51a626d8951ad52e6a1db4
+│   │   ├── c7
+│   │   │   ├── 430909daed99dace61c2cdb8680f1d30722453
+│   │   │   ├── a2810cec7cfb8f566ce83efbbf98620da856a0
+│   │   │   └── ace0ede7fc145a26888a5ec2c5cdad8428b86c
+│   │   ├── c8
+│   │   │   ├── 6ded7648804b96fc0017ccad701457f80113b1
+│   │   │   └── 7df70bd39c54a6006949ed1c716340cd18c004
+│   │   ├── c9
+│   │   │   ├── 3b97a42f727d89f8ba00f0aca504be1dd8a5c5
+│   │   │   └── a008be2d1435a5df9f161b8b7645b306872cb3
+│   │   ├── ca
+│   │   │   ├── 8324123b76f10304a297b3a1204fe989c9e1f6
+│   │   │   └── a0e1d60b742736bacb4765b90a181bae59f255
+│   │   ├── cb
+│   │   │   └── 7ad6546fc542cfa4c47e131997819647e13efc
+│   │   ├── cc
+│   │   │   ├── 1338222354da30fbd8fa6e8fdfe00458f611cc
+│   │   │   ├── a5e0df2dc7f90d258c132bba34ab153dcf256b
+│   │   │   └── ef01b0c6ac57c8b57db69820c4562e6bb797fd
+│   │   ├── cd
+│   │   │   ├── 177183face53b94a42fccd1c88095e882b4809
+│   │   │   ├── 34800a4bd1911d65089102e0969048b3e989f9
+│   │   │   ├── 71661eac79cf1286379565b9267f5588a81319
+│   │   │   ├── 7c93ac218a0a818681a8dab68f2f6123936c9c
+│   │   │   └── f671e3706453bd187e278668866d5b30c058f3
+│   │   ├── ce
+│   │   │   ├── 1a73e4a16e10cd214fb79de171b6e521b9a3bf
+│   │   │   ├── 34d5e791608737fbeeea994c4e95392f287e5a
+│   │   │   └── 455ecf485e30e856ca4fc7220c9249310aa00d
+│   │   ├── cf
+│   │   │   └── 6d78cb832d14ea26bc85d7ac975594e23e104b
+│   │   ├── d0
+│   │   │   └── bafe4631d4580fffdcf2570995e3050960af87
+│   │   ├── d1
+│   │   │   ├── aa6d5cf58aa30a0890b28dd1a45fb75ebf699c
+│   │   │   └── d416506d946253bb80b568d1accc795411e799
+│   │   ├── d2
+│   │   │   └── 1098b83d8433f02e080b1f75c8ebc21da44a7a
+│   │   ├── d3
+│   │   │   └── cb95a6451d5d6f1872b291b5411765fc705c48
+│   │   ├── d4
+│   │   │   ├── 4f46419332d85fafeb3580f795d91ba8b31187
+│   │   │   └── acdf5ac08ba8283255bc26c5c143b295e5d3ef
+│   │   ├── d5
+│   │   │   ├── 64d0bc3dd917926892c55e3706cc116d5b165e
+│   │   │   └── 8d05078cf4f87e16e64f775f3d842ac8b9b078
+│   │   ├── d6
+│   │   │   ├── 196625663201431eb21c806edcfb5b4ac5909a
+│   │   │   ├── 23cb3b551f210e76a7e13c26e86af9005a2ab9
+│   │   │   ├── 3781207e9b9371dab6e3162ba7593cbe52bd2e
+│   │   │   └── 5a14cd7b71e16092949de1fdc136c49186f858
+│   │   ├── d7
+│   │   │   ├── 611f8177de2af6d8c07e9a5270b237303533f0
+│   │   │   └── 86450bd57985ab50a23520821f82a2f780b493
+│   │   ├── d8
+│   │   │   └── a570ab12abc3ff4048587b7149d2bf97b97c31
+│   │   ├── d9
+│   │   │   └── ede273f753254daabf97b014a8853c5f0d6403
+│   │   ├── da
+│   │   │   ├── 294e45b8620900001fef5c116d8482e779d775
+│   │   │   ├── a1db93a533c75faaa3e29cfc5f44bdf9e513b2
+│   │   │   ├── bcb7925c1b1e7eb3418ee04ec7d0951f803d35
+│   │   │   └── f8f231671d8387e67cc87b15df536325fe5e4f
+│   │   ├── db
+│   │   │   ├── 5eab46bf9fbc2b7da6e8b3072577c978e837cc
+│   │   │   └── e199e5cdd5646abceb4048a5feb01637683bb3
+│   │   ├── dc
+│   │   │   ├── 44622aae8f69021d4dd0ef441cd6d16c5df712
+│   │   │   ├── 576a47e0e980cb4bc39b2a1bf4ec6246590f62
+│   │   │   ├── 5aa26f74017a61e7aeb2dba6c28a60f3c0c8e3
+│   │   │   ├── 725b918056b804eb90076bd7914ad386a5e4da
+│   │   │   └── ff6ef0b34d2dc8d98729ebdef1fbda59629b06
+│   │   ├── dd
+│   │   │   └── fa25d06641e581a0bea24c35aa885860d4658e
+│   │   ├── de
+│   │   │   ├── 0e5507b3360fae14006168ffcee657b3e1ef8a
+│   │   │   ├── 7bfd0a9701cd8a7a3f5c9cc21861e03f1fe9af
+│   │   │   ├── ba4ae8753a1221bcc379cc450da68f5be2f4d7
+│   │   │   ├── cfa89379773804e67defec6252ae67404208d3
+│   │   │   └── d6d9baf6afe5a2897bb00cf770921f633dd518
+│   │   ├── df
+│   │   │   ├── b57f4281a49ab255e9e80116ab9d8b1b2b3df3
+│   │   │   └── c4a13a96fe7388e65aeab2472a1b784daea2f4
+│   │   ├── e0
+│   │   │   ├── 7dd0791142935d18ff76aeea43dbf7b93a7f2d
+│   │   │   ├── 8e93f2be0f85c4e3f22929db2f78f744e19316
+│   │   │   └── fc9beae868bfdb3d17221c2747f128c3123444
+│   │   ├── e1
+│   │   │   ├── c4483e98dff09baf49bee987432a6a6d9040c0
+│   │   │   ├── dbc441b4e9e98e0bd1869bbfe333358c47c8cf
+│   │   │   ├── eb8211f6e393e63404790db4496c277b460d83
+│   │   │   ├── f0422a36b71a6ab46e1d8619bba3062100bbc4
+│   │   │   └── fbeb88ade098c795c83345b4ad107a8a3460d6
+│   │   ├── e2
+│   │   │   ├── 94e2ec08f2039b23a4e6ed88816ce967144b62
+│   │   │   └── c9e47aa24568286cdf854e0ce3d295f1e60c52
+│   │   ├── e3
+│   │   │   ├── 55141007b8755ac278544279abc9b2853995f9
+│   │   │   ├── 9f423671ac6558a80775e0eea51daecf2f8c5e
+│   │   │   ├── d99f5b39badf5547d1d32bcb272e5522ef0848
+│   │   │   ├── ef2d2a440ad45b67aea80d8bcbaf0e3381edf3
+│   │   │   └── fa72058277228f6356753941bd6fd6d20a461f
+│   │   ├── e4
+│   │   │   ├── 266f572d169bb9c3b05f16460daed6b9663201
+│   │   │   └── daaa70e7119a84619a61803dc509109356e4ed
+│   │   ├── e5
+│   │   │   └── adec835cc9df1074ff0779376983209e28552d
+│   │   ├── e6
+│   │   │   ├── 3073ea61dd9c52d687574e41672963aaab4560
+│   │   │   ├── 9288407aa78575c2f0cf30332edf5c8ab8bc6f
+│   │   │   └── dc767d121295b614709314ed12b86a1e3ad23f
+│   │   ├── e7
+│   │   │   └── cd75c6ea62d8ad68e554d4b0756b5ae810cfcd
+│   │   ├── e8
+│   │   │   ├── 375e0e94d7a56fe1a0a49da661be21f09ae931
+│   │   │   └── b78fbc577f690e7eef1c780725e15e564c0a1e
+│   │   ├── e9
+│   │   │   ├── 136c1452f6a29ab1844c5fb3f6d6a135b6c503
+│   │   │   └── 6a0943475f856b5c31b87b335a5080e2db634f
+│   │   ├── ea
+│   │   │   ├── 2872e0febe6584331ba98888bc3314eaab7b3f
+│   │   │   ├── a95850b017bffa8e03d055d5830673a96131f0
+│   │   │   ├── f53bd00201ba57136a1a1d25ac959d5966fccd
+│   │   │   └── fd40f0d2d1c79212177cc0cbcd1b413f305223
+│   │   ├── eb
+│   │   │   ├── 2daf3368e40c585ad6d27662260411ec7d4fee
+│   │   │   ├── 64f625f283c0080dd8c56c5884c1cba7c9eb7e
+│   │   │   ├── c1c7ad0b8ce7b504c6527d976404d180ce86f9
+│   │   │   ├── c6618bf93911b8941ef7819e8947414bb013a0
+│   │   │   └── f0149e6c0d1942bafd190968592b8704e9ee78
+│   │   ├── ec
+│   │   │   └── a288c25c3c2aada7a4bef69fd7c33e1fe71f09
+│   │   ├── ed
+│   │   │   ├── 87d59a924b83bc29b80864c7a182311dea8622
+│   │   │   ├── d33f0b62b25e79131fd3430e7622fa7a5d6196
+│   │   │   ├── e85fd5838eb6434e798f58a67179d0ab35e2c2
+│   │   │   ├── f50a3cde68dbc2c8a2465262120d1f8d495554
+│   │   │   └── fa1cde285f95a82d3e66d281e74080c418cde7
+│   │   ├── ee
+│   │   │   ├── 02c915d4c4adba06e6b3c653cde87f0f0b259e
+│   │   │   ├── 345009b24627e4ac00280b913978807919752c
+│   │   │   └── 6a4bb07ea3ccb7023fd61027ae0bd9a762b796
+│   │   ├── f0
+│   │   │   └── 89475fda891d1c80b78ef22d27a54344f2551e
+│   │   ├── f1
+│   │   │   └── a8f4a5063bea8efb1b108917ea1516477f8037
+│   │   ├── f2
+│   │   │   ├── 1d6662774b9b32f566f76e615deeb3e39b4712
+│   │   │   └── fde0366ed01101d178094f372fb269043b0c64
+│   │   ├── f3
+│   │   │   ├── 109785964b6f865a614433ddcec2cafc9a07e3
+│   │   │   ├── 2218d1c828307771180e1c4af068d9e3c75562
+│   │   │   └── 79bddb2523422570776303b9944cdddebff487
+│   │   ├── f4
+│   │   │   ├── aef7e268c1d11c503375bca62f4e42f25d9ab3
+│   │   │   └── eb1a741bae1e5506bcd7fa19f3cad6904ff88a
+│   │   ├── f5
+│   │   │   └── c84a7363d7b17625ce65546841374cf0c2d6e0
+│   │   ├── f6
+│   │   │   ├── 0c5018544ce37d4313069436e728689031b2d1
+│   │   │   ├── 30d8446b52aced8c12a6fc6063e6418c7ad867
+│   │   │   ├── 7ecf0ae90574bab3fafe8a21b704da52a1efc6
+│   │   │   └── a220a5183c5df44473075a9c1c05a1b1298e0c
+│   │   ├── f7
+│   │   │   ├── a6186a6861c5f9dbf4d920ff050fc2729114a0
+│   │   │   ├── beba267a3aa9721933a03139488d92bd1c609f
+│   │   │   └── ccfbed49b2bca824baccc58f4c3f6a35a4afa6
+│   │   ├── f8
+│   │   │   ├── 6a75c61aacb8a413877da99b5a21c30ffda1b5
+│   │   │   ├── 6bab84cc36a0a27b484e2eef1d99dc587ea957
+│   │   │   ├── 75b150b5fa3ff82ba9d4668a4341e7395429bb
+│   │   │   ├── 979d5de6a2785b41b527b1cb996230b32be923
+│   │   │   ├── e5da774fcadb1649a8990e5ac8bf8df12acedf
+│   │   │   └── fefc98ae7ae66762e0e1d1202b1ed60b74bdbb
+│   │   ├── f9
+│   │   │   ├── 86785a739fc9fc89fab85b8cf6663c3f55afc8
+│   │   │   └── cab39cb331c360055234796af2477acceaf859
+│   │   ├── fa
+│   │   │   ├── 30973020a9b9835758fecacf2a1347d792bac8
+│   │   │   └── 44407403cf19871f9b7fa7844b95bdf9ecb5a6
+│   │   ├── fb
+│   │   │   ├── 0b2dfa98c0eed32afc850b1b6edca705649ed5
+│   │   │   ├── 61641b0453c357acfa61efe624abd94d47a0ab
+│   │   │   ├── 8446412d669b61207daa5408057ee474bffaff
+│   │   │   ├── 90946aa22dd1bb8dee0d3bd49563e7fbcd3102
+│   │   │   └── d3abb3a03da0c129a394d9ab527f02ad18f4a4
+│   │   ├── fc
+│   │   │   ├── 4c4405e9dcde718774b248b50f4a4b33b54c45
+│   │   │   ├── 81edeecd9ce0b3f630aa3e8299f69fcc39e38e
+│   │   │   └── df974a870e1369238cb11498bcdd05de3ed976
+│   │   ├── fd
+│   │   │   ├── 0a8a657c2467e2916649c07c36ff12c5bbeef0
+│   │   │   ├── bd6dbeae1e18de575326c0c70d7ac5d0174487
+│   │   │   └── bf234efe713c4c786a39c9af969db803d97ca6
+│   │   ├── fe
+│   │   │   ├── 4f4f3339358a007ba6bea3adcfd319a6b278ec
+│   │   │   ├── c18ee1847cd77790e5527b04f157b34839d714
+│   │   │   ├── dcdc5909b05fc7986623b585d0e7250a9dca2e
+│   │   │   └── fee6acb8d576e4316142facd8e788afc61988f
+│   │   ├── ff
+│   │   │   ├── 203bc9e6e8d3b7504c336ca4ef851c342efe2f
+│   │   │   ├── 51fe42b15b99d7a43d43db55f2428defc9d3d1
+│   │   │   ├── 8c175584ed1fa48992dca4212fa0f9eabf97e2
+│   │   │   └── f69eb91f1bd115356a42b5294984e1dbc99422
+│   │   ├── info
+│   │   └── pack
+│   │       ├── pack-c1f32d39f254d1d1db6c5ecace3a87ba78ab908b.idx
+│   │       ├── pack-c1f32d39f254d1d1db6c5ecace3a87ba78ab908b.pack
+│   │       └── pack-c1f32d39f254d1d1db6c5ecace3a87ba78ab908b.rev
+│   ├── ORIG_HEAD
+│   ├── packed-refs
+│   └── refs
+│       ├── heads
+│       │   ├── checkpoint
+│       │   │   ├── before-cleanup-2025-0524-140804
+│       │   │   └── before-cleanup-20250525-164649
+│       │   ├── develop
+│       │   ├── feature
+│       │   │   ├── add-project-documentation
+│       │   │   ├── bug-fix-shape-mismatch-pac-classifier
+│       │   │   ├── cleanup-20250525-164649
+│       │   │   ├── modernize-package-structure
+│       │   │   └── return-dist-option
+│       │   └── main
+│       ├── remotes
+│       │   └── origin
+│       │       ├── develop
+│       │       ├── feature
+│       │       │   └── bug-fix-shape-mismatch-pac-classifier
+│       │       ├── HEAD
+│       │       └── main
+│       ├── stash
+│       └── tags
+│           ├── v0.0.1
+│           ├── v0.2.0
+│           └── v1.0.0
+├── .github
+│   └── workflows
+│       ├── ci.yml
+│       └── release.yml
+├── .gitignore
+├── LICENSE
+├── .LICENSE.~undo-tree~
+├── MANIFEST.in
+├── .old
+│   ├── create_animated_demo.py
+│   ├── create_comparison_demo.py
+│   ├── create_complete_comparison.py
+│   ├── create_demo_gif.py
+│   ├── create_demo_visualization.py
+│   ├── create_enhanced_comparison.py
+│   ├── create_final_comparison.py
+│   ├── create_final_layout.py
+│   ├── create_mngs_style_comparison.py
+│   ├── create_pac_analysis_with_tensorpac.py
+│   ├── create_simple_demo.py
+│   ├── debug_amp_end_hz.py
+│   ├── debug_detailed.py
+│   ├── debug_mngs_comparison.py
+│   ├── debug_shape.py
+│   ├── debug_test.py
+│   ├── direct_fix.py
+│   ├── .env
+│   │   └── lib
+│   │       └── python3.10
+│   │           └── site-packages
+│   │               ├── accelerate
+│   │               │   └── commands
+│   │               ├── anthropic
+│   │               │   └── lib
+│   │               ├── fairscale
+│   │               │   ├── experimental
+│   │               │   └── nn
+│   │               ├── fastapi
+│   │               ├── formulaic
+│   │               │   └── parser
+│   │               ├── groq
+│   │               │   ├── resources
+│   │               │   └── types
+│   │               ├── llama_stack_client
+│   │               │   ├── lib
+│   │               │   │   └── cli
+│   │               │   ├── resources
+│   │               │   └── types
+│   │               ├── mne
+│   │               │   ├── datasets
+│   │               │   ├── io
+│   │               │   ├── preprocessing
+│   │               │   └── report
+│   │               ├── obspy
+│   │               │   ├── clients
+│   │               │   │   ├── earthworm
+│   │               │   │   ├── fdsn
+│   │               │   │   ├── filesystem
+│   │               │   │   │   └── tests
+│   │               │   │   ├── iris
+│   │               │   │   │   └── tests
+│   │               │   │   └── nrl
+│   │               │   │       └── tests
+│   │               │   │           └── data
+│   │               │   │               └── IRIS_v2_stationxml
+│   │               │   ├── imaging
+│   │               │   │   └── tests
+│   │               │   ├── io
+│   │               │   │   ├── alsep
+│   │               │   │   │   └── tests
+│   │               │   │   ├── arclink
+│   │               │   │   │   └── tests
+│   │               │   │   ├── ascii
+│   │               │   │   ├── focmec
+│   │               │   │   ├── gcf
+│   │               │   │   │   └── tests
+│   │               │   │   ├── hypodd
+│   │               │   │   │   └── tests
+│   │               │   │   ├── iaspei
+│   │               │   │   ├── kml
+│   │               │   │   ├── mseed
+│   │               │   │   │   └── tests
+│   │               │   │   ├── ndk
+│   │               │   │   ├── nied
+│   │               │   │   │   └── tests
+│   │               │   │   ├── nlloc
+│   │               │   │   │   └── tests
+│   │               │   │   ├── pde
+│   │               │   │   ├── rg16
+│   │               │   │   │   └── tests
+│   │               │   │   ├── scardec
+│   │               │   │   │   └── tests
+│   │               │   │   ├── seg2
+│   │               │   │   │   └── tests
+│   │               │   │   ├── seisan
+│   │               │   │   ├── seiscomp
+│   │               │   │   │   └── tests
+│   │               │   │   ├── sh
+│   │               │   │   └── xseed
+│   │               │   └── realtime
+│   │               ├── openai
+│   │               │   ├── resources
+│   │               │   │   ├── beta
+│   │               │   │   └── chat
+│   │               │   └── types
+│   │               │       └── fine_tuning
+│   │               ├── optuna
+│   │               │   ├── importance
+│   │               │   ├── samplers
+│   │               │   └── storages
+│   │               ├── pylsp
+│   │               ├── seaborn
+│   │               ├── sktime
+│   │               │   ├── forecasting
+│   │               │   │   ├── base
+│   │               │   │   └── model_selection
+│   │               │   ├── libs
+│   │               │   ├── param_est
+│   │               │   ├── performance_metrics
+│   │               │   ├── regression
+│   │               │   ├── split
+│   │               │   ├── transformations
+│   │               │   │   ├── bootstrap
+│   │               │   │   ├── hierarchical
+│   │               │   │   └── series
+│   │               │   └── utils
+│   │               └── transformers
+│   │                   ├── data
+│   │                   ├── kernels
+│   │                   │   └── deta
+│   │                   └── models
+│   ├── exapmles
+│   ├── fix_gradient_flow.py
+│   ├── fix_hilbert_final.py
+│   ├── fix_hilbert.py
+│   ├── fix_hilbert_updated.py
+│   ├── fix_indent.py
+│   ├── fix_optimization.py
+│   ├── fix_pac_gradients_directly.py
+│   ├── fix_pac_gradients.py
+│   ├── fix_pha_gradients.py
+│   ├── fix_test.py
+│   ├── fix_utils_gradients.py
+│   ├── GRADIENT_FLOW_FIXES.md
+│   ├── isolated.md
+│   ├── paper
+│   │   ├── compile -> scripts/compile-all.sh
+│   │   ├── .gitignore
+│   │   ├── manuscript
+│   │   │   ├── compile -> ./scripts/sh/compile.sh
+│   │   │   ├── docs
+│   │   │   │   ├── installation.md
+│   │   │   │   └── suggestions.md
+│   │   │   ├── .gitignore
+│   │   │   ├── main
+│   │   │   │   ├── diff.pdf
+│   │   │   │   └── manuscript.pdf
+│   │   │   ├── main.tex
+│   │   │   ├── README.md
+│   │   │   ├── scripts
+│   │   │   │   ├── ps1
+│   │   │   │   │   └── pptx2tiff.ps1
+│   │   │   │   ├── py
+│   │   │   │   │   ├── check_terms_by_GPT.py
+│   │   │   │   │   ├── crop_tif.py
+│   │   │   │   │   ├── diff.py
+│   │   │   │   │   ├── insert_citations.py
+│   │   │   │   │   ├── pptx2tif.py
+│   │   │   │   │   ├── revise_by_GPT.py
+│   │   │   │   │   └── utils.py
+│   │   │   │   └── sh
+│   │   │   │       ├── compile.sh
+│   │   │   │       ├── .compile.sh.PyyVm1
+│   │   │   │       ├── insert_citations.sh
+│   │   │   │       ├── install_on_ubuntu.sh
+│   │   │   │       ├── modules
+│   │   │   │       │   ├── check.sh
+│   │   │   │       │   ├── check_terms.sh
+│   │   │   │       │   ├── cleanup.sh
+│   │   │   │       │   ├── clear_versions.sh
+│   │   │   │       │   ├── compile_diff_tex.sh
+│   │   │   │       │   ├── compile_main_tex.sh
+│   │   │   │       │   ├── config.sh
+│   │   │   │       │   ├── count_words_figures_and_tables.sh
+│   │   │   │       │   ├── custom_tree.sh
+│   │   │   │       │   ├── gather_tex.sh
+│   │   │   │       │   ├── gen_diff_tex.sh
+│   │   │   │       │   ├── git_push.sh
+│   │   │   │       │   ├── load_files_list.sh
+│   │   │   │       │   ├── open_pdf_or_exit.sh
+│   │   │   │       │   ├── pptx2tif_all.sh
+│   │   │   │       │   ├── pptx2tif.sh
+│   │   │   │       │   ├── _pptx2tif_working_but_not_symlink_available.sh
+│   │   │   │       │   ├── print_success.sh
+│   │   │   │       │   ├── process_figures.sh
+│   │   │   │       │   ├── process_tables.sh
+│   │   │   │       │   └── versioning.sh
+│   │   │   │       └── revise.sh
+│   │   │   ├── src
+│   │   │   │   ├── abstract.tex
+│   │   │   │   ├── additional_info.tex
+│   │   │   │   ├── authors.tex
+│   │   │   │   ├── bibliography.bib
+│   │   │   │   ├── data_availability.tex
+│   │   │   │   ├── discussion.tex
+│   │   │   │   ├── figures
+│   │   │   │   │   ├── compiled
+│   │   │   │   │   │   ├── Figure_ID_00_pac_value_comparision.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_01_batch_size.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_02_chunk_size.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_03_n_chs.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_04_t_sec.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_05_fs.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_07_pha_n_bands.jpg.tex
+│   │   │   │   │   │   └── Figure_ID_08_n_perm.jpg.tex
+│   │   │   │   │   ├── README.md
+│   │   │   │   │   ├── src
+│   │   │   │   │   │   ├── Figure_ID_00_pac_value_comparision.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_01_batch_size.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_02_chunk_size.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_02_link_data_jpg -> ../../../../../scripts/link_data/jpg
+│   │   │   │   │   │   ├── Figure_ID_03_n_chs.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_04_t_sec.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_05_fs.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_07_pha_n_bands.jpg.tex
+│   │   │   │   │   │   ├── Figure_ID_08_n_perm.jpg.tex
+│   │   │   │   │   │   ├── _Figure_ID_XX.tex
+│   │   │   │   │   │   └── tables_src -> ../../tables/src
+│   │   │   │   │   ├── templates
+│   │   │   │   │   │   └── z_Figure_XX.jnt
+│   │   │   │   │   └── .tex
+│   │   │   │   │       └── .All_Figures.tex
+│   │   │   │   ├── graphical_abstract.tex
+│   │   │   │   ├── highlights.tex
+│   │   │   │   ├── introduction.tex
+│   │   │   │   ├── journal_name.tex
+│   │   │   │   ├── keywords.tex
+│   │   │   │   ├── methods.tex
+│   │   │   │   ├── results.tex
+│   │   │   │   ├── styles
+│   │   │   │   │   ├── bibliography.tex
+│   │   │   │   │   ├── columns.tex
+│   │   │   │   │   ├── formatting.tex
+│   │   │   │   │   ├── linker.tex
+│   │   │   │   │   └── packages.tex
+│   │   │   │   ├── tables
+│   │   │   │   │   ├── src
+│   │   │   │   │   │   ├── figures_src -> ../../figures/src
+│   │   │   │   │   │   ├── Table_ID_01.tex
+│   │   │   │   │   │   └── _Table_ID_XX.tex
+│   │   │   │   │   └── .tex
+│   │   │   │   │       ├── .All_Tables.tex
+│   │   │   │   │       └── .tmp
+│   │   │   │   │           ├── Table_01.tex
+│   │   │   │   │           ├── Table_02.tex
+│   │   │   │   │           ├── Table_03.tex
+│   │   │   │   │           ├── Table_ID_01.tex
+│   │   │   │   │           ├── Table_ID_02.tex
+│   │   │   │   │           ├── _Table_ID_03.tex
+│   │   │   │   │           ├── Table_ID_03.tex
+│   │   │   │   │           └── *.tex
+│   │   │   │   ├── title.tex
+│   │   │   │   └── wordcount.tex
+│   │   │   └── supplementary -> ../supplementary
+│   │   ├── README.md
+│   │   ├── revision
+│   │   │   ├── _compile
+│   │   │   ├── compile -> ../manuscript/compile
+│   │   │   ├── docs
+│   │   │   │   └── email.md
+│   │   │   ├── .gitignore
+│   │   │   ├── main
+│   │   │   │   └── src -> ../src
+│   │   │   ├── main.tex
+│   │   │   ├── README.md
+│   │   │   ├── scripts -> ../manuscript/scripts
+│   │   │   └── src
+│   │   │       ├── commands_diff.tex
+│   │   │       ├── commands.tex
+│   │   │       ├── conclusion.tex
+│   │   │       ├── editor
+│   │   │       │   ├── 01
+│   │   │       │   │   ├── comments.tex
+│   │   │       │   │   └── response.tex
+│   │   │       │   └── 02
+│   │   │       │       ├── comments.tex
+│   │   │       │       ├── response.tex
+│   │   │       │       └── revision.tex
+│   │   │       ├── figures
+│   │   │       │   └── .tex
+│   │   │       │       └── .All_Figures.tex
+│   │   │       ├── introduction.tex
+│   │   │       ├── packages.tex
+│   │   │       ├── README.md
+│   │   │       ├── references.tex
+│   │   │       ├── reviewer1
+│   │   │       │   ├── 00
+│   │   │       │   │   ├── comments.tex
+│   │   │       │   │   ├── response.tex
+│   │   │       │   │   └── revision.tex
+│   │   │       │   ├── 01
+│   │   │       │   │   ├── comments.tex
+│   │   │       │   │   ├── response.tex
+│   │   │       │   │   └── revision.tex
+│   │   │       │   └── 02
+│   │   │       │       ├── comments.tex
+│   │   │       │       ├── response.tex
+│   │   │       │       └── revision.tex
+│   │   │       ├── reviewer2
+│   │   │       │   ├── 00
+│   │   │       │   │   ├── comments.tex
+│   │   │       │   │   ├── response.tex
+│   │   │       │   │   └── revision.tex
+│   │   │       │   ├── 01
+│   │   │       │   │   ├── comments.tex
+│   │   │       │   │   ├── response.tex
+│   │   │       │   │   └── revision.tex
+│   │   │       │   └── 02
+│   │   │       │       ├── comments.tex
+│   │   │       │       ├── response.tex
+│   │   │       │       └── revision.tex
+│   │   │       ├── styles -> ../../manuscript/src/styles
+│   │   │       ├── tables
+│   │   │       │   └── .tex
+│   │   │       │       └── .All_Tables.tex
+│   │   │       └── title.tex
+│   │   ├── scripts
+│   │   │   ├── compile-all.sh
+│   │   │   ├── compile-manuscript.sh
+│   │   │   ├── compile-revision.sh
+│   │   │   └── compile-supplementary.sh
+│   │   └── supplementary
+│   │       ├── compile -> ./scripts/sh/compile.sh
+│   │       ├── main
+│   │       │   ├── diff.tex
+│   │       │   ├── main.tex -> ../main.tex
+│   │       │   └── manuscript.tex
+│   │       ├── main.tex
+│   │       ├── README.md
+│   │       ├── scripts -> ../manuscript/scripts
+│   │       ├── src
+│   │       │   ├── authors.tex -> ../../manuscript/src/authors.tex
+│   │       │   ├── bibliography.bib -> ../../manuscript/src/bibliography.bib
+│   │       │   ├── figures
+│   │       │   │   ├── compiled
+│   │       │   │   │   └── Figure_ID_01_xxx.tex
+│   │       │   │   ├── src
+│   │       │   │   │   ├── Figure_ID_01_xxx.tex
+│   │       │   │   │   ├── _Figure_ID_XX.tex
+│   │       │   │   │   ├── src_figures_manuscript -> ../../../../manuscript/src/figures/src
+│   │       │   │   │   ├── src_tables -> ../../tables/src
+│   │       │   │   │   └── src_tables_manuscript -> ../../../../manuscript/src/tables/src
+│   │       │   │   └── .tex
+│   │       │   │       ├── .All_Figures
+│   │       │   │       └── .All_Figures.tex
+│   │       │   ├── journal_name.tex -> ../../manuscript/src/journal_name.tex
+│   │       │   ├── methods.tex
+│   │       │   ├── results.tex
+│   │       │   ├── styles -> ../../manuscript/src/styles
+│   │       │   ├── tables
+│   │       │   │   ├── src
+│   │       │   │   │   ├── Table_ID_10_swr_direction_match_all_vswr_time.tex
+│   │       │   │   │   └── _Table_ID_XX.tex
+│   │       │   │   └── .tex
+│   │       │   │       └── .All_Tables.tex
+│   │       │   ├── title.tex -> ../../manuscript/src/title.tex
+│   │       │   └── wordcount.tex -> ../../manuscript/src/wordcount.tex
+│   │       └── supple.tex -> main.tex
+│   ├── README.org
+│   ├── scripts
+│   │   ├── exp_01_synthetic_data_preparation
+│   │   │   └── generate_synthetic_data.py
+│   │   ├── learnability
+│   │   │   └── classify_demo_signals_using_gPAC_module.py
+│   │   ├── PackageHandlers
+│   │   │   ├── _BaseHandler.py
+│   │   │   ├── __init__.py
+│   │   │   ├── MNGSHandler.py
+│   │   │   ├── README.md
+│   │   │   └── TensorpacHandler.py
+│   │   ├── post_analysis
+│   │   │   ├── link_data
+│   │   │   │   ├── csv
+│   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   ├── calc_time_mean_sec
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   ├── computation.csv
+│   │   │   │   │   ├── CPU_[%]
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── CPU_[%].csv
+│   │   │   │   │   ├── device.csv
+│   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   ├── fs.csv
+│   │   │   │   │   ├── init_time_mean_sec
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   ├── package_specific.csv
+│   │   │   │   │   ├── pac_resolution.csv
+│   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   ├── RAM_[GiB]
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── RAM_[GiB].csv
+│   │   │   │   │   ├── signal_size.csv
+│   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   ├── use_threads.csv
+│   │   │   │   │   ├── VRAM_[GiB]
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   └── VRAM_[GiB].csv
+│   │   │   │   └── jpg
+│   │   │   │       ├── calc_time_mean_sec
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       ├── CPU_[%]
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       ├── init_time_mean_sec
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       ├── RAM_[GiB]
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       └── VRAM_[GiB]
+│   │   │   │           ├── amp_n_bands.jpg
+│   │   │   │           ├── batch_size.jpg
+│   │   │   │           ├── chunk_size.jpg
+│   │   │   │           ├── device.jpg
+│   │   │   │           ├── fp16.jpg
+│   │   │   │           ├── fs.jpg
+│   │   │   │           ├── in_place.jpg
+│   │   │   │           ├── n_chs.jpg
+│   │   │   │           ├── no_grad.jpg
+│   │   │   │           ├── n_perm.jpg
+│   │   │   │           ├── n_segments.jpg
+│   │   │   │           ├── pha_n_bands.jpg
+│   │   │   │           ├── trainable.jpg
+│   │   │   │           ├── t_sec.jpg
+│   │   │   │           └── use_threads.jpg
+│   │   │   ├── plot_linked_data
+│   │   │   │   ├── csv
+│   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   ├── calc_time_mean_sec
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   ├── computation.csv
+│   │   │   │   │   ├── CPU_[%]
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── CPU_[%].csv
+│   │   │   │   │   ├── device.csv
+│   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   ├── fs.csv
+│   │   │   │   │   ├── init_time_mean_sec
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   ├── package_specific.csv
+│   │   │   │   │   ├── pac_resolution.csv
+│   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   ├── RAM_[GiB]
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   ├── RAM_[GiB].csv
+│   │   │   │   │   ├── signal_size.csv
+│   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   ├── use_threads.csv
+│   │   │   │   │   ├── VRAM_[GiB]
+│   │   │   │   │   │   ├── amp_n_bands.csv
+│   │   │   │   │   │   ├── batch_size.csv
+│   │   │   │   │   │   ├── chunk_size.csv
+│   │   │   │   │   │   ├── device.csv
+│   │   │   │   │   │   ├── fp16.csv
+│   │   │   │   │   │   ├── fs.csv
+│   │   │   │   │   │   ├── in_place.csv
+│   │   │   │   │   │   ├── n_chs.csv
+│   │   │   │   │   │   ├── no_grad.csv
+│   │   │   │   │   │   ├── n_perm.csv
+│   │   │   │   │   │   ├── n_segments.csv
+│   │   │   │   │   │   ├── pha_n_bands.csv
+│   │   │   │   │   │   ├── trainable.csv
+│   │   │   │   │   │   ├── t_sec.csv
+│   │   │   │   │   │   └── use_threads.csv
+│   │   │   │   │   └── VRAM_[GiB].csv
+│   │   │   │   └── jpg
+│   │   │   │       ├── calc_time_mean_sec
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       ├── CPU_[%]
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       ├── init_time_mean_sec
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       ├── RAM_[GiB]
+│   │   │   │       │   ├── amp_n_bands.jpg
+│   │   │   │       │   ├── batch_size.jpg
+│   │   │   │       │   ├── chunk_size.jpg
+│   │   │   │       │   ├── device.jpg
+│   │   │   │       │   ├── fp16.jpg
+│   │   │   │       │   ├── fs.jpg
+│   │   │   │       │   ├── in_place.jpg
+│   │   │   │       │   ├── n_chs.jpg
+│   │   │   │       │   ├── no_grad.jpg
+│   │   │   │       │   ├── n_perm.jpg
+│   │   │   │       │   ├── n_segments.jpg
+│   │   │   │       │   ├── pha_n_bands.jpg
+│   │   │   │       │   ├── trainable.jpg
+│   │   │   │       │   ├── t_sec.jpg
+│   │   │   │       │   └── use_threads.jpg
+│   │   │   │       └── VRAM_[GiB]
+│   │   │   │           ├── amp_n_bands.jpg
+│   │   │   │           ├── batch_size.jpg
+│   │   │   │           ├── chunk_size.jpg
+│   │   │   │           ├── device.jpg
+│   │   │   │           ├── fp16.jpg
+│   │   │   │           ├── fs.jpg
+│   │   │   │           ├── in_place.jpg
+│   │   │   │           ├── n_chs.jpg
+│   │   │   │           ├── no_grad.jpg
+│   │   │   │           ├── n_perm.jpg
+│   │   │   │           ├── n_segments.jpg
+│   │   │   │           ├── pha_n_bands.jpg
+│   │   │   │           ├── trainable.jpg
+│   │   │   │           ├── t_sec.jpg
+│   │   │   │           └── use_threads.jpg
+│   │   │   ├── plot_linked_data.py
+│   │   │   ├── validate_precisions
+│   │   │   │   ├── pac_value_comparision.csv
+│   │   │   │   └── pac_value_comparision.jpg
+│   │   │   └── validate_precisions.py
+│   │   ├── profile
+│   │   │   ├── main.py
+│   │   │   ├── record_processor_usages.py
+│   │   │   └── run_experiment.sh
+│   │   └── utils
+│   │       ├── define_parameter_space.py
+│   │       ├── init_model.py
+│   │       ├── __init__.py
+│   │       ├── perform_pac_calculation.py
+│   │       ├── prepare_signal.py
+│   │       ├── resource_info.py
+│   │       ├── save_results
+│   │       │   └── stats.csv
+│   │       └── save_results.py
+│   ├── test_return_dist.py
+│   ├── verify_gradient_fix.py
+│   └── verify_utils_fix.py
+├── performance_analysis_tensorpac_mode.py
+├── .pre-commit-config.yaml
+├── project_management
+│   ├── bug-report
+│   │   └── solved
+│   │       └── bug-report-shape-mismatch-pac-classifier.md
+│   ├── development_plan.md
+│   ├── .old
+│   │   ├── bug_fixes.md
+│   │   ├── _bug-report-shape-mismatch-pac-classifier.md
+│   │   ├── bug-report-shape-mismatch-pac-classifier.md
+│   │   ├── EVALUATION_PLAN.md
+│   │   ├── feature-request-return-distribution-option.md
+│   │   ├── feature-request-run-examples-and-save-figures.md
+│   │   ├── _next_steps.md
+│   │   ├── _progress.md
+│   │   └── _UPDATED_PLAN.md
+│   ├── progress.md
+│   ├── reports
+│   │   ├── 2025-0519-094500-progress-report.org
+│   │   ├── 2025-0519-094600-return-dist-feature.org
+│   │   └── README.md
+│   ├── session_summary_20250525.md
+│   └── USER_PLAN.md
+├── project_structure_before_cleanup.txt
+├── .project.toml.~undo-tree~
+├── __pycache__
+├── pyproject.toml
+├── .pyproject.toml.~undo-tree~
+├── README.md
+├── .README.md.~undo-tree~
+├── README_old.md
+├── .README.org.~undo-tree~
+├── requirements.txt
+├── .requirements.txt.~undo-tree~
+├── run_tests.sh
+├── .run_tests.sh.log
+├── safe_rm.sh
+├── scripts
+│   └── vs_tensorpac
+│       ├── analysis
+│       ├── config
+│       │   └── base_config.yaml
+│       ├── data
+│       │   ├── real
+│       │   └── synthetic
+│       ├── experiments
+│       │   ├── base_experiment.py
+│       │   └── __init__.py
+│       ├── README.md
+│       └── results
+│           ├── figures
+│           ├── processed
+│           └── raw
+├── sequential_filtfilt_implementation.py
+├── SEQUENTIAL_FILTFILT_SUMMARY.md
+├── src
+│   ├── gpac
+│   │   ├── _BandPassFilter.py
+│   │   ├── _BaseFilter1D.py
+│   │   ├── _calculate_gpac.py
+│   │   ├── _decorators.py
+│   │   ├── .decorators.py.~undo-tree~
+│   │   ├── _DifferenciableBandPassFilter.py
+│   │   ├── .env -> /home/ywatanabe/.env
+│   │   ├── _Hilbert.py
+│   │   ├── __init__.py
+│   │   ├── .__init__.py.~undo-tree~
+│   │   ├── _ModulationIndex.py
+│   │   ├── .modules.py.~undo-tree~
+│   │   ├── .old
+│   │   │   ├── __DataGenerator.py
+│   │   │   ├── _DifferenciableBandPassFilter_fixed.py
+│   │   │   ├── _DifferenciableBandPassFilter.py.bak
+│   │   │   ├── _DifferenciableBandPassFilter.py.pha_fix_bak
+│   │   │   ├── _example_not_usable.py
+│   │   │   ├── _gPAC_not_usable.py
+│   │   │   ├── _Hilbert.py.arg_fix_bak
+│   │   │   ├── _ModulationIndex.py
+│   │   │   ├── _modules.py
+│   │   │   ├── _pac.py.bak
+│   │   │   ├── _pac.py.direct_bak
+│   │   │   ├── __SyntheticPACDataset.py
+│   │   │   ├── _SyntheticPACDataset.py
+│   │   │   ├── _utils_fixed.py
+│   │   │   └── _utils.py.utils_fix_bak
+│   │   ├── _PAC_original.py
+│   │   ├── _PAC.py
+│   │   ├── .pac.py.~undo-tree~
+│   │   ├── __pycache__
+│   │   ├── README.md
+│   │   ├── _SyntheticDataGenerator.py
+│   │   ├── _tensorpac_fir1.py
+│   │   ├── _utils.py
+│   │   └── .utils.py.~undo-tree~
+│   └── gpac.egg-info
+│       ├── dependency_links.txt
+│       ├── PKG-INFO
+│       ├── requires.txt
+│       ├── SOURCES.txt
+│       └── top_level.txt
+├── tensorpac_source
+│   ├── appveyor.yml
+│   ├── build_install.sh
+│   ├── circle.yml
+│   ├── CITATION.cff
+│   ├── codecov.yml
+│   ├── .coveragerc
+│   ├── docs
+│   │   ├── make.bat
+│   │   ├── Makefile
+│   │   └── source
+│   │       ├── api.rst
+│   │       ├── cite.rst
+│   │       ├── community.rst
+│   │       ├── conf.py
+│   │       ├── contributors.rst
+│   │       ├── index.rst
+│   │       ├── install.rst
+│   │       ├── picture
+│   │       │   ├── 10_detailed_loop_vs_tensor.png
+│   │       │   ├── 1_signals.png
+│   │       │   ├── 2_basic.png
+│   │       │   ├── 3_filtering.png
+│   │       │   ├── 4_pacmeth.png
+│   │       │   ├── 5_surrometh.png
+│   │       │   ├── 6_normmeth.png
+│   │       │   ├── 7_distant.png
+│   │       │   ├── 9_plot.png
+│   │       │   ├── erpac.png
+│   │       │   ├── favicon-32x32.png
+│   │       │   ├── favicon.ico
+│   │       │   ├── fminfmax.png
+│   │       │   ├── ico128.png
+│   │       │   ├── ico64.png
+│   │       │   ├── ico.png
+│   │       │   ├── logo.png
+│   │       │   ├── PP_planningVsExec.png
+│   │       │   ├── readme.png
+│   │       │   └── tp.png
+│   │       ├── references.rst
+│   │       ├── refs.bib
+│   │       ├── _static
+│   │       │   ├── baniere.png
+│   │       │   └── tp_style.css
+│   │       └── _templates
+│   │           ├── layout.html
+│   │           └── pac_class.rst
+│   ├── examples
+│   │   ├── erpac
+│   │   │   ├── plot_erpac.py
+│   │   │   ├── plot_erpac_stats.py
+│   │   │   └── README.txt
+│   │   ├── misc
+│   │   │   ├── plot_align_tf_pha_peak.py
+│   │   │   ├── plot_artificially_coupled_signals.py
+│   │   │   ├── plot_binned_amplitude.py
+│   │   │   ├── plot_fmin_fmax_optmization.py
+│   │   │   ├── plot_frequency_vectors.py
+│   │   │   ├── plot_itc.py
+│   │   │   ├── plot_preferred_phase.py
+│   │   │   ├── plot_psd.py
+│   │   │   └── README.txt
+│   │   ├── pac
+│   │   │   ├── plot_compare_filtering.py
+│   │   │   ├── plot_compare_normalizations.py
+│   │   │   ├── plot_compare_surrogates.py
+│   │   │   ├── plot_long_range_coupling.py
+│   │   │   ├── plot_pac_methods.py
+│   │   │   ├── plot_readme.py
+│   │   │   ├── README.txt
+│   │   │   └── seeg_data_pac.npz
+│   │   ├── README.txt
+│   │   ├── stats
+│   │   │   ├── plot_compare_cond_cluster.py
+│   │   │   ├── plot_compare_mcp.py
+│   │   │   ├── plot_pvalues.py
+│   │   │   ├── plot_stats_stationary.py
+│   │   │   └── README.txt
+│   │   └── tuto
+│   │       ├── plot_real_data.py
+│   │       └── README.txt
+│   ├── .git
+│   │   ├── config
+│   │   ├── HEAD
+│   │   ├── hooks
+│   │   │   ├── functions
+│   │   │   │   └── git-add-gitignore-template.sh
+│   │   │   ├── post-init
+│   │   │   ├── pre-command-hook
+│   │   │   ├── pre-commit
+│   │   │   └── pre-push
+│   │   ├── index
+│   │   ├── info
+│   │   ├── logs
+│   │   │   ├── HEAD
+│   │   │   └── refs
+│   │   │       ├── heads
+│   │   │       │   └── master
+│   │   │       └── remotes
+│   │   │           └── origin
+│   │   │               └── HEAD
+│   │   ├── objects
+│   │   │   ├── info
+│   │   │   └── pack
+│   │   │       ├── pack-95faef4632710dd3903709ab7c333423e8fd9066.idx
+│   │   │       ├── pack-95faef4632710dd3903709ab7c333423e8fd9066.pack
+│   │   │       └── pack-95faef4632710dd3903709ab7c333423e8fd9066.rev
+│   │   ├── packed-refs
+│   │   └── refs
+│   │       ├── heads
+│   │       │   └── master
+│   │       ├── remotes
+│   │       │   └── origin
+│   │       │       └── HEAD
+│   │       └── tags
+│   ├── .github
+│   │   └── workflows
+│   │       └── tensorpac.yml
+│   ├── .gitignore
+│   ├── LICENSE
+│   ├── Makefile
+│   ├── MANIFEST.in
+│   ├── paper
+│   │   ├── manuscript
+│   │   │   ├── code
+│   │   │   │   ├── fig_1_pac_process.py
+│   │   │   │   ├── fig_2_rnd_signals.py
+│   │   │   │   ├── fig_3_compare_pac.py
+│   │   │   │   ├── fig_4_pac_corrected.py
+│   │   │   │   ├── fig_5_erpac.py
+│   │   │   │   ├── fig_6_pp.py
+│   │   │   │   ├── fig_7_fopt.py
+│   │   │   │   ├── fig_8_st_vs_tensors.py
+│   │   │   │   └── REAME.rst
+│   │   │   └── figures
+│   │   │       └── README.rst
+│   │   ├── paper.json
+│   │   └── reviews
+│   │       ├── code
+│   │       │   ├── r1_ndpac_threshold.py
+│   │       │   ├── r1_zscore_amp_ndpac.py
+│   │       │   ├── r2_numba_performance.py
+│   │       │   ├── r3_erpac_fn_fp.py
+│   │       │   ├── r3_functional_pac.py
+│   │       │   ├── r3_pactools_vs_tensorpac.py
+│   │       │   └── README.rst
+│   │       └── figures
+│   │           └── README.rst
+│   ├── README.rst
+│   ├── setup.cfg
+│   ├── setup.py
+│   ├── tensorpac
+│   │   ├── config.py
+│   │   ├── gcmi.py
+│   │   ├── __init__.py
+│   │   ├── io.py
+│   │   ├── methods
+│   │   │   ├── __init__.py
+│   │   │   ├── meth_erpac.py
+│   │   │   ├── meth_pac_nb.py
+│   │   │   ├── meth_pac.py
+│   │   │   ├── meth_pp.py
+│   │   │   ├── meth_surrogates.py
+│   │   │   ├── meth_switch.py
+│   │   │   ├── __pycache__
+│   │   │   │   ├── meth_pac_nb.heights_ratio_nb-132.py310.1.nbc
+│   │   │   │   ├── meth_pac_nb.heights_ratio_nb-132.py310.nbi
+│   │   │   │   ├── meth_pac_nb._kl_hr_nb-58.py310.1.nbc
+│   │   │   │   ├── meth_pac_nb._kl_hr_nb-58.py310.nbi
+│   │   │   │   ├── meth_pac_nb.mean_vector_length_nb-21.py310.1.nbc
+│   │   │   │   ├── meth_pac_nb.mean_vector_length_nb-21.py310.nbi
+│   │   │   │   ├── meth_pac_nb.modulation_index_nb-80.py310.1.nbc
+│   │   │   │   └── meth_pac_nb.modulation_index_nb-80.py310.nbi
+│   │   │   └── tests
+│   │   │       └── test_pac_methods.py
+│   │   ├── pac.py
+│   │   ├── __pycache__
+│   │   ├── signals.py
+│   │   ├── spectral.py
+│   │   ├── stats.py
+│   │   ├── tests
+│   │   │   ├── test_gcmi.py
+│   │   │   ├── test_io.py
+│   │   │   ├── test_pac.py
+│   │   │   ├── test_signals.py
+│   │   │   ├── test_stats.py
+│   │   │   └── test_utils.py
+│   │   ├── utils.py
+│   │   └── visu.py
+│   └── .travis.yml
+├── tests
+│   ├── conftest.py
+│   ├── custom
+│   │   ├── .old
+│   │   │   ├── test_comparison_simple-20250525_162625.py
+│   │   │   ├── test_integration_full_pipeline.py.debug_bak
+│   │   │   ├── test_integration_full_pipeline.py.indent_fix_bak
+│   │   │   └── test_integration_full_pipeline.py.test_fix_bak
+│   │   ├── __pycache__
+│   │   ├── test_frequency_adjustment.py
+│   │   ├── test_generator.py
+│   │   ├── test_integration_full_pipeline.py
+│   │   ├── test_pac_classifier_shape_handling.py
+│   │   └── test_values_comparison.py
+│   ├── gpac
+│   │   ├── __pycache__
+│   │   ├── test__BandPassFilter.py
+│   │   ├── test__BaseFilter1D.py
+│   │   ├── test__decorators.py
+│   │   ├── test__DifferenciableBandPassFilter.py
+│   │   ├── test__Hilbert.py
+│   │   ├── test___init__.py
+│   │   ├── test__ModulationIndex.py
+│   │   ├── test__PAC.py
+│   │   ├── test__SyntheticDataGenerator.py
+│   │   └── test__utils.py
+│   ├── .old
+│   │   ├── _generate_org_test_report.py
+│   │   ├── _make_org_report.py
+│   │   ├── org_test_report.py
+│   │   └── _simple_org_test_report.py
+│   ├── __pycache__
+│   ├── pytest.ini
+│   ├── run_tests.def
+│   ├── sync_tests_with_source.sh
+│   ├── .sync_tests_with_source.sh.log
+│   ├── test_bandpass_filter.py
+│   ├── test_hilbert_transform.py
+│   ├── test_modulation_index.py
+│   ├── test_pac_integration.py
+│   └── test_pac_integration.py.backup
+└── .trash
+    ├── 20250525_151644
+    │   ├── check_edge_mode_differences.py
+    │   ├── check_filtfilt_difference.py
+    │   ├── _debug_performance.py
+    │   ├── explain_differences.py
+    │   ├── _fair_benchmark.py
+    │   ├── filter_length_comparison.py
+    │   ├── filter_resolution_comparison.py
+    │   ├── fix_edge_mode.py
+    │   ├── resolution_demo.py
+    │   └── _scaling_analysis.py
+    └── 20250525_151645
+        ├── edge_handling_comparison.png
+        ├── edge_mode_differences.png
+        ├── filter_response_comparison.png
+        ├── filtfilt_math_comparison.png
+        ├── final_comparison_sequential.py
+        ├── gpac_edge_mode_test.png
+        ├── hres_mres_comparison.png
+        ├── pac_computation_comparison.png
+        ├── _performance_comparison.png
+        ├── readme_demo_edge_mode_output.png
+        ├── readme_demo_filtfilt_comparison.png
+        ├── readme_demo_with_edge_mode_output.png
+        ├── sequential_filtfilt_fixed.py
+        ├── tensorpac_filter_comparison.png
+        ├── test_differences.py
+        ├── test_edge_handling_overhead.py
+        ├── test_edge_handling_pac_context.py
+        ├── test_edge_mode_pac.py
+        ├── test_filtfilt_performance.py
+        ├── test_filtfilt_simple.py
+        ├── test_hres_mres_comparison.py
+        ├── test_sequential_filtfilt.py
+        ├── test_tensorpac_compatibility.py
+        ├── test_tensorpac_float32.py
+        ├── test_torchaudio_filtfilt.py
+        └── visualize_filtfilt_math.py
+
+647 directories, 1771 files

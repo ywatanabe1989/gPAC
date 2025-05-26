@@ -1,3 +1,9 @@
+<!-- ---
+!-- Timestamp: 2025-05-26 06:26:35
+!-- Author: ywatanabe
+!-- File: /ssh:sp:/home/ywatanabe/proj/gPAC/docs/real_world_data_sources.md
+!-- --- -->
+
 # Real-World EEG Data Sources for PAC Analysis
 
 ## Publicly Available Datasets with Known PAC
@@ -88,6 +94,7 @@ def analyze_real_pac():
 - **Slow-wave sleep**: Coupling between slow oscillations (0.5-2 Hz) and sleep spindles (11-15 Hz)
 - **REM sleep**: Theta-gamma coupling (4-8 Hz with 30-100 Hz)
 
+
 ### Motor Tasks
 - **Movement preparation**: Mu rhythm (8-12 Hz) coupled with high gamma (60-100 Hz)
 - **Movement execution**: Beta suppression with gamma bursts
@@ -109,3 +116,5 @@ def analyze_real_pac():
 2. Create validation against published PAC studies
 3. Implement automatic dataset downloading
 4. Add real-world performance benchmarks
+
+<!-- EOF -->

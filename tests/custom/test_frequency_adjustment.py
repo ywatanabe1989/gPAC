@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 import warnings
 import numpy as np
 import torch
-from gpac._pac import calculate_pac
+from gpac import calculate_pac
 
 # Test frequency adjustment
 torch.manual_seed(42)

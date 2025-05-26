@@ -5,7 +5,7 @@
 ## 🚀 Key Results
 
 <div align="center">
-  <img src="benchmarks/figures/hres_mres_comparison_improved.png" alt="PAC Comparison" width="100%">
+  <img src="benchmarks/figures/hres_mres_comparison.png" alt="PAC Comparison" width="100%">
   
   **gPAC achieves 28-63x speedup over TensorPAC while maintaining high accuracy (r=0.898)**
 </div>
