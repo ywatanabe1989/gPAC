@@ -47,3 +47,29 @@ The bug was fixed by modifying the `forward` method in the `PACClassifier` class
   - Verified edge case handling
 - Documented performance characteristics and limitations
 - Added comprehensive channel handling guide to prevent shape mismatch issues
+- Fixed critical BandPass filter TensorPAC compatibility issue (correlation was 0.001, now >0.999)
+  - Implemented scipy-compatible odd extension padding for exact filtfilt behavior
+  - Achieved excellent correlation with TensorPAC: Phase r=0.999, Amplitude r=1.000
+  - Maintained full GPU acceleration while ensuring compatibility
+  - Updated all tests to use renamed BandPassFilter class
+- Verified Hilbert transform differentiability (feature request 02):
+  - Created comprehensive test script confirming full differentiability
+  - Perfect correlation with scipy (r=1.000 for both phase and amplitude)
+  - All complex operations (FFT, IFFT, atan2, abs) preserve gradients
+- Completed ModulationIndex differentiability analysis (feature request 03):
+  - Identified torch.bucketize as the non-differentiable operation
+  - DifferentiableModulationIndex already implemented with soft binning
+  - Verified gradient flow through differentiable implementation
+  - Both standard (for evaluation) and differentiable (for training) versions available
+- Implemented comprehensive gradient testing suite (feature request 05):
+  - Created tests/custom/test_gradient_checking.py with full coverage
+  - Tests use torch.autograd.gradcheck for rigorous validation
+  - Includes finite difference comparison and multi-module chains
+  - All differentiable modules have gradient flow verification
+  - Tests complete in < 5 minutes as required
+- Completed v01_mode refactoring (feature request 08):
+  - Successfully removed v01_mode from all production API code
+  - Cleaned up OptimizedBandPassFilter by replacing with clean version
+  - Fixed _PAC.py to remove v01_mode parameter passing
+  - All tests now pass after cleanup
+  - v01 implementation preserved in legacy module for research purposes

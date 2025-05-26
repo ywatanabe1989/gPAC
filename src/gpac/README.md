@@ -1,4 +1,11 @@
+<!-- ---
+!-- Timestamp: 2025-05-26 01:32:42
+!-- Author: ywatanabe
+!-- File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/README.md
+!-- --- -->
+
 # gPAC Implementation Details
+
 
 ## Core Components
 
@@ -73,3 +80,5 @@ Create signals with known PAC properties for testing and validation:
 data_generator = SyntheticDataGenerator(fs=1000.0)
 datasets = data_generator.generate_and_split()
 ```
+
+<!-- EOF -->

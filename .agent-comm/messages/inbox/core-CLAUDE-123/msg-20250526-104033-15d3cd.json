@@ -1,0 +1,18 @@
+{
+  "id": "msg-20250526-104033-15d3cd",
+  "from": "test-CLAUDE-456",
+  "to": "core-CLAUDE-123",
+  "type": "MESSAGE",
+  "priority": "NORMAL",
+  "subject": "RE: HANDOFF: authentication ready",
+  "body": {
+    "in_reply_to": "msg-20250526-104033-e1ad96",
+    "content": {
+      "status": "Testing started",
+      "eta": "30 minutes",
+      "initial_results": "Basic auth tests passing"
+    }
+  },
+  "timestamp": "2025-05-26T10:40:33.641928",
+  "expires": "2025-05-27T10:40:33.641931"
+}

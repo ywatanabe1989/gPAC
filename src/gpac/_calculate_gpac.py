@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-05-25 09:44:58 (ywatanabe)"
-# File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/_pac.py
+# Timestamp: "2025-05-26 06:26:32 (ywatanabe)"
+# File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_calculate_gpac.py
 # ----------------------------------------
 import os
 __FILE__ = (
-    "./src/gpac/_pac.py"
+    "./src/gpac/_calculate_gpac.py"
 )
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
+
 import warnings
 from typing import Optional, Tuple, Union
 
@@ -35,14 +36,12 @@ def calculate_pac(
     fp16: bool = False,
     amp_prob: bool = False,
     mi_n_bins: int = 18,
-    filter_cycle_pha: int = 3,
-    filter_cycle_amp: int = 6,
+    filter_cycle: int = 3,
     device: Optional[str | torch.device] = None,
     chunk_size: Optional[int] = None,
     average_channels: bool = False,
     return_dist: bool = False,
-    filtfilt_mode: bool = False,
-    edge_mode: Optional[str] = None,
+    use_optimized_filter: bool = True,
 ) -> Union[
     # Standard return (no distribution): pac_values, pha_freqs, amp_freqs
     Tuple[torch.Tensor, np.ndarray, np.ndarray],
@@ -51,15 +50,15 @@ def calculate_pac(
 ]:
     """
     Calculate Phase-Amplitude Coupling (PAC) between neural oscillations.
-    
-    PAC measures how the amplitude of fast brain waves (e.g., 60-160 Hz gamma) is 
-    modulated by the phase of slower waves (e.g., 2-20 Hz theta/alpha). This is 
+
+    PAC measures how the amplitude of fast brain waves (e.g., 60-160 Hz gamma) is
+    modulated by the phase of slower waves (e.g., 2-20 Hz theta/alpha). This is
     important for understanding cross-frequency interactions in neural networks.
 
     Input Signal Format:
         signal: 4D tensor with shape (batch_size, channels, segments, time_points)
         - batch_size: Number of different recordings/subjects
-        - channels: EEG recording sites (different electrodes)  
+        - channels: EEG recording sites (different electrodes)
         - segments: Time windows from same session (e.g., consecutive 2-sec epochs)
         - time_points: Individual samples (duration × sampling_rate)
 
@@ -67,7 +66,7 @@ def calculate_pac(
         signal: Input neural signals as PyTorch tensor or numpy array
         fs: Sampling frequency in Hz (e.g., 256, 512, 1000)
         pha_start_hz: Start of phase frequency range (default: 2 Hz)
-        pha_end_hz: End of phase frequency range (default: 20 Hz)  
+        pha_end_hz: End of phase frequency range (default: 20 Hz)
         pha_n_bands: Number of phase frequency bands to analyze (default: 50)
         amp_start_hz: Start of amplitude frequency range (default: 60 Hz)
         amp_end_hz: End of amplitude frequency range (default: 160 Hz)
@@ -77,20 +76,19 @@ def calculate_pac(
         fp16: Use half-precision (faster but less precise)
         amp_prob: Return amplitude probabilities instead of modulation index
         mi_n_bins: Number of phase bins for modulation index (default: 18)
-        filter_cycle_pha: Filter bandwidth for phase in cycles (default: 3)
-        filter_cycle_amp: Filter bandwidth for amplitude in cycles (default: 6)
+        filter_cycle: Filter bandwidth in cycles (default: 3)
         device: Compute device ("cuda", "cpu", or torch.device)
         chunk_size: Process in chunks to save memory (None=no chunking)
         average_channels: Average results across channels (default: False)
         return_dist: Return full surrogate distribution for custom analysis
-        filtfilt_mode: Use zero-phase filtering for TensorPAC compatibility (default: False)
+        use_optimized_filter: Use optimized filter with caching for faster initialization (default: True)
 
     Returns:
         Standard return (return_dist=False):
             - pac_values: Shape (batch_size, channels, pha_n_bands, amp_n_bands)
             - pha_freqs: Phase frequency centers (pha_n_bands,)
             - amp_freqs: Amplitude frequency centers (amp_n_bands,)
-            
+
         With surrogate distribution (return_dist=True and n_perm > 0):
             - pac_values: Shape (batch_size, channels, pha_n_bands, amp_n_bands)
             - surrogate_dist: Shape (n_perm, batch_size, channels, pha_n_bands, amp_n_bands)
@@ -206,7 +204,7 @@ def calculate_pac(
     nyquist_freq = fs / 2
     safety_factor = 0.9  # Leave some margin below Nyquist
     max_safe_freq = nyquist_freq * safety_factor
-    
+
     # Adjust amplitude end frequency if it exceeds safe limits
     if amp_end_hz >= max_safe_freq:
         amp_end_hz_adjusted = max_safe_freq
@@ -216,17 +214,19 @@ def calculate_pac(
             f"Adjusting to {amp_end_hz_adjusted:.1f} Hz."
         )
         amp_end_hz = amp_end_hz_adjusted
-    
+
     # Adjust phase end frequency if it exceeds safe limits
     if pha_end_hz >= max_safe_freq:
-        pha_end_hz_adjusted = min(max_safe_freq, amp_start_hz * 0.5)  # Keep phase below amplitude
+        pha_end_hz_adjusted = min(
+            max_safe_freq, amp_start_hz * 0.5
+        )  # Keep phase below amplitude
         warnings.warn(
             f"pha_end_hz ({pha_end_hz} Hz) exceeds safe frequency limit "
             f"({max_safe_freq:.1f} Hz) for fs={fs} Hz. "
             f"Adjusting to {pha_end_hz_adjusted:.1f} Hz."
         )
         pha_end_hz = pha_end_hz_adjusted
-    
+
     # Ensure phase frequencies are below amplitude frequencies
     if pha_end_hz >= amp_start_hz:
         pha_end_hz_adjusted = amp_start_hz * 0.8
@@ -235,15 +235,19 @@ def calculate_pac(
             f"Adjusting to {pha_end_hz_adjusted:.1f} Hz."
         )
         pha_end_hz = pha_end_hz_adjusted
-        
+
     # Final validation
     if pha_start_hz >= pha_end_hz:
-        raise ValueError(f"pha_start_hz ({pha_start_hz}) must be < pha_end_hz ({pha_end_hz})")
+        raise ValueError(
+            f"pha_start_hz ({pha_start_hz}) must be < pha_end_hz ({pha_end_hz})"
+        )
     if amp_start_hz >= amp_end_hz:
-        raise ValueError(f"amp_start_hz ({amp_start_hz}) must be < amp_end_hz ({amp_end_hz})")
+        raise ValueError(
+            f"amp_start_hz ({amp_start_hz}) must be < amp_end_hz ({amp_end_hz})"
+        )
     if pha_start_hz <= 0:
         raise ValueError(f"pha_start_hz ({pha_start_hz}) must be > 0")
-    
+
     # 2. Device Handling
     if device is None:
         resolved_device = torch.device(
@@ -287,13 +291,10 @@ def calculate_pac(
         n_perm=n_perm,
         trainable=trainable,
         fp16=fp16,
-        amp_prob=amp_prob,
         mi_n_bins=mi_n_bins,
-        filter_cycle_pha=filter_cycle_pha,
-        filter_cycle_amp=filter_cycle_amp,
-        return_dist=return_dist,
-        filtfilt_mode=filtfilt_mode,
-        edge_mode=edge_mode,
+        filter_cycle_pha=filter_cycle,
+        filter_cycle_amp=filter_cycle,
+        use_optimized_filter=use_optimized_filter,
     ).to(resolved_device)
 
     if not trainable:
@@ -332,11 +333,17 @@ def calculate_pac(
         grad_context = torch.enable_grad() if trainable else torch.no_grad()
         with grad_context:
             result = model(signal_4d)
-            # Extract surrogate distribution if it was returned
-            if isinstance(result, tuple) and len(result) == 2:
-                pac_results, surrogate_dist = result
+            # Extract PAC values and surrogate distribution from result dictionary
+            if amp_prob:
+                pac_results = result["amp_prob"]
             else:
-                pac_results = result
+                # Use z-scored MI if available, otherwise raw MI
+                pac_results = result.get("mi_z", result["mi"])
+            
+            # Extract surrogate distribution if available and requested
+            surrogate_dist = None
+            if return_dist and "surrogate_mis" in result:
+                surrogate_dist = result["surrogate_mis"]
     else:
         print(
             f"Processing {num_traces} traces in chunks of size {chunk_size}..."

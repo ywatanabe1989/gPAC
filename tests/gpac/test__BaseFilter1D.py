@@ -1,5 +1,13 @@
-# Add your tests here
+import pytest
+import torch
+import sys
+import os
 
+# Add path for gpac imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+
+# Note: BaseFilter1D is likely an abstract class, so we may not have direct tests for it
+# Tests would be in the concrete implementations
 
 if __name__ == "__main__":
     import os
@@ -11,17 +19,6 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------------
 # Start of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_BaseFilter1D.py
 # --------------------------------------------------------------------------------
-# #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
-# # Timestamp: "2025-04-25 18:12:11 (ywatanabe)"
-# # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_BaseFilter1D.py
-# # ----------------------------------------
-# import os
-# 
-# __FILE__ = "./src/gpac/_BaseFilter1D.py"
-# __DIR__ = os.path.dirname(__FILE__)
-# # ----------------------------------------
-# 
 # import warnings
 # from abc import ABC, abstractmethod
 # 
@@ -170,7 +167,6 @@ if __name__ == "__main__":
 #         return kernels
 # 
 # 
-# # EOF
 
 # --------------------------------------------------------------------------------
 # End of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_BaseFilter1D.py

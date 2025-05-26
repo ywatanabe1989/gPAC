@@ -18,7 +18,7 @@ data = generator.generate_and_split()
 train_dataset = data['train']
 
 # Get a sample
-signal, label = train_dataset[0]
+signal, label, metadata = train_dataset[0]
 print(f"Generated signal shape: {signal.shape}")
 print(f"Label: {label}")
 print(f"Data type: {type(signal)}")
