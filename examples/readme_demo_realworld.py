@@ -189,7 +189,7 @@ def create_realworld_figure(
     
     plt.tight_layout()
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
-    mngs.gen.print_block(f"Figure saved to: {save_path}", c='green')
+    print(f"Figure saved to: {save_path}", c='green')
     
     return fig
 
@@ -201,13 +201,13 @@ def main(args):
     os.makedirs(output_dir, exist_ok=True)
     
     # Load sample EEG data
-    mngs.gen.print_block("Loading MNE sample EEG data", c='cyan')
+    print("Loading MNE sample EEG data", c='cyan')
     raw, events = load_sample_eeg_data()
     print(f"Loaded {len(raw.ch_names)} EEG channels")
     print(f"Sampling frequency: {raw.info['sfreq']} Hz")
     
     # Preprocess data
-    mngs.gen.print_block("Preprocessing EEG data", c='cyan')
+    print("Preprocessing EEG data", c='cyan')
     data, sfreq, ch_names, times = preprocess_for_pac(
         raw, tmin=-0.2, tmax=0.5, event_id=1
     )
@@ -215,7 +215,7 @@ def main(args):
     print(f"Time range: {times[0]:.2f} to {times[-1]:.2f} seconds")
     
     # Compute PAC for multiple channels
-    mngs.gen.print_block("Computing PAC across channels", c='cyan')
+    print("Computing PAC across channels", c='cyan')
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
     
@@ -237,7 +237,7 @@ def main(args):
         pac_results[ch_idx] = (pac_mean, pac_std, pha_freqs, amp_freqs)
     
     # Create visualization
-    mngs.gen.print_block("Creating visualization", c='cyan')
+    print("Creating visualization", c='cyan')
     
     # Get a sample segment for raw data display
     raw_segment = data[0, :, :]  # First epoch, all channels
@@ -249,7 +249,7 @@ def main(args):
     )
     
     # Summary
-    mngs.gen.print_block("Analysis Summary", c='yellow')
+    print("Analysis Summary", c='yellow')
     print(f"Analyzed {len(pac_results)} channels")
     print(f"Phase frequencies: {pha_freqs[0]:.1f} - {pha_freqs[-1]:.1f} Hz")
     print(f"Amplitude frequencies: {amp_freqs[0]:.1f} - {amp_freqs[-1]:.1f} Hz")
