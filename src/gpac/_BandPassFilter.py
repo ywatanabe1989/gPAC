@@ -1,167 +1,222 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-05-26 11:15:00 (ywatanabe)"
+# Timestamp: "2025-05-28 19:00:00 (ywatanabe)"
 # File: /home/ywatanabe/proj/gPAC/src/gpac/_BandPassFilter.py
 # ----------------------------------------
+import os
+__FILE__ = (
+    "./src/gpac/_BandPassFilter.py"
+)
+__DIR__ = os.path.dirname(__FILE__)
+# ----------------------------------------
+
+"""
+Unified BandPassFilter module that combines static and differentiable filtering modes.
+Provides a single interface for both trainable and non-trainable bandpass filtering.
+"""
 
 import torch
 import torch.nn as nn
-import numpy as np
 
-from ._tensorpac_fir1 import design_filter_tensorpac
+from ._Filters._DifferentiableBandpassFilter import DifferentiableBandPassFilter
+from ._Filters._StaticBandpassFilter import StaticBandPassFilter
 
 
 class BandPassFilter(nn.Module):
     """
-    Bandpass filter with combined phase and amplitude filtering.
+    Unified bandpass filter that switches between static and differentiable modes.
     
-    This implementation uses scipy-compatible odd extension padding
-    for exact filtfilt behavior when filtfilt_mode=True.
+    Parameters
+    ----------
+    seq_len : int
+        Length of the input sequence
+    fs : float
+        Sampling frequency
+    pha_start_hz : float
+        Start frequency for phase bands
+    pha_end_hz : float
+        End frequency for phase bands
+    pha_n_bands : int
+        Number of phase bands
+    amp_start_hz : float
+        Start frequency for amplitude bands
+    amp_end_hz : float
+        End frequency for amplitude bands
+    amp_n_bands : int
+        Number of amplitude bands
+    fp16 : bool
+        Whether to use half precision
+    trainable : bool
+        Whether to use trainable (differentiable) filters
     """
-
+    
     def __init__(
         self,
-        pha_bands,
-        amp_bands,
-        fs,
         seq_len,
+        fs,
+        pha_start_hz=2,
+        pha_end_hz=20,
+        pha_n_bands=50,
+        amp_start_hz=60,
+        amp_end_hz=160,
+        amp_n_bands=30,
         fp16=False,
-        cycle_pha=3,
-        cycle_amp=6,
-        filtfilt_mode=False,
-        edge_mode=None,
+        trainable=False,
+        padding_mode="reflect",
     ):
         super().__init__()
+        
+        # Validate parameters
+        if seq_len <= 0:
+            raise ValueError(f"seq_len must be positive, got seq_len={seq_len}")
+        if pha_start_hz >= pha_end_hz:
+            raise ValueError(f"Invalid phase frequency range: {pha_start_hz} >= {pha_end_hz}")
+        if amp_start_hz >= amp_end_hz:
+            raise ValueError(f"Invalid amplitude frequency range: {amp_start_hz} >= {amp_end_hz}")
+        if pha_n_bands <= 0:
+            raise ValueError(f"Number of bands must be positive, got pha_n_bands={pha_n_bands}")
+        if amp_n_bands <= 0:
+            raise ValueError(f"Number of bands must be positive, got amp_n_bands={amp_n_bands}")
+        if fs <= 0:
+            raise ValueError(f"Sampling frequency must be positive, got fs={fs}")
+        
+        # Check Nyquist frequency
+        nyquist = fs / 2
+        if pha_end_hz > nyquist:
+            raise ValueError(f"Phase frequency {pha_end_hz} Hz exceeds Nyquist frequency {nyquist} Hz")
+        if amp_end_hz > nyquist:
+            raise ValueError(f"Amplitude frequency {amp_end_hz} Hz exceeds Nyquist frequency {nyquist} Hz")
+        
+        self.seq_len = seq_len
+        self.fs = fs
         self.fp16 = fp16
-        self.n_pha_bands = len(pha_bands)
-        self.n_amp_bands = len(amp_bands)
-        self.filtfilt_mode = filtfilt_mode
-        self.edge_mode = edge_mode
-
-        # Create phase filters with cycle_pha
-        pha_filters = []
-        for ll, hh in pha_bands:
-            kernel = design_filter_tensorpac(
-                seq_len, fs, low_hz=ll, high_hz=hh, cycle=cycle_pha
+        self.trainable = trainable
+        self.pha_n_bands = pha_n_bands
+        self.amp_n_bands = amp_n_bands
+        self.pha_start_hz = pha_start_hz
+        self.pha_end_hz = pha_end_hz
+        self.amp_start_hz = amp_start_hz
+        self.amp_end_hz = amp_end_hz
+        self.padding_mode = padding_mode
+        
+        if trainable:
+            # Use differentiable bandpass filter with SincNet style
+            self.filter = DifferentiableBandPassFilter(
+                sig_len=seq_len,
+                fs=fs,
+                pha_low_hz=pha_start_hz,
+                pha_high_hz=pha_end_hz,
+                pha_n_bands=pha_n_bands,
+                amp_low_hz=amp_start_hz,
+                amp_high_hz=amp_end_hz,
+                amp_n_bands=amp_n_bands,
+                filter_length=251,
+                min_band_hz=1,
+                min_low_hz=1,
+                init_scale='mel',
+                window='hamming',
+                normalization='std',
+                fp16=fp16,
             )
-            pha_filters.append(kernel)
-
-        # Create amplitude filters with cycle_amp
-        amp_filters = []
-        for ll, hh in amp_bands:
-            kernel = design_filter_tensorpac(
-                seq_len, fs, low_hz=ll, high_hz=hh, cycle=cycle_amp
-            )
-            amp_filters.append(kernel)
-
-        # Combine all filters
-        all_filters = pha_filters + amp_filters
-
-        # Find max length for padding
-        max_len = max(f.shape[0] for f in all_filters)
-
-        # Pad filters to same length
-        padded_filters = []
-        for f in all_filters:
-            pad_needed = max_len - f.shape[0]
-            if pad_needed > 0:
-                pad_left = pad_needed // 2
-                pad_right = pad_needed - pad_left
-                f_padded = torch.nn.functional.pad(f, (pad_left, pad_right))
-            else:
-                f_padded = f
-            padded_filters.append(f_padded)
-
-        # Stack all filters
-        kernels = torch.stack(padded_filters)
-        if fp16:
-            kernels = kernels.half()
-        self.register_buffer("kernels", kernels)
-
-        # Calculate padlen for edge handling if requested
-        if edge_mode:
-            # Get the maximum filter length for padding
-            self.padlen = max(len(f) for f in all_filters) - 1
+            # Get initial band centers for compatibility
+            bands_info = self.filter.get_filter_banks()
+            self.pha_mids = bands_info['pha_bands'][:, :].mean(dim=1)
+            self.amp_mids = bands_info['amp_bands'][:, :].mean(dim=1)
         else:
-            self.padlen = 0
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Apply bandpass filtering with combined filters."""
-        # x shape: (batch*channel*segment, 1, time)
-
-        # Apply edge padding if requested
-        if self.edge_mode and self.padlen > 0:
-            x = torch.nn.functional.pad(
-                x, (self.padlen, self.padlen), mode=self.edge_mode
+            # Use static bandpass filter
+            # First calculate the bands
+            pha_bands = self._calc_bands_pha(pha_start_hz, pha_end_hz, pha_n_bands)
+            amp_bands = self._calc_bands_amp(amp_start_hz, amp_end_hz, amp_n_bands)
+            all_bands = torch.vstack([pha_bands, amp_bands])
+            
+            self.filter = StaticBandPassFilter(
+                bands=all_bands,
+                fs=fs,
+                seq_len=seq_len,
+                fp16=fp16,
+                padding_mode=padding_mode,
             )
-
-        if self.filtfilt_mode:
-            # For exact scipy compatibility, we need odd extension padding
-            batch_size = x.shape[0]
-            seq_len = x.shape[-1]
+            # Store mid frequencies for PAC
+            self.pha_mids = pha_bands.mean(-1)
+            self.amp_mids = amp_bands.mean(-1)
+    
+    def forward(self, x, edge_len=0):
+        """
+        Apply bandpass filtering.
+        
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input signal with shape (batch_size, n_segments, seq_len)
+        edge_len : int
+            Number of samples to remove from edges
             
-            # Convert input for processing
-            x_squeezed = x.squeeze(1)  # (batch, time)
-            
-            # Process each filter with appropriate padding
-            filtered_bands = []
-            
-            for i, kernel in enumerate(self.kernels):
-                # Calculate padlen based on filter length
-                padlen = min(3 * len(kernel), seq_len - 1)
-            
-                # Apply odd extension padding manually for each signal
-                x_padded_list = []
-                for b in range(batch_size):
-                    signal = x_squeezed[b]
-                    
-                    if padlen > 0:
-                        # Create odd extension: -flipped_signal
-                        left_pad = -signal[1:padlen+1].flip(0)
-                        right_pad = -signal[-padlen-1:-1].flip(0) 
-                        signal_padded = torch.cat([left_pad, signal, right_pad])
-                    else:
-                        signal_padded = signal
-                    
-                    x_padded_list.append(signal_padded)
-            
-                # Stack padded signals
-                x_padded = torch.stack(x_padded_list).unsqueeze(1)  # (batch, 1, padded_time)
-                
-                # Apply forward and backward filtering
-                kernel_3d = kernel.unsqueeze(0).unsqueeze(0)  # (1, 1, kernel_len)
-                filtered_band = torch.nn.functional.conv1d(x_padded, kernel_3d, padding='same')
-                filtered_band = torch.nn.functional.conv1d(
-                    filtered_band.flip(-1), kernel_3d, padding='same'
-                ).flip(-1)
-                
-                # Remove padding
-                if padlen > 0:
-                    filtered_band = filtered_band[:, :, padlen:-padlen]
-                
-                filtered_bands.append(filtered_band.squeeze(1))
-            
-            # Stack all filtered bands
-            filtered = torch.stack(filtered_bands, dim=1)  # (batch, n_bands, time)
+        Returns
+        -------
+        torch.Tensor
+            Filtered signal with shape (batch_size, n_segments, n_bands, seq_len)
+        """
+        return self.filter(x, edge_len=edge_len)
+    
+    @staticmethod
+    def _calc_bands_pha(start_hz=2, end_hz=20, n_bands=100):
+        """Calculate phase frequency bands."""
+        start_hz = start_hz if start_hz is not None else 2
+        end_hz = end_hz if end_hz is not None else 20
+        mid_hz = torch.linspace(start_hz, end_hz, n_bands)
+        return torch.cat(
+            (
+                mid_hz.unsqueeze(1) - mid_hz.unsqueeze(1) / 4.0,
+                mid_hz.unsqueeze(1) + mid_hz.unsqueeze(1) / 4.0,
+            ),
+            dim=1,
+        )
+    
+    @staticmethod
+    def _calc_bands_amp(start_hz=30, end_hz=160, n_bands=100):
+        """Calculate amplitude frequency bands."""
+        start_hz = start_hz if start_hz is not None else 30
+        end_hz = end_hz if end_hz is not None else 160
+        mid_hz = torch.linspace(start_hz, end_hz, n_bands)
+        return torch.cat(
+            (
+                mid_hz.unsqueeze(1) - mid_hz.unsqueeze(1) / 8.0,
+                mid_hz.unsqueeze(1) + mid_hz.unsqueeze(1) / 8.0,
+            ),
+            dim=1,
+        )
+    
+    def get_filter_banks(self):
+        """Get current filter bank parameters (for trainable filters)."""
+        if hasattr(self.filter, 'get_filter_banks'):
+            return self.filter.get_filter_banks()
         else:
-            # Standard single-pass filtering
-            filtered = torch.nn.functional.conv1d(
-                x,
-                self.kernels.unsqueeze(1),  # (n_bands, 1, kernel_len)
-                padding="same",
-                groups=1,
+            # For static filters, return the fixed bands
+            pha_bands = self._calc_bands_pha(
+                getattr(self, 'pha_start_hz', 2),
+                getattr(self, 'pha_end_hz', 20),
+                self.pha_n_bands
             )
-
-        # filtered shape: (batch*channel*segment, n_bands, time)
-
-        # Remove edge padding if it was applied
-        if self.edge_mode and self.padlen > 0:
-            filtered = filtered[:, :, self.padlen : -self.padlen]
-
-        # Add extra dimension to match expected output
-        # Output should be: (batch*channel*segment, 1, n_bands, time)
-        filtered = filtered.unsqueeze(1)
-
-        return filtered
+            amp_bands = self._calc_bands_amp(
+                getattr(self, 'amp_start_hz', 60),
+                getattr(self, 'amp_end_hz', 160),
+                self.amp_n_bands
+            )
+            return {
+                'pha_bands': pha_bands,
+                'amp_bands': amp_bands
+            }
+    
+    def get_regularization_loss(self, lambda_overlap=0.01, lambda_bandwidth=0.01):
+        """Get regularization loss for trainable filters."""
+        if hasattr(self.filter, 'get_regularization_loss'):
+            return self.filter.get_regularization_loss(lambda_overlap, lambda_bandwidth)
+        else:
+            return {'total': torch.tensor(0.0)}
+    
+    def constrain_parameters(self):
+        """Apply constraints to trainable parameters."""
+        if hasattr(self.filter, 'constrain_parameters'):
+            self.filter.constrain_parameters()
 
 # EOF
