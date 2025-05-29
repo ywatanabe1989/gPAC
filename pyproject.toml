@@ -25,4 +25,4 @@ dependencies = [
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["gpac", "gpac._Filters", "gpac.legacy", "gpac.v01"]
+packages = ["gpac", "gpac._Filters"]
