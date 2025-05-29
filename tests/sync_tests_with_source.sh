@@ -1,6 +1,6 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-05-24 19:06:04 (ywatanabe)"
+# Timestamp: "2025-05-28 20:49:33 (ywatanabe)"
 # File: ./gPAC/tests/sync_tests_with_source.sh
 
 THIS_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
@@ -334,6 +334,9 @@ main() {
 
         # Process each file
         update_test_file "$test_file" "$src_file"
+
+        # Executable
+        chmod +x $test_file
     done
 
     remove_hidden_test_files_and_dirs

@@ -1,9 +1,16 @@
 import os
+import sys
 # ----------------------------------------
 
 from pathlib import Path
 
 __FILE__ = os.path.abspath(__file__)
+
+# Add src directory to Python path for imports
+_project_root = Path(__file__).parent.parent
+_src_path = _project_root / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
 
 
 # File: tests/conftest.py

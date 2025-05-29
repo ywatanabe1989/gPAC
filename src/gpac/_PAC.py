@@ -1,321 +1,373 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-05-26 00:50:00 (ywatanabe)"
-# File: /home/ywatanabe/proj/gPAC/src/gpac/_PAC.py
+# Time-stamp: "2024-11-26 10:33:30 (ywatanabe)"
+# File: ./mngs_repo/src/mngs/nn/_PAC.py
 
-"""
-PyTorch Module for calculating Phase-Amplitude Coupling (PAC).
+THIS_FILE = "/home/ywatanabe/proj/mngs_repo/src/mngs/nn/_PAC.py"
 
-This implementation uses TensorPAC-compatible filter design for
-better comparability with existing neuroscience tools.
-Includes differentiable MI calculation when trainable=True.
-"""
-
-import warnings
-from typing import Dict, Optional
+# Imports
+from typing import Dict, Optional, Tuple, Union
 
 import torch
 import torch.nn as nn
 
 from ._BandPassFilter import BandPassFilter
-from ._OptimizedBandPassFilter import OptimizedBandPassFilter
 from ._Hilbert import Hilbert
 from ._ModulationIndex import ModulationIndex
-from ._DifferentiableModulationIndex import DifferentiableModulationIndex
-from ._utils import ensure_4d_input
-
-# Try to import trainable filter
-try:
-    from ._Filters._TrainableBandPassFilter import TrainableBandPassFilter
-    _TRAINABLE_AVAILABLE = True
-except ImportError:
-    _TRAINABLE_AVAILABLE = False
 
 
+# Functions
 class PAC(nn.Module):
-    """
-    PyTorch Module for calculating Phase-Amplitude Coupling (PAC).
-    
-    When trainable=True:
-    - Uses trainable bandpass filters
-    - Uses differentiable soft-binning MI calculation
-    - Enables end-to-end gradient optimization
-    
-    When trainable=False:
-    - Uses static bandpass filters  
-    - Uses standard histogram-based MI calculation
-    - Maintains TensorPAC compatibility
-    """
-
     def __init__(
         self,
         seq_len: int,
         fs: float,
-        pha_start_hz: float = 2.0,
-        pha_end_hz: float = 20.0,
+        pha_start_hz: float = 2,
+        pha_end_hz: float = 20,
         pha_n_bands: int = 50,
-        amp_start_hz: float = 60.0,
-        amp_end_hz: float = 160.0,
+        amp_start_hz: float = 60,
+        amp_end_hz: float = 160,
         amp_n_bands: int = 30,
-        n_perm: Optional[int] = None,
+        n_perm: Union[int, None] = 0,
         trainable: bool = False,
+        in_place: bool = True,
         fp16: bool = False,
-        mi_n_bins: int = 18,
-        filter_cycle_pha: int = 3,
-        filter_cycle_amp: int = 6,
-        filtfilt_mode: bool = False,
-        edge_mode: Optional[str] = None,
-        differentiable_mi_temperature: float = 1.0,
-        differentiable_mi_method: str = 'softmax',
-        use_optimized_filter: bool = True,
-    ):
+        edge_mode: str = "auto",
+        edge_length: Optional[Union[int, float]] = None,
+    ) -> None:
         super().__init__()
+        
+        # Input validation
+        if seq_len <= 0:
+            raise ValueError(f"seq_len must be positive, got {seq_len}")
+        if fs <= 0:
+            raise ValueError(f"fs must be positive, got {fs}")
+        if pha_start_hz <= 0 or pha_end_hz <= pha_start_hz:
+            raise ValueError(
+                f"Invalid phase frequency range: [{pha_start_hz}, {pha_end_hz}] Hz"
+            )
+        if amp_start_hz <= 0 or amp_end_hz <= amp_start_hz:
+            raise ValueError(
+                f"Invalid amplitude frequency range: [{amp_start_hz}, {amp_end_hz}] Hz"
+            )
+        if pha_n_bands <= 0 or amp_n_bands <= 0:
+            raise ValueError(
+                f"Number of bands must be positive, got pha: {pha_n_bands}, amp: {amp_n_bands}"
+            )
+        # Handle n_perm=0 as None
+        if n_perm == 0:
+            n_perm = None
+        if n_perm is not None and (not isinstance(n_perm, int) or n_perm <= 0):
+            raise ValueError(f"n_perm must be a positive integer or None, got {n_perm}")
 
-        # Store configuration
-        self.seq_len = seq_len
-        self.fs = fs
         self.fp16 = fp16
+        self.n_perm = n_perm
         self.trainable = trainable
-        self.filter_cycle_pha = filter_cycle_pha
-        self.filter_cycle_amp = filter_cycle_amp
-        self.mi_n_bins = mi_n_bins
-        self.filtfilt_mode = filtfilt_mode
         self.edge_mode = edge_mode
-        self.use_optimized_filter = use_optimized_filter
+        self.edge_length = edge_length
 
-        # Validate and store permutation setting
-        self.n_perm = None
-        if n_perm is not None:
-            if not isinstance(n_perm, int) or n_perm < 1:
-                raise ValueError("n_perm must be a positive integer or None.")
-            self.n_perm = n_perm
+        # caps amp_end_hz to avoid aliasing
+        factor = 0.8
+        nyquist = fs / 2
+        amp_end_hz = int(min(nyquist / (1 + factor) - 1, amp_end_hz))
+        
+        # Also adjust amp_start_hz if it's now >= amp_end_hz
+        if amp_start_hz >= amp_end_hz:
+            # Set amp_start_hz to a reasonable value below amp_end_hz
+            amp_start_hz = max(1.0, amp_end_hz * 0.5)
+        
+        # Check frequency bounds against Nyquist
+        if pha_end_hz > nyquist:
+            raise ValueError(
+                f"Phase end frequency {pha_end_hz} Hz exceeds Nyquist frequency {nyquist} Hz"
+            )
+        if amp_end_hz > nyquist:
+            raise ValueError(
+                f"Amplitude end frequency {amp_end_hz} Hz exceeds Nyquist frequency {nyquist} Hz"
+            )
 
-        # Initialize core components
-        self.bandpass_filter = self._init_bandpass(
+        # Determine padding mode based on edge_mode if not specified directly
+        padding_mode = "reflect"  # default
+        if edge_mode == "zero":
+            padding_mode = "zero"
+        elif edge_mode == "replicate":
+            padding_mode = "replicate"
+        
+        self.bandpass = BandPassFilter(
             seq_len,
             fs,
-            pha_start_hz,
-            pha_end_hz,
-            pha_n_bands,
-            amp_start_hz,
-            amp_end_hz,
-            amp_n_bands,
-            trainable,
-            fp16,
-        )
-        self.hilbert = Hilbert(seq_len=seq_len, dim=-1, fp16=fp16)
-        
-        # Initialize MI module based on trainable mode
-        if trainable:
-            self.modulation_index = DifferentiableModulationIndex(
-                n_bins=mi_n_bins,
-                temperature=differentiable_mi_temperature,
-                binning_method=differentiable_mi_method,
-                fp16=fp16,
-            )
-        else:
-            self.modulation_index = ModulationIndex(
-                n_bins=mi_n_bins,
-                fp16=fp16,
-            )
-
-        # Store frequency information
-        self.PHA_MIDS_HZ: torch.Tensor
-        self.AMP_MIDS_HZ: torch.Tensor
-        # Frequency info is set within _init_bandpass
-
-        # Store band counts
-        self._pha_n_bands = pha_n_bands
-        self._amp_n_bands = amp_n_bands
-
-    def _init_bandpass(
-        self,
-        seq_len: int,
-        fs: float,
-        pha_start_hz: float,
-        pha_end_hz: float,
-        pha_n_bands: int,
-        amp_start_hz: float,
-        amp_end_hz: float,
-        amp_n_bands: int,
-        trainable: bool,
-        fp16: bool,
-    ) -> nn.Module:
-        """Initialize bandpass filters with TensorPAC compatibility."""
-        # Create frequency bands
-        pha_bands = torch.stack(
-            [
-                torch.linspace(pha_start_hz, pha_end_hz, pha_n_bands + 1)[:-1],
-                torch.linspace(pha_start_hz, pha_end_hz, pha_n_bands + 1)[1:],
-            ],
-            dim=1,
-        )
-        amp_bands = torch.stack(
-            [
-                torch.linspace(amp_start_hz, amp_end_hz, amp_n_bands + 1)[:-1],
-                torch.linspace(amp_start_hz, amp_end_hz, amp_n_bands + 1)[1:],
-            ],
-            dim=1,
+            pha_start_hz=pha_start_hz,
+            pha_end_hz=pha_end_hz,
+            pha_n_bands=pha_n_bands,
+            amp_start_hz=amp_start_hz,
+            amp_end_hz=amp_end_hz,
+            amp_n_bands=amp_n_bands,
+            fp16=fp16,
+            trainable=trainable,
+            padding_mode=padding_mode,
         )
 
-        # Store frequency centers
-        pha_mids = pha_bands.mean(dim=1)
-        amp_mids = amp_bands.mean(dim=1)
-        self.register_buffer("PHA_MIDS_HZ", pha_mids, persistent=False)
-        self.register_buffer("AMP_MIDS_HZ", amp_mids, persistent=False)
+        # Set PHA_MIDS_HZ and AMP_MIDS_HZ from the bandpass filter
+        self.PHA_MIDS_HZ = self.bandpass.pha_mids
+        self.AMP_MIDS_HZ = self.bandpass.amp_mids
 
-        if trainable:
-            if not _TRAINABLE_AVAILABLE:
-                raise ImportError(
-                    "Trainable mode requires TrainableBandPassFilter but import failed."
-                )
-            return TrainableBandPassFilter(
-                seq_len=seq_len,
-                fs=fs,
-                pha_low_hz=pha_start_hz,
-                pha_high_hz=pha_end_hz,
-                pha_n_bands=pha_n_bands,
-                amp_low_hz=amp_start_hz,
-                amp_high_hz=amp_end_hz,
-                amp_n_bands=amp_n_bands,
-                cycle_pha=self.filter_cycle_pha,
-                cycle_amp=self.filter_cycle_amp,
-                fp16=fp16,
-                filtfilt_mode=self.filtfilt_mode,
-                edge_mode=self.edge_mode,
-            )
-        else:
-            FilterClass = OptimizedBandPassFilter if self.use_optimized_filter else BandPassFilter
-            kwargs = dict(
-                pha_bands=pha_bands,
-                amp_bands=amp_bands,
-                fs=fs,
-                seq_len=seq_len,
-                fp16=fp16,
-                cycle_pha=self.filter_cycle_pha,
-                cycle_amp=self.filter_cycle_amp,
-                filtfilt_mode=self.filtfilt_mode,
-                edge_mode=self.edge_mode,
-            )
-            return FilterClass(**kwargs)
+        self.hilbert = Hilbert(seq_len, dim=-1, fp16=fp16)
+
+        self.modulation_index = ModulationIndex(
+            n_bins=18,
+            temperature=0.1
+        )
+
+        # No need for DimHandler - we'll use simple reshaping in generate_surrogates
 
     def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
         """
-        Performs the full PAC calculation pipeline.
+        Compute PAC values from input signal.
 
-        Args:
-            x: Input signal tensor with shape (B, C, Seg, Time)
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input signal with shape:
+            - (batch_size, n_chs, seq_len) or
+            - (batch_size, n_chs, n_segments, seq_len)
 
-        Returns:
-            dict: Dictionary containing:
-                - 'mi': Modulation Index values (B, C, F_pha, F_amp)
-                - 'amp_prob': Amplitude probability distribution (B, C, F_pha, F_amp, n_bins)
-                - 'pha_bin_centers': Phase bin center values
-                - 'pha_freqs_hz': Phase frequency centers
-                - 'amp_freqs_hz': Amplitude frequency centers
-                - 'mi_z': Z-scored MI values (only if n_perm is not None)
-                - 'surrogate_mis': Surrogate MI distributions (only if n_perm is not None)
+        Returns
+        -------
+        dict
+            Dictionary containing:
+            - 'pac': PAC values (modulation index) with shape (batch, channels, freqs_phase, freqs_amplitude)
+            - 'phase_frequencies': Center frequencies for phase bands
+            - 'amplitude_frequencies': Center frequencies for amplitude bands
+            - 'mi_per_segment': None (for efficiency - use forward_full() if needed)
+            - 'amplitude_distributions': None (for efficiency - use forward_full() if needed)
+            - 'phase_bin_centers': None (for efficiency - use forward_full() if needed)
+            - 'phase_bin_edges': None (for efficiency - use forward_full() if needed)
+            - 'pac_z': Z-scored PAC values (if n_perm is specified)
+            - 'surrogates': Surrogate PAC values (if n_perm is specified)
+            - 'surrogate_mean': Mean of surrogates (if n_perm is specified)
+            - 'surrogate_std': Std of surrogates (if n_perm is specified)
         """
+        # Input validation
+        if not isinstance(x, torch.Tensor):
+            raise TypeError(f"Expected torch.Tensor, got {type(x)}")
+        if x.ndim not in [3, 4]:
+            raise ValueError(f"Input must be 3D or 4D tensor, got {x.ndim}D tensor with shape {x.shape}")
+        
+        # Constants for clarity
+        PHASE_IDX = 0
+        AMPLITUDE_IDX = 1
 
-        # Input preparation
-        x = ensure_4d_input(x)
-        batch_size, n_chs, n_segments, current_seq_len = x.shape
-        device = x.device
-        target_dtype = torch.float16 if self.fp16 else torch.float32
+        with torch.set_grad_enabled(bool(self.trainable)):
+            # Ensure 4D input: (batch, channels, segments, time)
+            x = self._ensure_4d_input(x)
+            batch_size, n_chs, n_segments, seq_len = x.shape
 
-        if current_seq_len != self.seq_len:
-            warnings.warn(
-                f"Input length {current_seq_len} != init length {self.seq_len}. Results may be suboptimal."
-            )
+            # Process each batch-channel combination together
+            # This reshape is necessary for the bandpass filter
+            x = x.reshape(batch_size * n_chs, n_segments, seq_len)
 
-        x = x.to(target_dtype)
+            # Apply bandpass filtering with configurable edge handling
+            # For now, we don't remove edges in the filter itself
+            x = self.bandpass(x, edge_len=0)
+            # Now: (batch*chs, segments, n_bands, time)
 
-        # Set gradient tracking context
-        grad_context = (
-            torch.enable_grad() if self.trainable else torch.no_grad()
-        )
-        with grad_context:
+            # Extract phase and amplitude via Hilbert transform
+            x = self.hilbert(x)
+            # Now: (batch*chs, segments, n_bands, time, 2) where last dim is [phase, amplitude]
 
-            # Bandpass filtering
-            # Reshape: (B, C, Seg, Time) -> (B * C * Seg, 1, Time)
-            x_flat = x.reshape(-1, 1, current_seq_len)
-            # Apply filter: (B * C * Seg, 1, N_filters, Time)
-            x_filt_flat = self.bandpass_filter(x_flat)
-            # Reshape back: (B, C, Seg, N_filters, Time)
-            x_filt = x_filt_flat.view(
-                batch_size, n_chs, n_segments, -1, current_seq_len
-            )
+            # Restore batch dimension
+            x = x.reshape(batch_size, n_chs, n_segments, -1, seq_len, 2)
+            # Now: (batch, chs, segments, n_bands, time, 2)
 
-            # Hilbert transform
-            # Output: (B, C, Seg, N_filters, Time, 2=[Phase, Amp])
-            x_analytic = self.hilbert(x_filt)
+            # Split into phase and amplitude bands
+            n_pha_bands = len(self.PHA_MIDS_HZ)
+            n_amp_bands = len(self.AMP_MIDS_HZ)
 
-            # Extract phase and amplitude bands
-            # Phase: (B, C, Seg, n_pha_bands, Time)
-            pha = x_analytic[..., : self._pha_n_bands, :, 0]
-            # Amplitude: (B, C, Seg, n_amp_bands, Time)
-            amp = x_analytic[..., self._pha_n_bands :, :, 1]
+            # Extract phase from phase bands
+            pha = x[:, :, :, :n_pha_bands, :, PHASE_IDX]
+            # Extract amplitude from amplitude bands
+            amp = x[:, :, :, n_pha_bands:, :, AMPLITUDE_IDX]
 
-            # Permute for Modulation Index: (B, C, Freq, Seg, Time)
+            # Rearrange dimensions for ModulationIndex
+            # ModulationIndex expects: (batch, chs, freqs, segments, time)
             pha = pha.permute(0, 1, 3, 2, 4)
             amp = amp.permute(0, 1, 3, 2, 4)
 
-            # Calculate observed Modulation index
-            pac_result = self.modulation_index(pha, amp)
+            # Remove edge artifacts based on configuration
+            edge_len = self._calculate_edge_length(seq_len)
+            if edge_len > 0:
+                pha = pha[..., edge_len:-edge_len]
+                amp = amp[..., edge_len:-edge_len]
 
-            # Build result dictionary
-            result = pac_result
-            result.update(
-                {
-                    "pha_freqs_hz": self.PHA_MIDS_HZ,
-                    "amp_freqs_hz": self.AMP_MIDS_HZ,
-                }
-            )
+            # Convert to half precision if needed
+            if self.fp16:
+                pha = pha.half()
+                amp = amp.half()
 
-            # Permutation test
+            # Calculate modulation index (only compute MI, not distributions)
+            mi_results = self.modulation_index(pha, amp)
+
+            # Extract the primary PAC values
+            pac_values = mi_results["mi"]
+
+            # Prepare output dictionary with fixed structure
+            output = {
+                "pac": pac_values,
+                "phase_frequencies": self.PHA_MIDS_HZ.detach().cpu(),
+                "amplitude_frequencies": self.AMP_MIDS_HZ.detach().cpu(),
+                "mi_per_segment": None,  # Not computed for efficiency
+                "amplitude_distributions": None,  # Not computed for efficiency
+                "phase_bin_centers": None,  # Not computed for efficiency
+                "phase_bin_edges": None,  # Not computed for efficiency
+            }
+
+            # Apply surrogate statistics if requested
             if self.n_perm is not None:
-                observed_mi = pac_result["mi"]
-                surrogate_mis = self._generate_surrogates_with_grad(
-                    pha, amp, device, target_dtype
+                z_scores, surrogates = self.to_z_using_surrogate(
+                    pha, amp, pac_values
                 )
-                mean_surr = surrogate_mis.mean(dim=0)
-                std_surr = surrogate_mis.std(dim=0)
-                mi_z = (observed_mi - mean_surr) / (std_surr + 1e-9)
-                mask = torch.isfinite(mi_z)
-                mi_z = torch.where(mask, mi_z, torch.zeros_like(mi_z))
-                result["mi_z"] = mi_z
-                result["surrogate_mis"] = surrogate_mis
+                output["pac_z"] = z_scores
+                output["surrogates"] = surrogates
+                output["surrogate_mean"] = surrogates.mean(dim=2)
+                output["surrogate_std"] = surrogates.std(dim=2)
 
-            return result
+            return output
 
-    def _generate_surrogates_with_grad(
-        self, pha: torch.Tensor, amp: torch.Tensor, device, dtype
-    ) -> torch.Tensor:
-        batch_size, n_chs, n_amp_bands, n_segments, time_core = amp.shape
+    def to_z_using_surrogate(self, pha: torch.Tensor, amp: torch.Tensor, observed: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Calculate z-scores using surrogate distribution.
 
-        if time_core <= 1:
-            warnings.warn("Cannot generate surrogates: sequence length <= 1.")
-            dummy_shape = pha.shape[:2] + (pha.shape[2], amp.shape[2])
-            return torch.zeros(
-                (self.n_perm,) + dummy_shape, dtype=dtype, device=device
-            )
+        Returns
+        -------
+        tuple
+            (z_scores, surrogates)
+        """
+        surrogates = self.generate_surrogates(pha, amp)
+        mm = surrogates.mean(dim=2).to(observed.device)
+        ss = surrogates.std(dim=2).to(observed.device)
+        z_scores = (observed - mm) / (ss + 1e-5)
+        return z_scores, surrogates
 
-        surrogate_results = []
-        indices = torch.arange(time_core, device=device)
+    def generate_surrogates(self, pha: torch.Tensor, amp: torch.Tensor, batch_size: int = 1) -> torch.Tensor:
+        """
+        Generate surrogate PAC values by circular shifting the phase signal.
 
-        for _ in range(self.n_perm):
-            shift_shape = (batch_size, n_chs, n_amp_bands, n_segments)
-            shifts = torch.randint(
-                1, time_core, size=shift_shape, device=device
-            )
-            shifted_indices = (
-                indices.view(1, 1, 1, 1, -1) - shifts.unsqueeze(-1)
-            ) % time_core
-            amp_shifted = torch.gather(amp, dim=-1, index=shifted_indices)
-            surrogate_pac = self.modulation_index(pha, amp_shifted)["mi"]
-            surrogate_results.append(surrogate_pac)
+        Parameters
+        ----------
+        pha : torch.Tensor
+            Phase signal with shape (batch, channels, freqs_pha, segments, time)
+        amp : torch.Tensor
+            Amplitude signal with shape (batch, channels, freqs_amp, segments, time)
+        batch_size : int
+            Batch size for processing surrogates to manage memory
 
-        return torch.stack(surrogate_results, dim=0)
+        Returns
+        -------
+        torch.Tensor
+            Surrogate PAC values with shape (batch, channels, n_perm, freqs_pha, freqs_amp)
+        """
+        # Get dimensions
+        batch, n_chs, n_freqs_pha, n_segments, seq_len = pha.shape
+        n_freqs_amp = amp.shape[2]
 
+        # Generate random circular shift points for each permutation
+        shift_points = torch.randint(
+            seq_len, (self.n_perm,), device=pha.device
+        )
+
+        # Store surrogate PAC values
+        surrogate_pacs = []
+
+        # Process each permutation
+        with torch.no_grad():
+            for perm_idx, shift in enumerate(shift_points):
+                # Circular shift the phase signal
+                pha_shifted = torch.roll(pha, shifts=int(shift), dims=-1)
+
+                # Calculate PAC for this permutation
+                # Process in smaller batches if needed for memory
+                pac_perm = []
+                for i in range(0, batch, batch_size):
+                    end_idx = min(i + batch_size, batch)
+                    mi_results = self.modulation_index(
+                        pha_shifted[i:end_idx], amp[i:end_idx]
+                    )
+                    pac_perm.append(mi_results['mi'].cpu())
+
+                # Combine batches
+                pac_perm = torch.cat(pac_perm, dim=0)
+                surrogate_pacs.append(pac_perm)
+
+        # Stack all permutations: (batch, channels, n_perm, freqs_pha, freqs_amp)
+        surrogate_pacs = torch.stack(surrogate_pacs, dim=2)
+
+        # Clear GPU cache if we used it
+        if pha.is_cuda:
+            torch.cuda.empty_cache()
+
+        return surrogate_pacs
+
+    # The init_bandpass method is no longer needed as BandPassFilter handles both static and trainable modes
+
+    # Band calculation methods are now in BandPassFilter
+
+    def _calculate_edge_length(self, seq_len: int) -> int:
+        """
+        Calculate edge length based on configuration.
+        
+        Parameters
+        ----------
+        seq_len : int
+            Sequence length
+            
+        Returns
+        -------
+        int
+            Number of samples to remove from each edge
+        """
+        if self.edge_mode == "none":
+            return 0
+        elif self.edge_mode == "auto":
+            # Default behavior: remove 1/8 of signal
+            return seq_len // 8
+        elif self.edge_mode == "adaptive":
+            # Adaptive based on filter order and frequency
+            # Estimate based on lowest frequency component
+            min_freq = min(self.bandpass.pha_bands[0, 0].item(), 
+                          self.bandpass.amp_bands[0, 0].item())
+            # Rule of thumb: 3 cycles of lowest frequency
+            edge_samples = int(3 * self.bandpass.fs / min_freq)
+            return min(edge_samples, seq_len // 4)  # Cap at 1/4 of signal
+        elif self.edge_mode == "fixed":
+            if self.edge_length is None:
+                raise ValueError("edge_length must be specified when edge_mode='fixed'")
+            if isinstance(self.edge_length, float):
+                # Interpret as fraction of signal
+                return int(self.edge_length * seq_len)
+            else:
+                # Direct sample count
+                return int(self.edge_length)
+        else:
+            raise ValueError(f"Unknown edge_mode: {self.edge_mode}")
+    
+    @staticmethod
+    def _ensure_4d_input(x: torch.Tensor) -> torch.Tensor:
+        if x.ndim != 4:
+            message = f"Input tensor must be 4D with the shape (batch_size, n_chs, n_segments, seq_len). Received shape: {x.shape}"
+
+        if x.ndim == 3:
+            # warnings.warn(
+            #     "'n_segments' was determined to be 1, assuming your input is (batch_size, n_chs, seq_len).",
+            #     UserWarning,
+            # )
+            x = x.unsqueeze(-2)
+
+        if x.ndim != 4:
+            raise ValueError(message)
+
+        return x
+
+
+# Main block removed - example usage is in documentation/tests
 
 # EOF

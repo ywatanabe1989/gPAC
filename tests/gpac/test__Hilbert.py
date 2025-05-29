@@ -1,11 +1,376 @@
-import pytest
-import torch
-import sys
-import os
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Time-stamp: "2024-11-28 20:50:00 (ywatanabe)"
+# File: ./tests/gpac/test__Hilbert.py
 
-# Add path for gpac imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import torch
+import pytest
+import numpy as np
 from gpac._Hilbert import Hilbert
+
+
+class TestHilbert:
+    """Test suite for Hilbert transform following AAA pattern and testing guidelines."""
+
+    def setup_method(self):
+        """Set up test fixtures."""
+        self.seq_len = 1000
+        self.n_freqs = 5
+        self.steepness = 50.0  # Default steepness
+        
+    # =============================================================================
+    # Forward Pass Tests
+    # =============================================================================
+    
+    def test_forward_pass_basic(self):
+        """Test basic forward pass with default parameters."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        batch_size, n_segments = 2, 3
+        x = torch.randn(batch_size, n_segments, self.n_freqs, self.seq_len)
+        
+        # Act
+        output = hilbert(x)
+        
+        # Assert
+        expected_shape = (batch_size, n_segments, self.n_freqs, self.seq_len, 2)
+        assert output.shape == expected_shape
+        assert torch.isfinite(output).all()
+        # Last dimension should be [phase, amplitude]
+        assert output.shape[-1] == 2
+        
+    def test_forward_pass_different_dimensions(self):
+        """Test forward pass with different input dimensions."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len, dim=-1)
+        
+        # Test different valid shapes
+        test_shapes = [
+            (1, 1, 1, self.seq_len),      # Minimal shape
+            (4, 2, 5, self.seq_len),      # Standard shape
+            (10, 5, 3, self.seq_len),     # Larger shape
+        ]
+        
+        for shape in test_shapes:
+            x = torch.randn(*shape)
+            output = hilbert(x)
+            
+            assert output.shape == shape + (2,)
+            assert torch.isfinite(output).all()
+            
+    def test_forward_pass_custom_steepness(self):
+        """Test forward pass with custom steepness parameter."""
+        # Arrange
+        steepness_values = [10.0, 50.0, 100.0, 200.0]
+        x = torch.randn(2, 1, 3, self.seq_len)
+        
+        for steepness in steepness_values:
+            hilbert = Hilbert(seq_len=self.seq_len, steepness=steepness)
+            output = hilbert(x)
+            
+            assert output.shape == (2, 1, 3, self.seq_len, 2)
+            assert torch.isfinite(output).all()
+            
+    # =============================================================================
+    # Input Shape Tests
+    # =============================================================================
+    
+    def test_input_shape_validation(self):
+        """Test that various input shapes are handled correctly."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        
+        # Test minimum dimensionality (4D required)
+        valid_4d = torch.randn(1, 1, 1, self.seq_len)
+        output = hilbert(valid_4d)
+        assert output.shape == (1, 1, 1, self.seq_len, 2)
+        
+        # Test with more dimensions
+        valid_5d = torch.randn(2, 3, 4, 5, self.seq_len)
+        hilbert_5d = Hilbert(seq_len=self.seq_len, dim=-1)
+        output_5d = hilbert_5d(valid_5d)
+        assert output_5d.shape == (2, 3, 4, 5, self.seq_len, 2)
+        
+    def test_dimension_parameter(self):
+        """Test hilbert transform along different dimensions."""
+        # Test with different dimension parameters
+        shapes_and_dims = [
+            ((2, 3, self.seq_len, 4), -2),   # Transform along second-to-last
+            ((2, self.seq_len, 3, 4), 1),    # Transform along dim 1
+            ((self.seq_len, 2, 3, 4), 0),    # Transform along dim 0
+        ]
+        
+        for shape, dim in shapes_and_dims:
+            x = torch.randn(*shape)
+            hilbert = Hilbert(seq_len=self.seq_len, dim=dim)
+            output = hilbert(x)
+            
+            # Output should have extra dimension of size 2 at the end
+            expected_shape = shape + (2,)
+            assert output.shape == expected_shape
+            assert torch.isfinite(output).all()
+            
+    # =============================================================================
+    # Output Shape and Content Tests
+    # =============================================================================
+    
+    def test_output_phase_amplitude_structure(self):
+        """Test that output correctly contains phase and amplitude."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        x = torch.randn(2, 1, 3, self.seq_len)
+        
+        # Act
+        output = hilbert(x)
+        phase = output[..., 0]
+        amplitude = output[..., 1]
+        
+        # Assert
+        # Phase should be in [-pi, pi]
+        assert (phase >= -np.pi).all() and (phase <= np.pi).all()
+        # Amplitude should be non-negative
+        assert (amplitude >= 0).all()
+        
+    def test_output_consistency(self):
+        """Test output consistency with same input."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        x = torch.randn(2, 1, 3, self.seq_len)
+        
+        # Act
+        output1 = hilbert(x)
+        output2 = hilbert(x)
+        
+        # Assert - outputs should be identical for same input
+        assert torch.allclose(output1, output2)
+        
+    # =============================================================================
+    # Parameter Validation Tests
+    # =============================================================================
+    
+    def test_parameter_validation_seq_len(self):
+        """Test sequence length parameter validation."""
+        # Test invalid sequence length
+        with pytest.raises(ValueError, match="seq_len must be positive"):
+            Hilbert(seq_len=0)
+            
+        with pytest.raises(ValueError, match="seq_len must be positive"):
+            Hilbert(seq_len=-100)
+            
+    def test_parameter_validation_steepness(self):
+        """Test steepness parameter validation."""
+        # Test invalid steepness
+        with pytest.raises(ValueError, match="steepness must be positive"):
+            Hilbert(seq_len=self.seq_len, steepness=0)
+            
+        with pytest.raises(ValueError, match="steepness must be positive"):
+            Hilbert(seq_len=self.seq_len, steepness=-10.0)
+            
+    def test_fp16_mode(self):
+        """Test half precision mode."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len, fp16=True)
+        x = torch.randn(2, 1, 3, self.seq_len)
+        
+        # Act
+        output = hilbert(x)
+        
+        # Assert
+        assert output.shape == (2, 1, 3, self.seq_len, 2)
+        assert torch.isfinite(output).all()
+        # Note: Internal computation uses fp16 but output might be fp32
+        
+    # =============================================================================
+    # Differentiability Tests
+    # =============================================================================
+    
+    def test_backward_pass(self):
+        """Test gradient flow through Hilbert transform."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        x = torch.randn(2, 1, 3, self.seq_len, requires_grad=True)
+        
+        # Act
+        output = hilbert(x)
+        loss = output.sum()
+        loss.backward()
+        
+        # Assert
+        assert x.grad is not None
+        assert torch.isfinite(x.grad).all()
+        assert x.grad.shape == x.shape
+        
+    def test_gradient_stability(self):
+        """Test gradient stability with different input scales."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        scales = [1e-3, 1.0, 1e3]
+        
+        for scale in scales:
+            x = torch.randn(2, 1, 3, self.seq_len) * scale
+            x.requires_grad = True
+            
+            output = hilbert(x)
+            loss = output.mean()
+            loss.backward()
+            
+            # Check gradients are finite and reasonable
+            assert torch.isfinite(x.grad).all()
+            assert x.grad.abs().max() < 1e6  # No gradient explosion
+            
+    def test_differentiable_approximation(self):
+        """Test that the differentiable approximation works correctly."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len, steepness=100.0)
+        x = torch.randn(2, 1, 3, self.seq_len, requires_grad=True)
+        
+        # Act
+        output = hilbert(x)
+        
+        # Create a loss that depends on both phase and amplitude
+        phase = output[..., 0]
+        amplitude = output[..., 1]
+        loss = phase.mean() + amplitude.mean()
+        loss.backward()
+        
+        # Assert
+        assert x.grad is not None
+        assert torch.isfinite(x.grad).all()
+        # Gradient should be non-zero (transform is not constant)
+        assert x.grad.abs().sum() > 0
+        
+    # =============================================================================
+    # Edge Cases and Special Inputs
+    # =============================================================================
+    
+    def test_zero_input(self):
+        """Test handling of zero input."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        x = torch.zeros(2, 1, 3, self.seq_len)
+        
+        # Act
+        output = hilbert(x)
+        
+        # Assert
+        assert torch.isfinite(output).all()
+        phase = output[..., 0]
+        amplitude = output[..., 1]
+        
+        # For zero input, amplitude should be near zero
+        assert amplitude.abs().max() < 1e-6
+        
+    def test_constant_input(self):
+        """Test handling of constant DC input."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        x = torch.ones(2, 1, 3, self.seq_len) * 2.0
+        
+        # Act
+        output = hilbert(x)
+        
+        # Assert
+        assert torch.isfinite(output).all()
+        # DC component should be preserved in some form
+        
+    def test_sinusoidal_input(self):
+        """Test with known sinusoidal input."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        t = torch.linspace(0, 2*np.pi, self.seq_len)
+        freq = 5.0  # 5 Hz
+        x = torch.sin(2 * np.pi * freq * t / self.seq_len)
+        x = x.unsqueeze(0).unsqueeze(0).unsqueeze(0)  # Add batch dims
+        
+        # Act
+        output = hilbert(x)
+        amplitude = output[..., 1]
+        
+        # Assert
+        # For a pure sinusoid, amplitude should be relatively constant
+        assert torch.isfinite(output).all()
+        # Check amplitude variation is small (after removing edge effects)
+        center_amp = amplitude[..., self.seq_len//4:-self.seq_len//4]
+        amp_std = center_amp.std()
+        amp_mean = center_amp.mean()
+        assert amp_std / amp_mean < 0.3  # Less than 30% variation
+        
+    # =============================================================================
+    # Integration Tests
+    # =============================================================================
+    
+    def test_batch_processing(self):
+        """Test processing multiple batches efficiently."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        batch_sizes = [1, 4, 16, 32]
+        
+        for batch_size in batch_sizes:
+            x = torch.randn(batch_size, 2, 3, self.seq_len)
+            output = hilbert(x)
+            
+            assert output.shape[0] == batch_size
+            assert torch.isfinite(output).all()
+            
+    def test_frequency_content_preservation(self):
+        """Test that frequency content is preserved."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        
+        # Create multi-frequency signal
+        t = torch.linspace(0, 1, self.seq_len)
+        freqs = [5.0, 10.0, 20.0]
+        x = sum(torch.sin(2 * np.pi * f * t) for f in freqs)
+        x = x.unsqueeze(0).unsqueeze(0).unsqueeze(0)
+        
+        # Act
+        output = hilbert(x)
+        
+        # Assert
+        assert torch.isfinite(output).all()
+        # The transform should preserve the signal structure
+        amplitude = output[..., 1]
+        assert amplitude.mean() > 0  # Non-zero amplitude
+        
+    def test_edge_effects(self):
+        """Test edge effects handling."""
+        # Arrange
+        hilbert = Hilbert(seq_len=self.seq_len)
+        
+        # Create signal with sharp transitions at edges
+        x = torch.zeros(1, 1, 1, self.seq_len)
+        x[..., self.seq_len//4:3*self.seq_len//4] = 1.0
+        
+        # Act
+        output = hilbert(x)
+        
+        # Assert
+        assert torch.isfinite(output).all()
+        # Edge effects should not cause NaN or Inf
+        
+    def test_different_steepness_effects(self):
+        """Test how different steepness values affect the transform."""
+        # Arrange
+        x = torch.randn(1, 1, 1, self.seq_len)
+        steepness_values = [10.0, 50.0, 100.0, 500.0]
+        outputs = []
+        
+        for steepness in steepness_values:
+            hilbert = Hilbert(seq_len=self.seq_len, steepness=steepness)
+            output = hilbert(x)
+            outputs.append(output)
+            
+        # Assert
+        # All outputs should be valid
+        for output in outputs:
+            assert torch.isfinite(output).all()
+            
+        # Higher steepness should approach ideal Hilbert transform
+        # (This is a qualitative test - exact validation would require
+        # comparison with scipy.signal.hilbert)
+
+
+# Main block for standalone testing
 
 if __name__ == "__main__":
     import os
@@ -17,142 +382,116 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------------
 # Start of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py
 # --------------------------------------------------------------------------------
-# import warnings
+# #!/usr/bin/env python3
+# # -*- coding: utf-8 -*-
+# # Timestamp: "2025-05-28 19:17:31 (ywatanabe)"
+# # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py
+# # ----------------------------------------
+# import os
+# __FILE__ = (
+#     "./src/gpac/_Hilbert.py"
+# )
+# __DIR__ = os.path.dirname(__FILE__)
+# # ----------------------------------------
 # 
-# import torch
+# import torch  # 1.7.1
 # import torch.nn as nn
 # from torch.fft import fft, ifft
 # 
 # 
 # class Hilbert(nn.Module):
 #     """
-#     Calculates the analytic signal using the Hilbert transform via FFT.
+#     Differentiable Hilbert transform module for extracting instantaneous phase and amplitude.
+#     
+#     Uses a sigmoid approximation of the Heaviside step function to ensure differentiability.
+#     
+#     Parameters
+#     ----------
+#     seq_len : int
+#         Expected sequence length (for pre-computing frequency grid)
+#     dim : int
+#         Dimension along which to apply transform (default: -1)
+#     fp16 : bool
+#         Whether to use half precision
+#     in_place : bool
+#         Whether to modify input in-place (saves memory)
+#     steepness : float
+#         Steepness of sigmoid approximation (default: 50, higher = sharper transition)
 #     """
-# 
-#     def __init__(
-#         self,
-#         seq_len: (int | None) = None,  # Optional: Sequence length for precomputation
-#         dim: int = -1,  # Dimension along which to apply the transform
-#         fp16: bool = False,  # Use float16 output where appropriate
-#     ):
+#     
+#     def __init__(self, seq_len, dim=-1, fp16=False, in_place=False, steepness=50):
 #         super().__init__()
 #         self.dim = dim
 #         self.fp16 = fp16
-#         self.initial_seq_len = seq_len  # Store if provided
-# 
-#         # Buffer for Heaviside step function in frequency domain
-#         # self.heaviside_freq: torch.Tensor | None = None
-#         if seq_len is not None:
-#             self._precompute_fft_components(seq_len)
-# 
-#     def _precompute_fft_components(self, num_samples: int) -> None:
-#         """Precomputes the frequency-domain Heaviside step function."""
-#         freqs = torch.fft.fftfreq(num_samples, d=1.0)
-#         # Use exact Heaviside for standard Hilbert (1 for positive freq, 0.5 for zero, 0 for negative)
-#         # and multiply by 2 later.
-#         # Create the step function components
-#         heaviside_u = torch.zeros_like(freqs)
-#         if num_samples % 2 == 0:
-#             # Even length: f[0]=0, f[1]..f[N/2-1]>0, f[N/2]=Nyquist, f[N/2+1]..f[N-1]<0
-#             heaviside_u[1 : num_samples // 2] = 1.0
-#             heaviside_u[num_samples // 2] = 0.5  # Nyquist component
-#         else:
-#             # Odd length: f[0]=0, f[1]..f[(N-1)/2]>0, f[(N+1)/2]..f[N-1]<0
-#             heaviside_u[1 : (num_samples - 1) // 2 + 1] = 1.0
-#         heaviside_u[0] = 0.5  # DC component
-# 
-#         # Register as a non-persistent buffer
-#         self.register_buffer("heaviside_freq", heaviside_u, persistent=False)
-# 
-#     def _get_heaviside_for_length(
-#         self, num_samples: int, device: torch.device, dtype: torch.dtype
-#     ) -> torch.Tensor:
-#         """Gets or computes the Heaviside function for the given length."""
-#         if self.heaviside_freq is None or self.heaviside_freq.shape[0] != num_samples:
-#             if self.initial_seq_len is not None and num_samples != self.initial_seq_len:
-#                 warnings.warn(
-#                     f"Input sequence length ({num_samples}) differs from Hilbert initialization length ({self.initial_seq_len}). Recomputing dynamically."
-#                 )
-#             elif self.initial_seq_len is None:
-#                 warnings.warn(
-#                     f"Computing Heaviside step dynamically for Hilbert transform (length {num_samples})."
-#                 )
-# 
-#             freqs = torch.fft.fftfreq(num_samples, d=1.0, device=device)
-#             heaviside_u = torch.zeros_like(freqs)
-#             if num_samples % 2 == 0:
-#                 heaviside_u[1 : num_samples // 2] = 1.0
-#                 heaviside_u[num_samples // 2] = 0.5
-#             else:
-#                 heaviside_u[1 : (num_samples - 1) // 2 + 1] = 1.0
-#             heaviside_u[0] = 0.5
-# 
-#             if self.initial_seq_len is None:  # Store if dynamic
-#                 self.heaviside_freq = heaviside_u.to(
-#                     dtype=dtype
-#                 )  # Use appropriate dtype
-#             return heaviside_u.to(dtype=dtype)
-#         else:
-#             # Return precomputed buffer, ensuring it's on the correct device/dtype
-#             return self.heaviside_freq.to(device=device, dtype=dtype)
-# 
-#     def forward(self, x: torch.Tensor) -> torch.Tensor:
+#         self.in_place = in_place
+#         self.seq_len = seq_len
+#         self.steepness = steepness
+#         
+#         # Pre-compute frequency grid for efficiency
+#         self._create_frequency_grid(seq_len)
+#     
+#     def _create_frequency_grid(self, n):
+#         """Create frequency grid for differentiable Hilbert transform."""
+#         # Frequency grid: [0, 1/n, 2/n, ..., (n-1)/2/n, -(n/2)/n, ..., -1/n]
+#         positive_freqs = torch.arange(0, (n - 1) // 2 + 1) / float(n)
+#         negative_freqs = torch.arange(-(n // 2), 0) / float(n)
+#         f = torch.cat([positive_freqs, negative_freqs])
+#         self.register_buffer("freq_grid", f)
+#     
+#     def forward(self, x):
 #         """
-#         Computes the analytic signal (phase and amplitude) of a real-valued input.
+#         Apply Hilbert transform to extract phase and amplitude.
+#         
+#         Parameters
+#         ----------
+#         x : torch.Tensor
+#             Input signal
+#             
+#         Returns
+#         -------
+#         torch.Tensor
+#             Output with shape [..., 2] where last dimension contains [phase, amplitude]
 #         """
-#         orig_dtype = x.dtype
-#         device = x.device
-#         current_seq_len = x.shape[self.dim]
-# 
-#         # Use float32 for FFT precision
-#         fft_dtype = torch.float32
-# 
-#         # 1. Prepare Input for FFT
-#         if torch.is_complex(x):
-#             warnings.warn(
-#                 "Hilbert module received complex input. Using only the real part."
-#             )
-#             x_real = x.real.to(fft_dtype)
-#         elif not torch.is_floating_point(x):
-#             warnings.warn(
-#                 f"Hilbert input was not floating point ({x.dtype}). Casting to {fft_dtype}."
-#             )
-#             x_real = x.to(fft_dtype)
-#         else:
-#             x_real = x.to(fft_dtype)
-# 
-#         # 2. Get Heaviside Step Function
-#         heaviside_u = self._get_heaviside_for_length(current_seq_len, device, fft_dtype)
-# 
-#         # 3. Perform FFT
-#         xf = fft(x_real, n=current_seq_len, dim=self.dim)
-# 
-#         # 4. Apply Heaviside Step in Frequency Domain (Multiply by 2)
-#         analytic_signal_f = xf * (2.0 * heaviside_u)
-# 
-#         # 5. Inverse FFT
-#         analytic_signal_t = ifft(
-#             analytic_signal_f, n=current_seq_len, dim=self.dim
-#         )  # Result is complex
-# 
-#         # 6. Calculate Instantaneous Phase and Amplitude
-#         pha = torch.atan2(analytic_signal_t.imag, analytic_signal_t.real)
-#         amp = analytic_signal_t.abs()
-# 
-#         # 7. Stack Phase and Amplitude
-#         out = torch.stack([pha, amp], dim=-1)
-# 
-#         # 8. Cast Output Type
+#         # Handle precision
 #         if self.fp16:
-#             output_dtype = torch.float16
-#         elif torch.is_complex(torch.empty(0, dtype=orig_dtype)):
-#             output_dtype = torch.float32
-#         else:
-#             output_dtype = orig_dtype
+#             x = x.half()
+#             
+#         # Clone if not in-place
+#         if not self.in_place:
+#             x = x.clone()
+#         
+#         # Store original dtype for restoration
+#         orig_dtype = x.dtype
+#         
+#         # FFT requires float32
+#         x_float = x.float()
+#         
+#         # Apply FFT
+#         x_fft = fft(x_float, n=self.seq_len, dim=self.dim)
+#         
+#         # Apply differentiable frequency domain filter
+#         # H(f) ≈ 2 * sigmoid(steepness * f) 
+#         # This approximates: 2 for positive frequencies, 0 for negative frequencies
+#         step_function = torch.sigmoid(self.steepness * self.freq_grid.type_as(x_float))
+#         x_fft_hilbert = x_fft * 2 * step_function
+#         
+#         # Convert back to time domain
+#         x_analytic = ifft(x_fft_hilbert, dim=self.dim)
+#         
+#         # Extract phase and amplitude
+#         phase = torch.atan2(x_analytic.imag, x_analytic.real)
+#         amplitude = x_analytic.abs()
+#         
+#         # Stack phase and amplitude
+#         output = torch.stack([phase, amplitude], dim=-1)
+#         
+#         # Restore original precision if needed
+#         if orig_dtype == torch.float16:
+#             output = output.half()
+#             
+#         return output
 # 
-#         return out.to(output_dtype)
-# 
-# 
+# # EOF
 
 # --------------------------------------------------------------------------------
 # End of Source Code from: /home/ywatanabe/proj/gPAC/src/gpac/_Hilbert.py
