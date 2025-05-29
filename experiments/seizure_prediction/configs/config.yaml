@@ -1,0 +1,36 @@
+data:
+  sampling_rate: 1000  # Hz
+  window_size: 300  # seconds
+  overlap: 150    # seconds
+  preictal_window: 3600  # seconds before seizure
+
+pac:
+  phase_bands:
+    - [4, 8]    # theta
+    - [8, 13]   # alpha
+  amplitude_bands:
+    - [30, 50]   # low gamma
+    - [50, 80]   # mid gamma
+    - [80, 150]  # high gamma
+  batch_size: 32
+  chunk_size: 1000
+
+model:
+  architecture: "lstm"  # options: lstm, transformer, cnn
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.3
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  
+training:
+  epochs: 100
+  patience: 10
+  batch_size: 16
+  validation_split: 0.2
+  test_split: 0.1
+
+gpu:
+  devices: [0, 1, 2, 3]  # List of GPU devices to use
+  strategy: "data_parallel"  # options: data_parallel, model_parallel
+  precision: "mixed"  # options: float32, float16, mixed
