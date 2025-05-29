@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 
 from gpac import BandPassFilter, Hilbert, ModulationIndex, PAC, generate_pac_signal
 from tensorpac import Pac
-from tensorpac.methods.meth import _pac_mi
+# from tensorpac.methods.meth import _pac_mi  # Not available in current tensorpac version
 from tensorpac.signals import pac_signals_wavelet
 
 
