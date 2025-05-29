@@ -14,7 +14,7 @@ COPY . .
 # Install Python dependencies
 RUN pip install --upgrade pip
 RUN pip install -e .
-RUN pip install pytest pytest-cov
+RUN pip install pytest pytest-cov matplotlib psutil tensorpac mngs
 
 # Run tests
 CMD ["pytest", "tests/", "-v"]
