@@ -22,15 +22,15 @@ if __name__ == "__main__":
 # )
 # __DIR__ = os.path.dirname(__FILE__)
 # # ----------------------------------------
-# 
+#
 # from ._BandPassFilter import BandPassFilter
 # from ._Filters import *
 # from ._Hilbert import Hilbert
 # from ._ModulationIndex import ModulationIndex
 # from ._PAC import PAC
-# 
+#
 # __all__ = ['PAC', 'BandPassFilter', 'Hilbert', 'ModulationIndex']
-# 
+#
 # # EOF
 
 # --------------------------------------------------------------------------------

@@ -4,9 +4,8 @@
 # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_Filters/_BaseFilter1D.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/_Filters/_BaseFilter1D.py"
-)
+
+__FILE__ = "./src/gpac/_Filters/_BaseFilter1D.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -99,9 +98,7 @@ class BaseFilter1D(nn.Module):
             # Assume shape is (seq_len,), add batch and channel dimensions
             x = x.unsqueeze(0).unsqueeze(0)
         elif x.ndim > 3:
-            raise ValueError(
-                f"Input tensor has too many dimensions: {x.shape}"
-            )
+            raise ValueError(f"Input tensor has too many dimensions: {x.shape}")
 
         return x
 
@@ -115,14 +112,14 @@ class BaseFilter1D(nn.Module):
     def apply_padding(self, x, pad_length):
         """
         Apply padding to the signal based on the configured padding mode.
-        
+
         Parameters
         ----------
         x : torch.Tensor
             Input signal with shape (batch, channels, time)
         pad_length : int
             Number of samples to pad on each side
-            
+
         Returns
         -------
         torch.Tensor
@@ -133,22 +130,22 @@ class BaseFilter1D(nn.Module):
             return self.flip_extend(x, pad_length)
         elif self.padding_mode == "replicate":
             # Replicate edge values
-            return F.pad(x, (pad_length, pad_length), mode='replicate')
+            return F.pad(x, (pad_length, pad_length), mode="replicate")
         elif self.padding_mode == "circular":
             # Circular padding (wrap around)
-            return F.pad(x, (pad_length, pad_length), mode='circular')
+            return F.pad(x, (pad_length, pad_length), mode="circular")
         elif self.padding_mode == "zero":
             # Zero padding
-            return F.pad(x, (pad_length, pad_length), mode='constant', value=0)
+            return F.pad(x, (pad_length, pad_length), mode="constant", value=0)
         elif self.padding_mode == "mirror":
             # Mirror padding (similar to reflect but includes boundary)
             # PyTorch doesn't have mirror mode, so we implement it
-            left_pad = x[:, :, 1:pad_length+1].flip(dims=[-1])
-            right_pad = x[:, :, -pad_length-1:-1].flip(dims=[-1])
+            left_pad = x[:, :, 1 : pad_length + 1].flip(dims=[-1])
+            right_pad = x[:, :, -pad_length - 1 : -1].flip(dims=[-1])
             return torch.cat([left_pad, x, right_pad], dim=-1)
         else:
             raise ValueError(f"Unknown padding mode: {self.padding_mode}")
-    
+
     @staticmethod
     def flip_extend(x, extension_length):
         """Legacy method for reflect padding."""
@@ -179,5 +176,6 @@ class BaseFilter1D(nn.Module):
             return x[..., edge_len:-edge_len]
         else:
             return x
+
 
 # EOF

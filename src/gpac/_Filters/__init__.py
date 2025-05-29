@@ -4,9 +4,8 @@
 # File: /ssh:sp:/home/ywatanabe/proj/gPAC/src/gpac/_Filters/__init__.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/_Filters/__init__.py"
-)
+
+__FILE__ = "./src/gpac/_Filters/__init__.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 

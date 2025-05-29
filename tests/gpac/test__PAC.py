@@ -22,11 +22,11 @@ class TestPAC:
         self.amp_start_hz = 30.0
         self.amp_end_hz = 100.0
         self.amp_n_bands = 3
-        
+
     # =============================================================================
     # Forward Pass Tests
     # =============================================================================
-    
+
     def test_forward_pass_basic(self):
         """Test basic forward pass with default parameters."""
         # Arrange
@@ -39,28 +39,33 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
         batch_size, n_chs = 2, 3
         x = torch.randn(batch_size, n_chs, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
         assert isinstance(output, dict)
-        assert 'pac' in output
-        assert 'phase_frequencies' in output
-        assert 'amplitude_frequencies' in output
-        assert 'mi_per_segment' in output
-        assert 'amplitude_distributions' in output
-        assert 'phase_bin_centers' in output
-        assert 'phase_bin_edges' in output
-        
+        assert "pac" in output
+        assert "phase_frequencies" in output
+        assert "amplitude_frequencies" in output
+        assert "mi_per_segment" in output
+        assert "amplitude_distributions" in output
+        assert "phase_bin_centers" in output
+        assert "phase_bin_edges" in output
+
         # Check PAC shape
-        assert output['pac'].shape == (batch_size, n_chs, self.pha_n_bands, self.amp_n_bands)
-        assert torch.isfinite(output['pac']).all()
-        
+        assert output["pac"].shape == (
+            batch_size,
+            n_chs,
+            self.pha_n_bands,
+            self.amp_n_bands,
+        )
+        assert torch.isfinite(output["pac"]).all()
+
     def test_forward_pass_4d_input(self):
         """Test forward pass with 4D input (batch, channels, segments, time)."""
         # Arrange
@@ -73,19 +78,24 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
         batch_size, n_chs, n_segments = 2, 3, 4
         x = torch.randn(batch_size, n_chs, n_segments, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert output['pac'].shape == (batch_size, n_chs, self.pha_n_bands, self.amp_n_bands)
+        assert output["pac"].shape == (
+            batch_size,
+            n_chs,
+            self.pha_n_bands,
+            self.amp_n_bands,
+        )
         # mi_per_segment is None when not computing distributions
-        assert output['mi_per_segment'] is None
-        
+        assert output["mi_per_segment"] is None
+
     def test_forward_pass_trainable_mode(self):
         """Test forward pass in trainable mode."""
         # Arrange
@@ -98,18 +108,18 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=True
+            trainable=True,
         )
         x = torch.randn(2, 3, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert output['pac'].shape == (2, 3, self.pha_n_bands, self.amp_n_bands)
+        assert output["pac"].shape == (2, 3, self.pha_n_bands, self.amp_n_bands)
         # Check that trainable parameters exist
         assert any(p.requires_grad for p in pac.parameters())
-        
+
     def test_forward_pass_with_surrogates(self):
         """Test forward pass with surrogate calculation."""
         # Arrange
@@ -124,26 +134,32 @@ class TestPAC:
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
             n_perm=n_perm,
-            trainable=False
+            trainable=False,
         )
         x = torch.randn(1, 2, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert 'pac_z' in output
-        assert 'surrogates' in output
-        assert 'surrogate_mean' in output
-        assert 'surrogate_std' in output
-        
-        assert output['surrogates'].shape == (1, 2, n_perm, self.pha_n_bands, self.amp_n_bands)
-        assert output['pac_z'].shape == output['pac'].shape
-        
+        assert "pac_z" in output
+        assert "surrogates" in output
+        assert "surrogate_mean" in output
+        assert "surrogate_std" in output
+
+        assert output["surrogates"].shape == (
+            1,
+            2,
+            n_perm,
+            self.pha_n_bands,
+            self.amp_n_bands,
+        )
+        assert output["pac_z"].shape == output["pac"].shape
+
     # =============================================================================
     # Input Shape Tests
     # =============================================================================
-    
+
     def test_input_shape_3d(self):
         """Test 3D input shape handling."""
         # Arrange
@@ -156,21 +172,21 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Test different 3D shapes
         shapes = [
-            (1, 1, self.seq_len),    # Minimal
-            (5, 2, self.seq_len),    # Multiple batch and channels
-            (3, 10, self.seq_len),   # More channels
+            (1, 1, self.seq_len),  # Minimal
+            (5, 2, self.seq_len),  # Multiple batch and channels
+            (3, 10, self.seq_len),  # More channels
         ]
-        
+
         for shape in shapes:
             x = torch.randn(*shape)
             output = pac(x)
-            assert output['pac'].shape[:2] == shape[:2]
-            
+            assert output["pac"].shape[:2] == shape[:2]
+
     def test_input_shape_4d(self):
         """Test 4D input shape handling."""
         # Arrange
@@ -183,21 +199,21 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Test different 4D shapes
         shapes = [
-            (1, 1, 1, self.seq_len),     # Minimal
-            (2, 3, 4, self.seq_len),     # Standard
-            (5, 2, 10, self.seq_len),    # Large segments
+            (1, 1, 1, self.seq_len),  # Minimal
+            (2, 3, 4, self.seq_len),  # Standard
+            (5, 2, 10, self.seq_len),  # Large segments
         ]
-        
+
         for shape in shapes:
             x = torch.randn(*shape)
             output = pac(x)
-            assert output['pac'].shape[:2] == shape[:2]
-            
+            assert output["pac"].shape[:2] == shape[:2]
+
     def test_invalid_input_shapes(self):
         """Test that invalid input shapes raise errors."""
         # Arrange
@@ -210,20 +226,20 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Test invalid shapes
         invalid_inputs = [
-            torch.randn(10),                    # 1D
-            torch.randn(10, self.seq_len),      # 2D
+            torch.randn(10),  # 1D
+            torch.randn(10, self.seq_len),  # 2D
             torch.randn(2, 3, 4, 5, self.seq_len),  # 5D
         ]
-        
+
         for x in invalid_inputs:
             with pytest.raises((ValueError, TypeError)):
                 pac(x)
-                
+
     def test_invalid_input_type(self):
         """Test that non-tensor input raises error."""
         # Arrange
@@ -236,17 +252,17 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Act & Assert
         with pytest.raises(TypeError, match="Expected torch.Tensor"):
             pac(np.random.randn(2, 3, self.seq_len))
-            
+
     # =============================================================================
     # Output Shape Tests
     # =============================================================================
-    
+
     def test_output_dictionary_structure(self):
         """Test that output dictionary has all expected keys."""
         # Arrange
@@ -259,22 +275,26 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
         x = torch.randn(2, 3, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert - check all expected keys
         expected_keys = [
-            'pac', 'phase_frequencies', 'amplitude_frequencies',
-            'mi_per_segment', 'amplitude_distributions',
-            'phase_bin_centers', 'phase_bin_edges'
+            "pac",
+            "phase_frequencies",
+            "amplitude_frequencies",
+            "mi_per_segment",
+            "amplitude_distributions",
+            "phase_bin_centers",
+            "phase_bin_edges",
         ]
         for key in expected_keys:
             assert key in output
-            
+
     def test_frequency_arrays(self):
         """Test that frequency arrays have correct values."""
         # Arrange
@@ -287,25 +307,25 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
         x = torch.randn(1, 1, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert len(output['phase_frequencies']) == self.pha_n_bands
-        assert len(output['amplitude_frequencies']) == self.amp_n_bands
-        assert output['phase_frequencies'][0] >= self.pha_start_hz
-        assert output['phase_frequencies'][-1] <= self.pha_end_hz
-        assert output['amplitude_frequencies'][0] >= self.amp_start_hz
-        assert output['amplitude_frequencies'][-1] <= self.amp_end_hz
-        
+        assert len(output["phase_frequencies"]) == self.pha_n_bands
+        assert len(output["amplitude_frequencies"]) == self.amp_n_bands
+        assert output["phase_frequencies"][0] >= self.pha_start_hz
+        assert output["phase_frequencies"][-1] <= self.pha_end_hz
+        assert output["amplitude_frequencies"][0] >= self.amp_start_hz
+        assert output["amplitude_frequencies"][-1] <= self.amp_end_hz
+
     # =============================================================================
     # Parameter Validation Tests
     # =============================================================================
-    
+
     def test_parameter_validation_frequencies(self):
         """Test frequency parameter validation."""
         # Test invalid phase frequency range
@@ -319,9 +339,9 @@ class TestPAC:
                 amp_start_hz=30.0,
                 amp_end_hz=100.0,
                 amp_n_bands=3,
-                trainable=False
+                trainable=False,
             )
-            
+
         # Test invalid amplitude frequency range
         with pytest.raises(ValueError, match="Invalid amplitude frequency range"):
             PAC(
@@ -333,9 +353,9 @@ class TestPAC:
                 amp_start_hz=100.0,
                 amp_end_hz=50.0,  # End < Start
                 amp_n_bands=3,
-                trainable=False
+                trainable=False,
             )
-            
+
     def test_parameter_validation_bands(self):
         """Test band count parameter validation."""
         # Test invalid phase bands
@@ -349,9 +369,9 @@ class TestPAC:
                 amp_start_hz=30.0,
                 amp_end_hz=100.0,
                 amp_n_bands=3,
-                trainable=False
+                trainable=False,
             )
-            
+
     def test_parameter_validation_sampling(self):
         """Test sampling rate and sequence length validation."""
         # Test invalid sampling rate
@@ -365,9 +385,9 @@ class TestPAC:
                 amp_start_hz=30.0,
                 amp_end_hz=100.0,
                 amp_n_bands=3,
-                trainable=False
+                trainable=False,
             )
-            
+
         # Test invalid sequence length
         with pytest.raises(ValueError, match="seq_len must be positive"):
             PAC(
@@ -379,9 +399,9 @@ class TestPAC:
                 amp_start_hz=30.0,
                 amp_end_hz=100.0,
                 amp_n_bands=3,
-                trainable=False
+                trainable=False,
             )
-            
+
     def test_parameter_validation_n_perm(self):
         """Test n_perm parameter validation."""
         # Test n_perm = 0 (should be treated as None)
@@ -395,12 +415,14 @@ class TestPAC:
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
             n_perm=0,  # Should be treated as None
-            trainable=False
+            trainable=False,
         )
         assert pac.n_perm is None
-        
+
         # Test invalid n_perm
-        with pytest.raises(ValueError, match="n_perm must be a positive integer or None"):
+        with pytest.raises(
+            ValueError, match="n_perm must be a positive integer or None"
+        ):
             PAC(
                 seq_len=self.seq_len,
                 fs=self.fs,
@@ -411,9 +433,9 @@ class TestPAC:
                 amp_end_hz=self.amp_end_hz,
                 amp_n_bands=self.amp_n_bands,
                 n_perm=-5,  # Invalid
-                trainable=False
+                trainable=False,
             )
-            
+
     def test_nyquist_frequency_validation(self):
         """Test that frequencies respect Nyquist limit."""
         # Test phase frequency exceeding Nyquist
@@ -427,18 +449,18 @@ class TestPAC:
                 amp_start_hz=30.0,
                 amp_end_hz=40.0,
                 amp_n_bands=3,
-                trainable=False
+                trainable=False,
             )
-            
+
     # =============================================================================
     # Differentiability Tests
     # =============================================================================
-    
+
     def test_backward_pass_static_mode(self):
         """Test gradient behavior in static mode."""
         # Skip this test - static mode uses pre-computed filters that don't support gradients
         pytest.skip("Static mode doesn't support gradient computation")
-        
+
     def test_backward_pass_trainable_mode(self):
         """Test gradient flow in trainable mode."""
         # Arrange
@@ -451,25 +473,25 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=True
+            trainable=True,
         )
         x = torch.randn(2, 3, self.seq_len, requires_grad=True)
-        
+
         # Act
         output = pac(x)
-        loss = output['pac'].sum()
+        loss = output["pac"].sum()
         loss.backward()
-        
+
         # Assert
         assert x.grad is not None
         assert torch.isfinite(x.grad).all()
-        
+
         # Check that trainable parameters have gradients
         for name, param in pac.named_parameters():
             if param.requires_grad:
                 assert param.grad is not None
                 assert torch.isfinite(param.grad).all()
-                
+
     def test_gradient_stability(self):
         """Test gradient stability with different input scales."""
         # Arrange
@@ -482,29 +504,29 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=True
+            trainable=True,
         )
-        
+
         scales = [1e-2, 1.0, 1e2]
         for scale in scales:
             x = torch.randn(1, 2, self.seq_len) * scale
             x.requires_grad = True
-            
+
             output = pac(x)
-            loss = output['pac'].mean()
+            loss = output["pac"].mean()
             loss.backward()
-            
+
             # Check gradients are finite and reasonable
             assert torch.isfinite(x.grad).all()
             assert x.grad.abs().max() < 1e6
-            
+
             # Clear gradients
             pac.zero_grad()
-            
+
     # =============================================================================
     # Edge Cases and Special Inputs
     # =============================================================================
-    
+
     def test_zero_input(self):
         """Test handling of zero input."""
         # Arrange
@@ -517,18 +539,18 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
         x = torch.zeros(2, 3, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert torch.isfinite(output['pac']).all()
+        assert torch.isfinite(output["pac"]).all()
         # PAC should be 1.0 for zero input (uniform distribution)
-        assert torch.allclose(output['pac'], torch.ones_like(output['pac']), atol=0.1)
-        
+        assert torch.allclose(output["pac"], torch.ones_like(output["pac"]), atol=0.1)
+
     def test_constant_input(self):
         """Test handling of constant DC input."""
         # Arrange
@@ -541,18 +563,18 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
         x = torch.ones(2, 3, self.seq_len) * 5.0
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert torch.isfinite(output['pac']).all()
+        assert torch.isfinite(output["pac"]).all()
         # PAC should be low for constant signal (no coupling)
-        assert output['pac'].mean() < 0.2
-        
+        assert output["pac"].mean() < 0.2
+
     def test_sinusoidal_input(self):
         """Test with known coupled sinusoidal signals."""
         # Arrange
@@ -565,27 +587,27 @@ class TestPAC:
             amp_start_hz=40.0,
             amp_end_hz=80.0,
             amp_n_bands=1,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Create coupled signal: low freq modulates high freq amplitude
         t = torch.linspace(0, 4, self.seq_len)  # 4 seconds
         low_freq = 6.0  # Hz (in phase range)
         high_freq = 60.0  # Hz (in amplitude range)
-        
+
         # Amplitude modulation
-        modulation = (1 + 0.5 * torch.sin(2 * np.pi * low_freq * t))
+        modulation = 1 + 0.5 * torch.sin(2 * np.pi * low_freq * t)
         signal = modulation * torch.sin(2 * np.pi * high_freq * t)
         signal = signal.unsqueeze(0).unsqueeze(0)  # Add batch and channel dims
-        
+
         # Act
         output = pac(signal)
-        
+
         # Assert
-        assert torch.isfinite(output['pac']).all()
+        assert torch.isfinite(output["pac"]).all()
         # Should detect coupling (adjusted threshold based on implementation)
-        assert output['pac'].item() > 0.001  # Lowered threshold
-        
+        assert output["pac"].item() > 0.001  # Lowered threshold
+
     def test_fp16_mode(self):
         """Test half precision mode."""
         # Arrange
@@ -599,20 +621,20 @@ class TestPAC:
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
             trainable=False,
-            fp16=True
+            fp16=True,
         )
         x = torch.randn(2, 3, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert torch.isfinite(output['pac']).all()
-        
+        assert torch.isfinite(output["pac"]).all()
+
     # =============================================================================
     # Surrogate Statistics Tests
     # =============================================================================
-    
+
     def test_surrogate_statistics(self):
         """Test surrogate statistics calculation."""
         # Arrange
@@ -627,23 +649,25 @@ class TestPAC:
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
             n_perm=n_perm,
-            trainable=False
+            trainable=False,
         )
         x = torch.randn(1, 2, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert output['surrogates'].shape[2] == n_perm
-        assert torch.isfinite(output['pac_z']).all()
-        assert torch.isfinite(output['surrogate_mean']).all()
-        assert torch.isfinite(output['surrogate_std']).all()
-        
+        assert output["surrogates"].shape[2] == n_perm
+        assert torch.isfinite(output["pac_z"]).all()
+        assert torch.isfinite(output["surrogate_mean"]).all()
+        assert torch.isfinite(output["surrogate_std"]).all()
+
         # Z-scores should be computed correctly
-        expected_z = (output['pac'] - output['surrogate_mean']) / (output['surrogate_std'] + 1e-5)
-        assert torch.allclose(output['pac_z'], expected_z, atol=1e-5)
-        
+        expected_z = (output["pac"] - output["surrogate_mean"]) / (
+            output["surrogate_std"] + 1e-5
+        )
+        assert torch.allclose(output["pac_z"], expected_z, atol=1e-5)
+
     def test_surrogate_randomness(self):
         """Test that surrogates are different from each other."""
         # Arrange
@@ -658,23 +682,23 @@ class TestPAC:
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
             n_perm=n_perm,
-            trainable=False
+            trainable=False,
         )
         x = torch.randn(1, 1, self.seq_len)
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert - surrogates should be different
-        surrogates = output['surrogates'][0, 0]  # Shape: (n_perm, n_pha, n_amp)
+        surrogates = output["surrogates"][0, 0]  # Shape: (n_perm, n_pha, n_amp)
         # Check that not all surrogates are identical
         for i in range(n_perm - 1):
             assert not torch.allclose(surrogates[i], surrogates[i + 1])
-            
+
     # =============================================================================
     # Integration Tests
     # =============================================================================
-    
+
     def test_edge_removal(self):
         """Test that edge artifacts are properly removed."""
         # Arrange
@@ -687,21 +711,21 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Create signal with artifacts at edges
         x = torch.zeros(1, 1, self.seq_len)
         x[..., :10] = 10.0  # Large values at start
         x[..., -10:] = 10.0  # Large values at end
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert
-        assert torch.isfinite(output['pac']).all()
+        assert torch.isfinite(output["pac"]).all()
         # PAC should not be strongly affected by edge artifacts
-        
+
     def test_frequency_band_capping(self):
         """Test automatic amplitude frequency capping to avoid aliasing."""
         # Arrange
@@ -715,12 +739,12 @@ class TestPAC:
             amp_start_hz=30.0,
             amp_end_hz=200.0,  # Would exceed Nyquist
             amp_n_bands=3,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Assert - amplitude end should be capped
         assert pac.AMP_MIDS_HZ[-1] < low_fs / 2
-        
+
     def test_multiple_channels_independence(self):
         """Test that channels are processed independently."""
         # Arrange
@@ -733,20 +757,20 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Create different signals for each channel
         x = torch.zeros(1, 2, self.seq_len)
         x[:, 0, :] = torch.randn(self.seq_len)
         x[:, 1, :] = torch.randn(self.seq_len) * 2.0
-        
+
         # Act
         output = pac(x)
-        
+
         # Assert - channels should have different PAC values
-        assert not torch.allclose(output['pac'][0, 0], output['pac'][0, 1])
-        
+        assert not torch.allclose(output["pac"][0, 0], output["pac"][0, 1])
+
     def test_batch_consistency(self):
         """Test that batch processing is consistent."""
         # Arrange
@@ -759,23 +783,21 @@ class TestPAC:
             amp_start_hz=self.amp_start_hz,
             amp_end_hz=self.amp_end_hz,
             amp_n_bands=self.amp_n_bands,
-            trainable=False
+            trainable=False,
         )
-        
+
         # Create identical signals in batch
         single_signal = torch.randn(1, 2, self.seq_len)
         batch_signal = single_signal.repeat(3, 1, 1)
-        
+
         # Act
         single_output = pac(single_signal)
         batch_output = pac(batch_signal)
-        
+
         # Assert - all batch elements should have same PAC
         for i in range(3):
             assert torch.allclose(
-                batch_output['pac'][i], 
-                single_output['pac'][0], 
-                atol=1e-6
+                batch_output["pac"][i], single_output["pac"][0], atol=1e-6
             )
 
 
@@ -795,20 +817,20 @@ if __name__ == "__main__":
 # # -*- coding: utf-8 -*-
 # # Time-stamp: "2024-11-26 10:33:30 (ywatanabe)"
 # # File: ./mngs_repo/src/mngs/nn/_PAC.py
-# 
+#
 # THIS_FILE = "/home/ywatanabe/proj/mngs_repo/src/mngs/nn/_PAC.py"
-# 
+#
 # # Imports
 # from typing import Dict, Optional, Tuple, Union
-# 
+#
 # import torch
 # import torch.nn as nn
-# 
+#
 # from ._BandPassFilter import BandPassFilter
 # from ._Hilbert import Hilbert
 # from ._ModulationIndex import ModulationIndex
-# 
-# 
+#
+#
 # # Functions
 # class PAC(nn.Module):
 #     def __init__(
@@ -827,7 +849,7 @@ if __name__ == "__main__":
 #         fp16: bool = False,
 #     ) -> None:
 #         super().__init__()
-#         
+#
 #         # Input validation
 #         if seq_len <= 0:
 #             raise ValueError(f"seq_len must be positive, got {seq_len}")
@@ -850,16 +872,16 @@ if __name__ == "__main__":
 #             n_perm = None
 #         if n_perm is not None and (not isinstance(n_perm, int) or n_perm <= 0):
 #             raise ValueError(f"n_perm must be a positive integer or None, got {n_perm}")
-# 
+#
 #         self.fp16 = fp16
 #         self.n_perm = n_perm
 #         self.trainable = trainable
-# 
+#
 #         # caps amp_end_hz to avoid aliasing
 #         factor = 0.8
 #         nyquist = fs / 2
 #         amp_end_hz = int(min(nyquist / (1 + factor) - 1, amp_end_hz))
-#         
+#
 #         # Check frequency bounds against Nyquist
 #         if pha_end_hz > nyquist:
 #             raise ValueError(
@@ -869,7 +891,7 @@ if __name__ == "__main__":
 #             raise ValueError(
 #                 f"Amplitude end frequency {amp_end_hz} Hz exceeds Nyquist frequency {nyquist} Hz"
 #             )
-# 
+#
 #         self.bandpass = BandPassFilter(
 #             seq_len,
 #             fs,
@@ -882,31 +904,31 @@ if __name__ == "__main__":
 #             fp16=fp16,
 #             trainable=trainable,
 #         )
-# 
+#
 #         # Set PHA_MIDS_HZ and AMP_MIDS_HZ from the bandpass filter
 #         self.PHA_MIDS_HZ = self.bandpass.pha_mids
 #         self.AMP_MIDS_HZ = self.bandpass.amp_mids
-# 
+#
 #         self.hilbert = Hilbert(seq_len, dim=-1, fp16=fp16)
-# 
+#
 #         self.modulation_index = ModulationIndex(
 #             n_bins=18,
 #             temperature=0.1
 #         )
-# 
+#
 #         # No need for DimHandler - we'll use simple reshaping in generate_surrogates
-# 
+#
 #     def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
 #         """
 #         Compute PAC values from input signal.
-# 
+#
 #         Parameters
 #         ----------
 #         x : torch.Tensor
 #             Input signal with shape:
 #             - (batch_size, n_chs, seq_len) or
 #             - (batch_size, n_chs, n_segments, seq_len)
-# 
+#
 #         Returns
 #         -------
 #         dict
@@ -928,63 +950,63 @@ if __name__ == "__main__":
 #             raise TypeError(f"Expected torch.Tensor, got {type(x)}")
 #         if x.ndim not in [3, 4]:
 #             raise ValueError(f"Input must be 3D or 4D tensor, got {x.ndim}D tensor with shape {x.shape}")
-#         
+#
 #         # Constants for clarity
 #         PHASE_IDX = 0
 #         AMPLITUDE_IDX = 1
-# 
+#
 #         with torch.set_grad_enabled(bool(self.trainable)):
 #             # Ensure 4D input: (batch, channels, segments, time)
 #             x = self._ensure_4d_input(x)
 #             batch_size, n_chs, n_segments, seq_len = x.shape
-# 
+#
 #             # Process each batch-channel combination together
 #             # This reshape is necessary for the bandpass filter
 #             x = x.reshape(batch_size * n_chs, n_segments, seq_len)
-# 
+#
 #             # Apply bandpass filtering
 #             x = self.bandpass(x, edge_len=0)
 #             # Now: (batch*chs, segments, n_bands, time)
-# 
+#
 #             # Extract phase and amplitude via Hilbert transform
 #             x = self.hilbert(x)
 #             # Now: (batch*chs, segments, n_bands, time, 2) where last dim is [phase, amplitude]
-# 
+#
 #             # Restore batch dimension
 #             x = x.reshape(batch_size, n_chs, n_segments, -1, seq_len, 2)
 #             # Now: (batch, chs, segments, n_bands, time, 2)
-# 
+#
 #             # Split into phase and amplitude bands
 #             n_pha_bands = len(self.PHA_MIDS_HZ)
 #             n_amp_bands = len(self.AMP_MIDS_HZ)
-# 
+#
 #             # Extract phase from phase bands
 #             pha = x[:, :, :, :n_pha_bands, :, PHASE_IDX]
 #             # Extract amplitude from amplitude bands
 #             amp = x[:, :, :, n_pha_bands:, :, AMPLITUDE_IDX]
-# 
+#
 #             # Rearrange dimensions for ModulationIndex
 #             # ModulationIndex expects: (batch, chs, freqs, segments, time)
 #             pha = pha.permute(0, 1, 3, 2, 4)
 #             amp = amp.permute(0, 1, 3, 2, 4)
-# 
+#
 #             # Remove edge artifacts
 #             edge_len = seq_len // 8
 #             if edge_len > 0:
 #                 pha = pha[..., edge_len:-edge_len]
 #                 amp = amp[..., edge_len:-edge_len]
-# 
+#
 #             # Convert to half precision if needed
 #             if self.fp16:
 #                 pha = pha.half()
 #                 amp = amp.half()
-# 
+#
 #             # Calculate modulation index
 #             mi_results = self.modulation_index(pha, amp)
-# 
+#
 #             # Extract the primary PAC values
 #             pac_values = mi_results["mi"]
-# 
+#
 #             # Prepare output dictionary
 #             output = {
 #                 "pac": pac_values,
@@ -997,7 +1019,7 @@ if __name__ == "__main__":
 #                 "phase_bin_centers": mi_results["phase_bin_centers"],
 #                 "phase_bin_edges": mi_results["phase_bin_edges"],
 #             }
-# 
+#
 #             # Apply surrogate statistics if requested
 #             if self.n_perm is not None:
 #                 z_scores, surrogates = self.to_z_using_surrogate(
@@ -1007,13 +1029,13 @@ if __name__ == "__main__":
 #                 output["surrogates"] = surrogates
 #                 output["surrogate_mean"] = surrogates.mean(dim=2)
 #                 output["surrogate_std"] = surrogates.std(dim=2)
-# 
+#
 #             return output
-# 
+#
 #     def to_z_using_surrogate(self, pha: torch.Tensor, amp: torch.Tensor, observed: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
 #         """
 #         Calculate z-scores using surrogate distribution.
-# 
+#
 #         Returns
 #         -------
 #         tuple
@@ -1024,11 +1046,11 @@ if __name__ == "__main__":
 #         ss = surrogates.std(dim=2).to(observed.device)
 #         z_scores = (observed - mm) / (ss + 1e-5)
 #         return z_scores, surrogates
-# 
+#
 #     def generate_surrogates(self, pha: torch.Tensor, amp: torch.Tensor, batch_size: int = 1) -> torch.Tensor:
 #         """
 #         Generate surrogate PAC values by circular shifting the phase signal.
-# 
+#
 #         Parameters
 #         ----------
 #         pha : torch.Tensor
@@ -1037,7 +1059,7 @@ if __name__ == "__main__":
 #             Amplitude signal with shape (batch, channels, freqs_amp, segments, time)
 #         batch_size : int
 #             Batch size for processing surrogates to manage memory
-# 
+#
 #         Returns
 #         -------
 #         torch.Tensor
@@ -1046,21 +1068,21 @@ if __name__ == "__main__":
 #         # Get dimensions
 #         batch, n_chs, n_freqs_pha, n_segments, seq_len = pha.shape
 #         n_freqs_amp = amp.shape[2]
-# 
+#
 #         # Generate random circular shift points for each permutation
 #         shift_points = torch.randint(
 #             seq_len, (self.n_perm,), device=pha.device
 #         )
-# 
+#
 #         # Store surrogate PAC values
 #         surrogate_pacs = []
-# 
+#
 #         # Process each permutation
 #         with torch.no_grad():
 #             for perm_idx, shift in enumerate(shift_points):
 #                 # Circular shift the phase signal
 #                 pha_shifted = torch.roll(pha, shifts=int(shift), dims=-1)
-# 
+#
 #                 # Calculate PAC for this permutation
 #                 # Process in smaller batches if needed for memory
 #                 pac_perm = []
@@ -1070,44 +1092,44 @@ if __name__ == "__main__":
 #                         pha_shifted[i:end_idx], amp[i:end_idx]
 #                     )
 #                     pac_perm.append(mi_results['mi'].cpu())
-# 
+#
 #                 # Combine batches
 #                 pac_perm = torch.cat(pac_perm, dim=0)
 #                 surrogate_pacs.append(pac_perm)
-# 
+#
 #         # Stack all permutations: (batch, channels, n_perm, freqs_pha, freqs_amp)
 #         surrogate_pacs = torch.stack(surrogate_pacs, dim=2)
-# 
+#
 #         # Clear GPU cache if we used it
 #         if pha.is_cuda:
 #             torch.cuda.empty_cache()
-# 
+#
 #         return surrogate_pacs
-# 
+#
 #     # The init_bandpass method is no longer needed as BandPassFilter handles both static and trainable modes
-# 
+#
 #     # Band calculation methods are now in BandPassFilter
-# 
+#
 #     @staticmethod
 #     def _ensure_4d_input(x: torch.Tensor) -> torch.Tensor:
 #         if x.ndim != 4:
 #             message = f"Input tensor must be 4D with the shape (batch_size, n_chs, n_segments, seq_len). Received shape: {x.shape}"
-# 
+#
 #         if x.ndim == 3:
 #             # warnings.warn(
 #             #     "'n_segments' was determined to be 1, assuming your input is (batch_size, n_chs, seq_len).",
 #             #     UserWarning,
 #             # )
 #             x = x.unsqueeze(-2)
-# 
+#
 #         if x.ndim != 4:
 #             raise ValueError(message)
-# 
+#
 #         return x
-# 
-# 
+#
+#
 # # Main block removed - example usage is in documentation/tests
-# 
+#
 # # EOF
 
 # --------------------------------------------------------------------------------
