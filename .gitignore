@@ -593,3 +593,18 @@ flycheck_*.el
 manuscript/**/.*
 
 tensorpac_source/
+
+# Temporary directories
+.playground/
+
+# Backup and optimization files
+*_backup.py
+*_optimized.py
+*_optimized_final.py
+*_fixed.py
+
+# Duplicate guidelines
+docs/to_claude/guidelines/**/IMPORTANT-*.md
+
+# Generated band files
+test_band_generation.py
