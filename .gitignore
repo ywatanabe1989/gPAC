@@ -608,3 +608,5 @@ docs/to_claude/guidelines/**/IMPORTANT-*.md
 
 # Generated band files
 test_band_generation.py
+.old_examples/
+.redundant/

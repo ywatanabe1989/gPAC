@@ -1,0 +1,48 @@
+=== gPAC Profiler Report ===
+Total operations profiled: 16
+Total time: 3.309s
+Device: cuda
+Profiler overhead: 206862.0%
+
+Top 5 Slowest Operations:
+----------------------------------------
+
+1. 📊 Complete Pipeline
+⏱️  Time: 0.917s
+💻 CPU: 36.0%
+🧠 RAM: 47.33GB (10.8%)
+🎮 GPU: 0.0%
+📦 VRAM: 0.53GB (0.7%)
+🌡️  Temp: 32°C
+
+2. 📊 Simple Matrix Multiplication
+⏱️  Time: 0.365s
+💻 CPU: 35.5%
+🧠 RAM: 47.08GB (10.8%)
+🎮 GPU: 6.0%
+📦 VRAM: 0.52GB (0.6%)
+🌡️  Temp: 31°C
+
+3. 📊 PAC Computation
+⏱️  Time: 0.330s
+💻 CPU: 35.5%
+🧠 RAM: 47.30GB (10.8%)
+🎮 GPU: 2.0%
+📦 VRAM: 0.53GB (0.7%)
+🌡️  Temp: 31°C
+
+4. 📊 Signal Analysis
+⏱️  Time: 0.146s
+💻 CPU: 36.1%
+🧠 RAM: 47.33GB (10.8%)
+🎮 GPU: 0.0%
+📦 VRAM: 0.53GB (0.7%)
+🌡️  Temp: 32°C
+
+5. 📊 Iteration 7
+⏱️  Time: 0.144s
+💻 CPU: 35.7%
+🧠 RAM: 47.36GB (10.8%)
+🎮 GPU: 0.0%
+📦 VRAM: 0.53GB (0.7%)
+🌡️  Temp: 32°C
