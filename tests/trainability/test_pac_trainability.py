@@ -16,6 +16,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import pytest
 import matplotlib
 
 matplotlib.use("Agg")
@@ -28,7 +29,9 @@ from gpac import PAC, generate_pac_signal
 class TestPACTrainability:
     """Test PAC trainability with learnable frequency bands."""
 
-    @pytest.mark.skip(reason="Test expectations too strict - loss decreases but not by 50%")
+    @pytest.mark.skip(
+        reason="Test expectations too strict - loss decreases but not by 50%"
+    )
     def test_band_optimization(self):
         """Test that frequency bands can be optimized to detect known PAC."""
         print("\n" + "=" * 60)

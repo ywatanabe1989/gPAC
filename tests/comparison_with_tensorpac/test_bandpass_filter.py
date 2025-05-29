@@ -24,7 +24,9 @@ import matplotlib.pyplot as plt
 from gpac import BandPassFilter, generate_pac_signal
 
 # Mark entire module to be skipped until comparison tests are fixed
-pytestmark = pytest.mark.skip(reason="Comparison tests need to be fixed - missing morlet_filter method")
+pytestmark = pytest.mark.skip(
+    reason="Comparison tests need to be fixed - missing morlet_filter method"
+)
 
 
 class TestBandpassFilterComparison:

@@ -30,7 +30,9 @@ except ImportError:
         print("Warning: TensorPAC not found. Please install tensorpac.")
 
 # Mark entire module to be skipped until comparison tests are fixed
-pytestmark = pytest.mark.skip(reason="Comparison tests need to be fixed - various assertion failures")
+pytestmark = pytest.mark.skip(
+    reason="Comparison tests need to be fixed - various assertion failures"
+)
 
 
 class TestTensorPACCompatibility:

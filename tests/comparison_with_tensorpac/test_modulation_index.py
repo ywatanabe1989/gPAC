@@ -29,8 +29,11 @@ from tensorpac import Pac
 from tensorpac.signals import pac_signals_wavelet
 
 import pytest
+
 # Mark entire module to be skipped until comparison tests are fixed
-pytestmark = pytest.mark.skip(reason="Comparison tests need to be fixed - empty array issues")
+pytestmark = pytest.mark.skip(
+    reason="Comparison tests need to be fixed - empty array issues"
+)
 
 
 class TestModuleLevelComparison:
