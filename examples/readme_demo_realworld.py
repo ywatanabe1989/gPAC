@@ -1,395 +1,317 @@
 #!/usr/bin/env python3
-"""
-Real-world demo script for gPAC package using publicly available EEG data.
-This demo analyzes phase-amplitude coupling in actual neural recordings.
+# -*- coding: utf-8 -*-
+# Time-stamp: "2025-01-30 02:30:00 (ywatanabe)"
+# File: readme_demo_realworld.py
 
-Uses MNE-Python sample dataset which includes MEG/EEG recordings during
-auditory and visual stimuli presentation.
+__file__ = "readme_demo_realworld.py"
+
+"""
+Functionalities:
+  - Demonstrates gPAC on real-world EEG data
+  - Downloads sample data from MNE-Python
+  - Analyzes PAC during cognitive task
+
+Dependencies:
+  - scripts: None
+  - packages: gpac, mne, torch, numpy, matplotlib
+
+IO:
+  - input-files: MNE sample data (auto-downloaded)
+  - output-files: ./readme_demo_realworld_out/realworld_pac_analysis.png
 """
 
+"""Imports"""
+import os
+import sys
+import argparse
 import numpy as np
 import torch
-import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-import time
-import sys
-import os
-import warnings
-warnings.filterwarnings('ignore')
-
-# Add parent directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
-
-from gpac import PAC
-
-# Try to import MNE for EEG data loading
+import matplotlib.gridspec as gridspec
+import mngs
 try:
     import mne
-    MNE_AVAILABLE = True
 except ImportError:
-    print("Warning: MNE-Python not available. Install with: pip install mne")
-    MNE_AVAILABLE = False
+    print("Installing MNE-Python for EEG data access...")
+    os.system("pip install mne")
+    import mne
 
-# Try to import tensorpac for comparison
-try:
-    from tensorpac import Pac as TensorPAC
-    TENSORPAC_AVAILABLE = True
-except ImportError:
-    print("Warning: TensorPAC not available for comparison")
-    TENSORPAC_AVAILABLE = False
+"""Parameters"""
+# from mngs.io import load_configs
+# CONFIG = load_configs()
 
-
-def download_sample_eeg_data():
-    """
-    Download MNE sample dataset if not already present.
+"""Functions & Classes"""
+def load_sample_eeg_data():
+    """Load sample EEG data from MNE."""
+    # Download sample data if not already present
+    sample_data_path = mne.datasets.sample.data_path()
     
-    Returns
-    -------
-    data_path : str
-        Path to the sample data
-    """
-    if not MNE_AVAILABLE:
-        return None
-        
-    # This will download the data if not present (~1.5GB)
-    print("Checking for MNE sample data...")
-    data_path = mne.datasets.sample.data_path()
-    return data_path
-
-
-def load_eeg_segment(data_path, duration=10.0, start_time=60.0):
-    """
-    Load a segment of EEG data from the MNE sample dataset.
+    # Load the sample auditory dataset
+    raw_fname = os.path.join(sample_data_path, 'MEG', 'sample', 
+                            'sample_auditory_raw.fif')
+    raw = mne.io.read_raw_fif(raw_fname, preload=True)
     
-    Parameters
-    ----------
-    data_path : str
-        Path to MNE sample data
-    duration : float
-        Duration of segment to load in seconds
-    start_time : float
-        Start time of segment in seconds
-        
-    Returns
-    -------
-    eeg_data : np.ndarray
-        EEG data array (n_channels, n_samples)
-    sfreq : float
-        Sampling frequency
-    ch_names : list
-        Channel names
-    """
-    if not MNE_AVAILABLE or data_path is None:
-        print("Using synthetic data as fallback...")
-        # Create synthetic multi-channel data
-        sfreq = 250.0
-        n_samples = int(duration * sfreq)
-        n_channels = 5
-        
-        # Create synthetic EEG-like signals with some PAC
-        time = np.linspace(0, duration, n_samples)
-        eeg_data = np.zeros((n_channels, n_samples))
-        
-        for ch in range(n_channels):
-            # Add different frequency components to each channel
-            noise = 0.5 * np.random.randn(n_samples)
-            
-            # Theta oscillation (6 Hz)
-            theta = np.sin(2 * np.pi * 6 * time + np.random.rand() * 2 * np.pi)
-            
-            # Gamma oscillation (60 Hz) modulated by theta
-            gamma_carrier = np.sin(2 * np.pi * 60 * time)
-            modulation = 1 + 0.3 * theta * (ch / n_channels)  # Varying coupling
-            gamma = modulation * gamma_carrier
-            
-            # Alpha rhythm (10 Hz)
-            alpha = 0.3 * np.sin(2 * np.pi * 10 * time)
-            
-            eeg_data[ch] = noise + 0.5 * theta + 0.3 * gamma + alpha
-            
-        ch_names = [f'EEG {i+1:03d}' for i in range(n_channels)]
-        return eeg_data, sfreq, ch_names
+    # Pick only EEG channels
+    raw.pick_types(meg=False, eeg=True, stim=False, eog=False)
     
-    # Load actual MNE sample data
-    raw_fname = os.path.join(data_path, 'MEG', 'sample', 'sample_audvis_filt-0-40_raw.fif')
-    raw = mne.io.read_raw_fif(raw_fname, preload=True, verbose=False)
+    # Get events
+    events_fname = os.path.join(sample_data_path, 'MEG', 'sample',
+                               'sample_auditory_raw-eve.fif')
+    events = mne.read_events(events_fname)
     
-    # Pick EEG channels only
-    raw.pick_types(meg=False, eeg=True, eog=False, exclude='bads')
-    
-    # Get data segment
-    start_sample = int(start_time * raw.info['sfreq'])
-    stop_sample = start_sample + int(duration * raw.info['sfreq'])
-    
-    eeg_data, times = raw[:, start_sample:stop_sample]
-    
-    return eeg_data, raw.info['sfreq'], raw.ch_names
+    return raw, events
 
 
-def preprocess_eeg_data(eeg_data, sfreq, highpass=1.0, lowpass=100.0):
-    """
-    Basic preprocessing of EEG data.
+def preprocess_for_pac(raw, tmin=-0.2, tmax=0.5, event_id=1):
+    """Preprocess EEG data for PAC analysis."""
+    # Create epochs around stimulus events
+    events = mne.find_events(raw, stim_channel='STI 014')
     
-    Parameters
-    ----------
-    eeg_data : np.ndarray
-        Raw EEG data (n_channels, n_samples)
-    sfreq : float
-        Sampling frequency
-    highpass : float
-        High-pass filter cutoff
-    lowpass : float
-        Low-pass filter cutoff
-        
-    Returns
-    -------
-    filtered_data : np.ndarray
-        Preprocessed EEG data
-    """
-    if MNE_AVAILABLE:
-        # Create MNE RawArray for filtering
-        info = mne.create_info(
-            ch_names=[f'EEG{i}' for i in range(eeg_data.shape[0])],
-            sfreq=sfreq,
-            ch_types='eeg'
-        )
-        raw = mne.io.RawArray(eeg_data, info, verbose=False)
-        
-        # Apply band-pass filter
-        raw.filter(highpass, lowpass, fir_design='firwin', verbose=False)
-        filtered_data = raw.get_data()
-    else:
-        # Simple detrending as fallback
-        from scipy import signal
-        filtered_data = signal.detrend(eeg_data, axis=1)
+    # Select only left auditory events (event_id=1)
+    epochs = mne.Epochs(raw, events, event_id=event_id, 
+                       tmin=tmin, tmax=tmax, baseline=None,
+                       preload=True, proj=False)
     
-    return filtered_data
+    # Apply bandpass filter to remove artifacts
+    epochs.filter(l_freq=1., h_freq=200.)
+    
+    # Get data and info
+    data = epochs.get_data()  # (n_epochs, n_channels, n_times)
+    sfreq = epochs.info['sfreq']
+    ch_names = epochs.ch_names
+    
+    return data, sfreq, ch_names, epochs.times
 
 
-def calculate_pac_multichannel(data, sfreq, channel_pairs=None):
-    """
-    Calculate PAC for multiple channel pairs.
+def compute_pac_on_channel(channel_data, sfreq, ch_name, device='cuda'):
+    """Compute PAC for a single channel across epochs."""
+    import gpac
     
-    Parameters
-    ----------
-    data : np.ndarray
-        EEG data (n_channels, n_samples)
-    sfreq : float
-        Sampling frequency
-    channel_pairs : list of tuples
-        List of (phase_ch, amp_ch) pairs. If None, use same channel.
-        
-    Returns
-    -------
-    pac_results : dict
-        Dictionary with PAC results for each channel/pair
-    computation_time : float
-        Total computation time
-    """
-    n_channels, n_samples = data.shape
+    # Convert to torch tensor
+    data_tensor = torch.tensor(channel_data, dtype=torch.float32)
     
-    if channel_pairs is None:
-        # Use same channel for phase and amplitude
-        channel_pairs = [(i, i) for i in range(min(n_channels, 5))]  # Limit to 5 channels
+    if device == 'cuda' and torch.cuda.is_available():
+        data_tensor = data_tensor.cuda()
     
-    # PAC parameters
-    pha_range = (4, 8)    # Theta band
-    amp_range = (30, 80)  # Low gamma band
-    n_pha_bands = 5
-    n_amp_bands = 10
-    
-    # Initialize PAC calculator
-    pac = PAC(
-        seq_len=n_samples,
+    # Initialize PAC model
+    pac_model = gpac.PAC(
+        seq_len=data_tensor.shape[-1],
         fs=sfreq,
-        pha_start_hz=pha_range[0],
-        pha_end_hz=pha_range[1],
-        pha_n_bands=n_pha_bands,
-        amp_start_hz=amp_range[0],
-        amp_end_hz=amp_range[1],
-        amp_n_bands=n_amp_bands,
-        trainable=False
+        pha_start_hz=4.0,    # Theta/alpha
+        pha_end_hz=13.0,
+        pha_n_bands=6,
+        amp_start_hz=30.0,   # Gamma
+        amp_end_hz=100.0,
+        amp_n_bands=8,
+        n_perm=None,
+        fp16=False
     )
     
-    pac_results = {}
-    start_time = time.time()
+    if device == 'cuda' and torch.cuda.is_available():
+        pac_model = pac_model.cuda()
     
-    for phase_ch, amp_ch in channel_pairs:
-        # Prepare signal
-        if phase_ch == amp_ch:
-            signal = torch.from_numpy(data[phase_ch]).float()
-            signal = signal.unsqueeze(0).unsqueeze(0)  # Add batch and channel dims
-            ch_name = f"Ch{phase_ch}"
-        else:
-            # For cross-channel PAC, would need to modify approach
-            continue
-        
-        # Calculate PAC
-        with torch.no_grad():
-            output = pac(signal)
-        
-        pac_results[ch_name] = {
-            'pac_values': output['pac'].squeeze().numpy(),
-            'phase_freqs': output['phase_frequencies'].numpy(),
-            'amp_freqs': output['amplitude_frequencies'].numpy(),
-        }
+    # Compute PAC for each epoch
+    pac_values = []
+    with torch.no_grad():
+        for epoch_data in data_tensor:
+            # Add batch and channel dimensions
+            epoch_tensor = epoch_data.unsqueeze(0).unsqueeze(0)
+            pac_result = pac_model(epoch_tensor)
+            pac_values.append(pac_result['pac'].squeeze().cpu().numpy())
     
-    computation_time = time.time() - start_time
+    # Average across epochs
+    pac_mean = np.mean(pac_values, axis=0)
+    pac_std = np.std(pac_values, axis=0)
     
-    return pac_results, computation_time
+    # Get frequency arrays
+    pha_freqs = pac_result['phase_frequencies'].numpy()
+    amp_freqs = pac_result['amplitude_frequencies'].numpy()
+    
+    return pac_mean, pac_std, pha_freqs, amp_freqs
 
 
-def create_realworld_plot(eeg_data, sfreq, pac_results, ch_names):
-    """
-    Create visualization of real-world PAC analysis.
-    
-    Parameters
-    ----------
-    eeg_data : np.ndarray
-        Raw EEG data
-    sfreq : float
-        Sampling frequency
-    pac_results : dict
-        PAC results for each channel
-    ch_names : list
-        Channel names
-    """
-    n_channels = min(len(pac_results), 4)  # Show max 4 channels
-    
+def create_realworld_figure(
+    raw_segment, times, sfreq,
+    pac_results, ch_names,
+    save_path
+):
+    """Create figure showing real-world PAC analysis."""
     fig = plt.figure(figsize=(16, 10))
-    gs = GridSpec(3, n_channels, figure=fig, height_ratios=[1, 1.5, 0.1],
-                  hspace=0.3, wspace=0.3)
+    gs = gridspec.GridSpec(3, 3, height_ratios=[1, 2, 0.1], 
+                          width_ratios=[1, 1, 1])
     
-    # Time vector for plotting
-    time = np.arange(eeg_data.shape[1]) / sfreq
+    # Top panel: Raw EEG traces
+    ax_raw = fig.add_subplot(gs[0, :])
+    n_show = min(5, len(ch_names))  # Show up to 5 channels
+    for i in range(n_show):
+        offset = i * 50  # µV offset for visualization
+        ax_raw.plot(times, raw_segment[i] * 1e6 - offset, 
+                   label=ch_names[i], linewidth=0.8)
+    ax_raw.set_xlabel('Time (s)')
+    ax_raw.set_ylabel('Amplitude (µV)')
+    ax_raw.set_title('Sample EEG Data (Auditory Stimulus Response)', fontsize=14)
+    ax_raw.legend(loc='upper right', fontsize=8)
+    ax_raw.grid(True, alpha=0.3)
+    ax_raw.axvline(0, color='red', linestyle='--', alpha=0.5, label='Stimulus')
     
-    # Plot each channel
-    for idx, (ch_name, pac_data) in enumerate(list(pac_results.items())[:n_channels]):
-        # Top row: Raw EEG signal (first 2 seconds)
-        ax_signal = fig.add_subplot(gs[0, idx])
-        ch_idx = int(ch_name.replace('Ch', ''))
-        signal_segment = eeg_data[ch_idx, :int(2*sfreq)]
-        time_segment = time[:int(2*sfreq)]
-        
-        ax_signal.plot(time_segment, signal_segment, 'k-', linewidth=0.5)
-        ax_signal.set_title(f'{ch_names[ch_idx] if ch_idx < len(ch_names) else ch_name}',
-                           fontsize=10, fontweight='bold')
-        ax_signal.set_xlabel('Time (s)', fontsize=8)
-        ax_signal.set_ylabel('Amplitude (µV)', fontsize=8)
-        ax_signal.tick_params(labelsize=7)
-        ax_signal.grid(True, alpha=0.3)
-        
-        # Middle row: PAC comodulogram
-        ax_pac = fig.add_subplot(gs[1, idx])
-        pac_values = pac_data['pac_values']
-        phase_freqs = pac_data['phase_freqs']
-        amp_freqs = pac_data['amp_freqs']
-        
-        im = ax_pac.imshow(pac_values.T, aspect='auto', origin='lower',
-                          extent=[phase_freqs[0], phase_freqs[-1],
+    # Bottom panels: PAC for different channels
+    for idx, (ch_idx, ch_name) in enumerate([(10, 'EEG 011'), 
+                                             (30, 'EEG 031'), 
+                                             (50, 'EEG 051')]):
+        if ch_idx < len(ch_names):
+            ax = fig.add_subplot(gs[1, idx])
+            pac_mean, pac_std, pha_freqs, amp_freqs = pac_results[ch_idx]
+            
+            im = ax.imshow(pac_mean.T, aspect='auto', origin='lower',
+                          extent=[pha_freqs[0], pha_freqs[-1],
                                  amp_freqs[0], amp_freqs[-1]],
                           cmap='hot', interpolation='bilinear')
-        
-        ax_pac.set_xlabel('Phase Frequency (Hz)', fontsize=8)
-        if idx == 0:
-            ax_pac.set_ylabel('Amplitude Frequency (Hz)', fontsize=8)
-        ax_pac.tick_params(labelsize=7)
-        
-        # Find peak PAC
-        max_idx = np.unravel_index(pac_values.argmax(), pac_values.shape)
-        max_phase_freq = phase_freqs[max_idx[0]]
-        max_amp_freq = amp_freqs[max_idx[1]]
-        max_pac_value = pac_values[max_idx]
-        
-        # Mark peak with cross
-        ax_pac.plot(max_phase_freq, max_amp_freq, 'w+', markersize=10, markeredgewidth=2)
-        ax_pac.text(0.05, 0.95, f'Peak: {max_pac_value:.3f}\n@{max_phase_freq:.1f}-{max_amp_freq:.1f}Hz',
-                   transform=ax_pac.transAxes, fontsize=7, color='white',
-                   verticalalignment='top', bbox=dict(boxstyle='round', facecolor='black', alpha=0.5))
+            
+            ax.set_xlabel('Phase Frequency (Hz)')
+            if idx == 0:
+                ax.set_ylabel('Amplitude Frequency (Hz)')
+            ax.set_title(f'PAC - {ch_names[ch_idx]}', fontsize=12)
+            
+            # Add contour for significant PAC
+            threshold = np.mean(pac_mean) + 2 * np.std(pac_mean)
+            ax.contour(pha_freqs, amp_freqs, pac_mean.T, 
+                      levels=[threshold], colors='cyan', linewidths=1)
     
-    # Add shared colorbar
+    # Add colorbar
     cbar_ax = fig.add_subplot(gs[2, :])
     cbar = plt.colorbar(im, cax=cbar_ax, orientation='horizontal')
-    cbar.set_label('PAC Value (MI)', fontsize=10)
-    cbar.ax.tick_params(labelsize=8)
+    cbar.set_label('Modulation Index', fontsize=10)
     
-    # Main title
-    fig.suptitle('Phase-Amplitude Coupling in Real EEG Data', fontsize=16, fontweight='bold')
+    # Add title
+    fig.suptitle('Phase-Amplitude Coupling in Real EEG Data\n' + 
+                 'MNE Sample Dataset - Auditory Evoked Response',
+                 fontsize=16, fontweight='bold')
     
     plt.tight_layout()
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    mngs.gen.print_block(f"Figure saved to: {save_path}", c='green')
+    
     return fig
 
 
-def main():
-    """Main demo function for real-world data."""
-    print("=" * 70)
-    print("gPAC Real-World Demo: PAC Analysis of EEG Data")
-    print("=" * 70)
+def main(args):
+    """Main function for real-world demo."""
+    # Create output directory
+    output_dir = './readme_demo_realworld_out'
+    os.makedirs(output_dir, exist_ok=True)
     
-    # Download/load data
-    if MNE_AVAILABLE:
-        print("\nAttempting to load MNE sample dataset...")
-        data_path = download_sample_eeg_data()
-    else:
-        print("\nMNE not available, using synthetic EEG-like data...")
-        data_path = None
-    
-    # Load EEG segment
-    print("Loading EEG data segment...")
-    eeg_data, sfreq, ch_names = load_eeg_segment(data_path, duration=10.0)
-    print(f"  Loaded {eeg_data.shape[0]} channels, {eeg_data.shape[1]} samples")
-    print(f"  Sampling frequency: {sfreq} Hz")
+    # Load sample EEG data
+    mngs.gen.print_block("Loading MNE sample EEG data", c='cyan')
+    raw, events = load_sample_eeg_data()
+    print(f"Loaded {len(raw.ch_names)} EEG channels")
+    print(f"Sampling frequency: {raw.info['sfreq']} Hz")
     
     # Preprocess data
-    print("\nPreprocessing EEG data...")
-    print("  Applying band-pass filter (1-100 Hz)")
-    filtered_data = preprocess_eeg_data(eeg_data, sfreq)
+    mngs.gen.print_block("Preprocessing EEG data", c='cyan')
+    data, sfreq, ch_names, times = preprocess_for_pac(
+        raw, tmin=-0.2, tmax=0.5, event_id=1
+    )
+    print(f"Epochs shape: {data.shape}")
+    print(f"Time range: {times[0]:.2f} to {times[-1]:.2f} seconds")
     
-    # Calculate PAC
-    print("\nCalculating PAC for multiple channels...")
-    print("  Phase frequencies: 4-8 Hz (Theta)")
-    print("  Amplitude frequencies: 30-80 Hz (Low Gamma)")
+    # Compute PAC for multiple channels
+    mngs.gen.print_block("Computing PAC across channels", c='cyan')
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"Using device: {device}")
     
-    pac_results, computation_time = calculate_pac_multichannel(filtered_data, sfreq)
+    pac_results = {}
+    n_channels_to_analyze = min(len(ch_names), 60)  # Analyze subset
     
-    print(f"\nComputation completed in {computation_time:.3f} seconds")
-    print(f"Analyzed {len(pac_results)} channels")
-    
-    # Report findings
-    print("\nPAC Analysis Summary:")
-    print("-" * 50)
-    for ch_name, pac_data in pac_results.items():
-        pac_values = pac_data['pac_values']
-        max_pac = pac_values.max()
-        max_idx = np.unravel_index(pac_values.argmax(), pac_values.shape)
-        peak_phase = pac_data['phase_freqs'][max_idx[0]]
-        peak_amp = pac_data['amp_freqs'][max_idx[1]]
+    for ch_idx in range(0, n_channels_to_analyze, 10):  # Every 10th channel
+        ch_name = ch_names[ch_idx]
+        print(f"  Processing {ch_name} ({ch_idx+1}/{n_channels_to_analyze})...")
         
-        print(f"{ch_name}: Peak PAC = {max_pac:.4f} at {peak_phase:.1f}-{peak_amp:.1f} Hz")
+        # Get data for this channel
+        channel_data = data[:, ch_idx, :]  # (n_epochs, n_times)
+        
+        # Compute PAC
+        pac_mean, pac_std, pha_freqs, amp_freqs = compute_pac_on_channel(
+            channel_data, sfreq, ch_name, device
+        )
+        
+        pac_results[ch_idx] = (pac_mean, pac_std, pha_freqs, amp_freqs)
     
     # Create visualization
-    print("\nGenerating visualization...")
-    fig = create_realworld_plot(filtered_data, sfreq, pac_results, ch_names)
+    mngs.gen.print_block("Creating visualization", c='cyan')
     
-    # Save plot
-    output_path = os.path.join(os.path.dirname(__file__), 'readme_demo_realworld_output.png')
-    fig.savefig(output_path, dpi=300, bbox_inches='tight')
-    print(f"Plot saved to: {output_path}")
+    # Get a sample segment for raw data display
+    raw_segment = data[0, :, :]  # First epoch, all channels
     
-    print("\nDemo completed successfully!")
+    fig = create_realworld_figure(
+        raw_segment, times, sfreq,
+        pac_results, ch_names,
+        os.path.join(output_dir, 'realworld_pac_analysis.png')
+    )
     
-    # Additional analysis info
-    print("\nInterpretation Guide:")
-    print("-" * 50)
-    print("- PAC values indicate coupling strength between slow and fast rhythms")
-    print("- Theta-gamma coupling (4-8 Hz phase, 30-80 Hz amplitude) is common in:")
-    print("  * Memory processing")
-    print("  * Cognitive control")
-    print("  * Sensory processing")
-    print("- Higher PAC values suggest stronger functional coupling")
+    # Summary
+    mngs.gen.print_block("Analysis Summary", c='yellow')
+    print(f"Analyzed {len(pac_results)} channels")
+    print(f"Phase frequencies: {pha_freqs[0]:.1f} - {pha_freqs[-1]:.1f} Hz")
+    print(f"Amplitude frequencies: {amp_freqs[0]:.1f} - {amp_freqs[-1]:.1f} Hz")
+    
+    # Find channel with strongest PAC
+    max_pac = 0
+    max_ch = None
+    for ch_idx, (pac_mean, _, _, _) in pac_results.items():
+        if pac_mean.max() > max_pac:
+            max_pac = pac_mean.max()
+            max_ch = ch_idx
+    
+    print(f"\nStrongest PAC found in {ch_names[max_ch]}: MI = {max_pac:.3f}")
+    
+    return 0
 
 
-if __name__ == "__main__":
-    main()
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments."""
+    import mngs
+    script_mode = mngs.gen.is_script()
+    parser = argparse.ArgumentParser(description='Real-world EEG PAC analysis demo')
+    args = parser.parse_args()
+    mngs.str.printc(args, c='yellow')
+    return args
+
+
+def run_main() -> None:
+    """Initialize mngs framework, run main function, and cleanup."""
+    global CONFIG, CC, sys, plt
+
+    import sys
+    import matplotlib.pyplot as plt
+    import mngs
+
+    args = parse_args()
+
+    # Start mngs framework
+    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+        sys,
+        plt,
+        args=args,
+        file=__file__,
+        sdir_suffix='realworld_demo',
+        verbose=False,
+        agg=True,
+    )
+
+    # Main
+    exit_status = main(args)
+
+    # Close the mngs framework
+    mngs.gen.close(
+        CONFIG,
+        verbose=False,
+        notify=False,
+        message="",
+        exit_status=exit_status,
+    )
+
+
+if __name__ == '__main__':
+    run_main()
+
+# EOF

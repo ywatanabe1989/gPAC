@@ -1,60 +1,100 @@
 # gPAC Examples
 
-This directory contains example scripts demonstrating various features of the gPAC package. The structure mirrors the source code organization for easy reference.
+This directory contains example scripts demonstrating various features of the gPAC (GPU-accelerated Phase-Amplitude Coupling) package.
 
-## Directory Structure
+## Overview
 
-### 1. `gpac/` - Core Module Examples
-Examples for each core module, named with `example_` prefix:
-- `example_PAC.py` - Basic PAC analysis workflow
-- `example_BandPassFilter.py` - Bandpass filtering and performance demonstration
-- `example_Hilbert.py` - Hilbert transform usage
-- `example_ModulationIndex.py` - Modulation index calculation
-- `example_SyntheticDataGenerator.py` - Generating synthetic PAC signals
-- `example_basic_usage.py` - General usage examples (from README)
-- `example_visualization.py` - Creating visualizations and diagrams
-- `_Filters/` - Subdirectory for filter-specific examples (if needed)
+All examples follow the mngs framework conventions for consistent output handling and visualization.
 
-### 2. `trainability/` - Trainable Features Examples
-Examples demonstrating learnable/differentiable aspects:
-- `example_differentiable_bucketize.py` - Differentiable histogram binning
+## Main Examples
 
-### 3. `comparison_with_tensorpac/` - Comparison Examples
-Examples comparing gPAC with other implementations:
-- `example_mngs_comparison.py` - Comparison with mngs package
-- `example_v01_comparison.py` - Comparison of different implementation modes
-
-## Running Examples
-
-Each example is self-contained and can be run directly:
+### 1. `example_pac_analysis.py`
+**Basic PAC Analysis**
+- Demonstrates core PAC computation using gPAC
+- Generates synthetic data with known PAC coupling
+- Visualizes PAC comodulogram
+- Compares with TensorPAC (if available)
 
 ```bash
-# Core module examples
-python examples/gpac/example_PAC.py
-python examples/gpac/example_BandPassFilter.py
-python examples/gpac/example_Hilbert.py
-
-# Trainability example
-python examples/trainability/example_differentiable_bucketize.py
-
-# Comparison examples
-python examples/comparison_with_tensorpac/example_mngs_comparison.py
+python example_pac_analysis.py
 ```
 
-## Example Structure
+### 2. `example_bandpass_filter.py`
+**Bandpass Filtering Demo**
+- Shows how to use gPAC's bandpass filter
+- Visualizes filter frequency responses
+- Demonstrates filtering for phase and amplitude bands
+- Compares different filter configurations
 
-Each example follows a consistent pattern:
-1. Import necessary modules
-2. Create or load sample data
-3. Demonstrate the module's functionality
-4. Show results or save outputs
-5. Include comments explaining key concepts
+```bash
+python example_bandpass_filter.py
+```
 
-## Adding New Examples
+### 3. `example_profiler.py`
+**Performance Profiling**
+- Profiles PAC computation performance
+- Tracks GPU memory usage (VRAM)
+- Tests different batch sizes
+- Generates performance reports and visualizations
+
+```bash
+python example_profiler.py
+```
+
+## Output Structure
+
+All examples save their outputs using mngs conventions:
+```
+examples/
+└── outputs/
+    ├── example_pac_analysis/
+    │   ├── pac_analysis.png
+    │   └── pac_results.pkl
+    ├── example_bandpass_filter/
+    │   ├── filter_frequency_response.png
+    │   ├── filtering_results.png
+    │   └── filter_info.yaml
+    └── example_profiler/
+        ├── profiling_results.png
+        ├── profiling_data.yaml
+        └── performance_report.txt
+```
+
+## Advanced Examples
+
+### Trainability Examples (`trainability/`)
+Demonstrates gPAC's differentiability for gradient-based optimization:
+- `example_pac_trainability.py` - Full training example
+- `example_pac_trainability_simple.py` - Simplified version
+- `example_pac_trainability_working.py` - Working implementation with outputs
+
+### Comparison Examples (`comparison_with_tensorpac/`)
+Detailed comparisons between gPAC and TensorPAC implementations.
+
+## Requirements
+
+- PyTorch with CUDA support (for GPU acceleration)
+- mngs >= 1.0.0
+- numpy, scipy, matplotlib
+- Optional: tensorpac (for comparison examples)
+
+## Tips
+
+1. **GPU Usage**: Examples automatically detect and use GPU if available
+2. **Batch Processing**: Adjust batch sizes based on your GPU memory
+3. **Visualization**: All plots are saved to `outputs/` directory
+4. **Caching**: Some examples use `@mngs.io.decorator.cache` for faster reruns
+
+## Common Issues
+
+- **Out of Memory**: Reduce batch size in profiler example
+- **No GPU**: Examples fall back to CPU automatically
+- **Missing TensorPAC**: Comparison features are optional
+
+## Contributing
 
 When adding new examples:
-1. Use the `example_` prefix for consistency
-2. Place in the appropriate directory matching the module structure
-3. Include docstring explaining what the example demonstrates
-4. Add clear comments throughout the code
-5. Keep examples focused on one main concept
+1. Follow mngs conventions for output handling
+2. Use descriptive filenames starting with `example_`
+3. Include docstrings explaining the example's purpose
+4. Save all outputs to `outputs/<script_name>/`

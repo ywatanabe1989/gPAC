@@ -36,7 +36,7 @@ class PAC(nn.Module):
         edge_length: Optional[Union[int, float]] = None,
     ) -> None:
         super().__init__()
-        
+
         # Input validation
         if seq_len <= 0:
             raise ValueError(f"seq_len must be positive, got {seq_len}")
@@ -70,12 +70,12 @@ class PAC(nn.Module):
         factor = 0.8
         nyquist = fs / 2
         amp_end_hz = int(min(nyquist / (1 + factor) - 1, amp_end_hz))
-        
+
         # Also adjust amp_start_hz if it's now >= amp_end_hz
         if amp_start_hz >= amp_end_hz:
             # Set amp_start_hz to a reasonable value below amp_end_hz
             amp_start_hz = max(1.0, amp_end_hz * 0.5)
-        
+
         # Check frequency bounds against Nyquist
         if pha_end_hz > nyquist:
             raise ValueError(
@@ -92,7 +92,7 @@ class PAC(nn.Module):
             padding_mode = "zero"
         elif edge_mode == "replicate":
             padding_mode = "replicate"
-        
+
         self.bandpass = BandPassFilter(
             seq_len,
             fs,
@@ -113,10 +113,7 @@ class PAC(nn.Module):
 
         self.hilbert = Hilbert(seq_len, dim=-1, fp16=fp16)
 
-        self.modulation_index = ModulationIndex(
-            n_bins=18,
-            temperature=0.1
-        )
+        self.modulation_index = ModulationIndex(n_bins=18, temperature=0.1)
 
         # No need for DimHandler - we'll use simple reshaping in generate_surrogates
 
@@ -151,8 +148,10 @@ class PAC(nn.Module):
         if not isinstance(x, torch.Tensor):
             raise TypeError(f"Expected torch.Tensor, got {type(x)}")
         if x.ndim not in [3, 4]:
-            raise ValueError(f"Input must be 3D or 4D tensor, got {x.ndim}D tensor with shape {x.shape}")
-        
+            raise ValueError(
+                f"Input must be 3D or 4D tensor, got {x.ndim}D tensor with shape {x.shape}"
+            )
+
         # Constants for clarity
         PHASE_IDX = 0
         AMPLITUDE_IDX = 1
@@ -223,9 +222,7 @@ class PAC(nn.Module):
 
             # Apply surrogate statistics if requested
             if self.n_perm is not None:
-                z_scores, surrogates = self.to_z_using_surrogate(
-                    pha, amp, pac_values
-                )
+                z_scores, surrogates = self.to_z_using_surrogate(pha, amp, pac_values)
                 output["pac_z"] = z_scores
                 output["surrogates"] = surrogates
                 output["surrogate_mean"] = surrogates.mean(dim=2)
@@ -233,7 +230,9 @@ class PAC(nn.Module):
 
             return output
 
-    def to_z_using_surrogate(self, pha: torch.Tensor, amp: torch.Tensor, observed: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+    def to_z_using_surrogate(
+        self, pha: torch.Tensor, amp: torch.Tensor, observed: torch.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Calculate z-scores using surrogate distribution.
 
@@ -248,7 +247,9 @@ class PAC(nn.Module):
         z_scores = (observed - mm) / (ss + 1e-5)
         return z_scores, surrogates
 
-    def generate_surrogates(self, pha: torch.Tensor, amp: torch.Tensor, batch_size: int = 1) -> torch.Tensor:
+    def generate_surrogates(
+        self, pha: torch.Tensor, amp: torch.Tensor, batch_size: int = 1
+    ) -> torch.Tensor:
         """
         Generate surrogate PAC values by circular shifting the phase signal.
 
@@ -271,9 +272,7 @@ class PAC(nn.Module):
         n_freqs_amp = amp.shape[2]
 
         # Generate random circular shift points for each permutation
-        shift_points = torch.randint(
-            seq_len, (self.n_perm,), device=pha.device
-        )
+        shift_points = torch.randint(seq_len, (self.n_perm,), device=pha.device)
 
         # Store surrogate PAC values
         surrogate_pacs = []
@@ -292,7 +291,7 @@ class PAC(nn.Module):
                     mi_results = self.modulation_index(
                         pha_shifted[i:end_idx], amp[i:end_idx]
                     )
-                    pac_perm.append(mi_results['mi'].cpu())
+                    pac_perm.append(mi_results["mi"].cpu())
 
                 # Combine batches
                 pac_perm = torch.cat(pac_perm, dim=0)
@@ -314,12 +313,12 @@ class PAC(nn.Module):
     def _calculate_edge_length(self, seq_len: int) -> int:
         """
         Calculate edge length based on configuration.
-        
+
         Parameters
         ----------
         seq_len : int
             Sequence length
-            
+
         Returns
         -------
         int
@@ -333,8 +332,10 @@ class PAC(nn.Module):
         elif self.edge_mode == "adaptive":
             # Adaptive based on filter order and frequency
             # Estimate based on lowest frequency component
-            min_freq = min(self.bandpass.pha_bands[0, 0].item(), 
-                          self.bandpass.amp_bands[0, 0].item())
+            min_freq = min(
+                self.bandpass.pha_bands[0, 0].item(),
+                self.bandpass.amp_bands[0, 0].item(),
+            )
             # Rule of thumb: 3 cycles of lowest frequency
             edge_samples = int(3 * self.bandpass.fs / min_freq)
             return min(edge_samples, seq_len // 4)  # Cap at 1/4 of signal
@@ -349,7 +350,7 @@ class PAC(nn.Module):
                 return int(self.edge_length)
         else:
             raise ValueError(f"Unknown edge_mode: {self.edge_mode}")
-    
+
     @staticmethod
     def _ensure_4d_input(x: torch.Tensor) -> torch.Tensor:
         if x.ndim != 4:

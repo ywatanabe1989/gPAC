@@ -1,5 +1,6 @@
 import os
 import sys
+
 # ----------------------------------------
 
 from pathlib import Path
@@ -43,8 +44,7 @@ _pattern_test_def = re.compile(r"^def test_", re.MULTILINE)
 def pytest_collect_file(file_path):
     # Only load files that have test functions
     if str(file_path).endswith(".py") and (
-        file_path.name.startswith("test_")
-        or file_path.name.endswith("_test.py")
+        file_path.name.startswith("test_") or file_path.name.endswith("_test.py")
     ):
         try:
             content = Path(file_path).read_text()

@@ -1,432 +1,322 @@
 #!/usr/bin/env python3
-"""
-Demo script for gPAC package showcasing PAC analysis with synthetic data.
-Generates comparison between gPAC and TensorPAC implementations.
+# -*- coding: utf-8 -*-
+# Time-stamp: "2025-01-30 02:00:00 (ywatanabe)"
+# File: readme_demo.py
 
-This demo creates:
-- Synthetic data with known PAC coupling
-- PAC calculations using both gPAC and TensorPAC
-- Visualization comparing results
-- Performance benchmarks
+__file__ = "readme_demo.py"
+
+"""
+Functionalities:
+  - Demonstrates gPAC vs TensorPAC comparison
+  - Creates publication-quality figure for README
+  - Shows performance benchmarks
+
+Dependencies:
+  - scripts: None
+  - packages: gpac, tensorpac, torch, numpy, matplotlib
+
+IO:
+  - input-files: None
+  - output-files: ./readme_demo_out/comparison_figure.png
 """
 
+"""Imports"""
+import os
+import sys
+import argparse
+import time
 import numpy as np
 import torch
-import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib.gridspec import GridSpec
-import time
-import sys
-import os
+import matplotlib.gridspec as gridspec
+from matplotlib.animation import FuncAnimation
+import mngs
 
-# Add parent directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+"""Parameters"""
+# from mngs.io import load_configs
+# CONFIG = load_configs()
 
-from gpac import PAC, SyntheticDataGenerator
-
-# Try to import tensorpac for comparison
-try:
-    from tensorpac import Pac as TensorPAC
-    TENSORPAC_AVAILABLE = True
-except ImportError:
-    print("Warning: TensorPAC not available for comparison")
-    TENSORPAC_AVAILABLE = False
-
-
-def generate_synthetic_pac_signal(n_seconds=10, fs=250, phase_freq=6.0, amp_freq=60.0, 
-                                 coupling_strength=0.5, noise_level=0.1):
-    """
-    Generate synthetic signal with known PAC coupling.
+"""Functions & Classes"""
+def generate_synthetic_pac_signal(
+    n_seconds=2,
+    fs=512,
+    f_phase=6,
+    f_amp=80,
+    pac_strength=0.5,
+    noise_level=0.1
+):
+    """Generate synthetic signal with known PAC."""
+    t = np.linspace(0, n_seconds, int(n_seconds * fs))
     
-    Parameters
-    ----------
-    n_seconds : float
-        Duration of signal in seconds
-    fs : float
-        Sampling frequency in Hz
-    phase_freq : float
-        Frequency for phase signal (Hz)
-    amp_freq : float
-        Frequency for amplitude signal (Hz)
-    coupling_strength : float
-        Strength of PAC coupling (0-1)
-    noise_level : float
-        Amount of noise to add (0-1)
+    # Phase signal (low frequency)
+    phase_signal = np.sin(2 * np.pi * f_phase * t)
     
-    Returns
-    -------
-    signal : np.ndarray
-        Synthetic signal with PAC
-    time : np.ndarray
-        Time vector
-    """
-    n_samples = int(n_seconds * fs)
-    time = np.linspace(0, n_seconds, n_samples)
+    # Amplitude signal (high frequency)
+    amp_signal = np.sin(2 * np.pi * f_amp * t)
     
-    # Generate phase signal
-    phase_signal = np.sin(2 * np.pi * phase_freq * time)
+    # Modulate amplitude by phase
+    modulation = 1 + pac_strength * (1 + np.sin(2 * np.pi * f_phase * t)) / 2
+    modulated_signal = amp_signal * modulation
     
-    # Generate amplitude signal with modulation
-    carrier = np.sin(2 * np.pi * amp_freq * time)
-    modulation = 1 + coupling_strength * phase_signal
-    amp_signal = modulation * carrier
+    # Combine signals
+    signal = phase_signal + modulated_signal
     
-    # Combine and add noise
-    signal = amp_signal + noise_level * np.random.randn(n_samples)
+    # Add noise
+    signal += noise_level * np.random.randn(len(signal))
     
-    return signal, time
+    return signal, t
 
 
-def calculate_gpac(signal, fs=250, pha_range=(4, 8), amp_range=(30, 100), 
-                   n_pha_bands=5, n_amp_bands=10):
-    """
-    Calculate PAC using gPAC.
+def compute_pac_gpac(signal, fs, device='cuda'):
+    """Compute PAC using gPAC."""
+    import gpac
     
-    Parameters
-    ----------
-    signal : torch.Tensor or np.ndarray
-        Input signal
-    fs : float
-        Sampling frequency
-    pha_range : tuple
-        Phase frequency range (start, end) in Hz
-    amp_range : tuple
-        Amplitude frequency range (start, end) in Hz
-    n_pha_bands : int
-        Number of phase bands
-    n_amp_bands : int
-        Number of amplitude bands
+    # Convert to torch tensor
+    signal_tensor = torch.tensor(signal, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
     
-    Returns
-    -------
-    pac_values : torch.Tensor
-        PAC values matrix
-    pha_freqs : torch.Tensor
-        Phase frequencies
-    amp_freqs : torch.Tensor
-        Amplitude frequencies
-    computation_time : float
-        Time taken for computation
-    """
-    # Convert to tensor if needed
-    if isinstance(signal, np.ndarray):
-        signal = torch.from_numpy(signal).float()
+    if device == 'cuda' and torch.cuda.is_available():
+        signal_tensor = signal_tensor.cuda()
     
-    # Ensure correct shape (batch, channels, time)
-    if signal.ndim == 1:
-        signal = signal.unsqueeze(0).unsqueeze(0)
-    elif signal.ndim == 2:
-        signal = signal.unsqueeze(0)
-    
-    seq_len = signal.shape[-1]
-    
-    # Initialize PAC calculator
-    pac = PAC(
-        seq_len=seq_len,
+    # Initialize PAC with moderate resolution for demo
+    pac_model = gpac.PAC(
+        seq_len=len(signal),
         fs=fs,
-        pha_start_hz=pha_range[0],
-        pha_end_hz=pha_range[1],
-        pha_n_bands=n_pha_bands,
-        amp_start_hz=amp_range[0],
-        amp_end_hz=amp_range[1],
-        amp_n_bands=n_amp_bands,
-        trainable=False
+        pha_start_hz=2.0,
+        pha_end_hz=20.0,
+        pha_n_bands=10,  # Reduced for speed
+        amp_start_hz=40.0,
+        amp_end_hz=160.0,
+        amp_n_bands=10,  # Reduced for speed
+        n_perm=None,  # No surrogates for speed
+        fp16=False
     )
+    
+    if device == 'cuda' and torch.cuda.is_available():
+        pac_model = pac_model.cuda()
     
     # Time the computation
     start_time = time.time()
     with torch.no_grad():
-        output = pac(signal)
-    computation_time = time.time() - start_time
+        pac_results = pac_model(signal_tensor)
+    pac_values = pac_results['pac'].squeeze().cpu().numpy()
+    comp_time = time.time() - start_time
     
-    pac_values = output['pac'].squeeze().numpy()
-    pha_freqs = output['phase_frequencies'].numpy()
-    amp_freqs = output['amplitude_frequencies'].numpy()
+    # Get frequency arrays
+    pha_freqs = pac_results['phase_frequencies'].numpy()
+    amp_freqs = pac_results['amplitude_frequencies'].numpy()
     
-    return pac_values, pha_freqs, amp_freqs, computation_time
+    return pac_values, pha_freqs, amp_freqs, comp_time
 
 
-def calculate_tensorpac(signal, fs=250, pha_range=(4, 8), amp_range=(30, 100),
-                       n_pha_bands=5, n_amp_bands=10):
-    """
-    Calculate PAC using TensorPAC.
+def compute_pac_tensorpac(signal, fs):
+    """Compute PAC using TensorPAC."""
+    from tensorpac import Pac
     
-    Parameters
-    ----------
-    signal : np.ndarray
-        Input signal
-    fs : float
-        Sampling frequency
-    pha_range : tuple
-        Phase frequency range (start, end) in Hz
-    amp_range : tuple
-        Amplitude frequency range (start, end) in Hz
-    n_pha_bands : int
-        Number of phase bands
-    n_amp_bands : int
-        Number of amplitude bands
+    # Reshape signal for tensorpac (needs 2D: n_epochs x n_times)
+    signal_2d = signal.reshape(1, -1)
     
-    Returns
-    -------
-    pac_values : np.ndarray
-        PAC values matrix
-    pha_freqs : np.ndarray
-        Phase frequencies
-    amp_freqs : np.ndarray
-        Amplitude frequencies
-    computation_time : float
-        Time taken for computation
-    """
-    if not TENSORPAC_AVAILABLE:
-        return None, None, None, None
+    # Initialize with similar parameters
+    pac = Pac(idpac=(2, 0, 0), dcomplex='hilbert')  # MI method
     
-    # Ensure correct shape for TensorPAC (n_epochs, n_times)
-    if signal.ndim == 1:
-        signal = signal.reshape(1, -1)
-    
-    # Create phase and amplitude frequency vectors with explicit bands
-    pha_freqs = np.linspace(pha_range[0], pha_range[1], n_pha_bands)
-    amp_freqs = np.linspace(amp_range[0], amp_range[1], n_amp_bands)
-    
-    # Create frequency bands for TensorPAC
-    pha_bands = [(f-0.5, f+0.5) for f in pha_freqs]
-    amp_bands = [(f-2, f+2) for f in amp_freqs]
-    
-    # Initialize TensorPAC with explicit frequency bands
-    pac = TensorPAC(idpac=(2, 0, 0), f_pha=pha_bands, f_amp=amp_bands, dcomplex='hilbert')
+    # Define frequency vectors (reduced resolution for speed)
+    f_pha = np.arange(2, 20, 2)  # 10 bands
+    f_amp = np.arange(40, 160, 12)  # 10 bands
     
     # Time the computation
     start_time = time.time()
-    xpac = pac.filterfit(fs, signal, n_jobs=1)
-    computation_time = time.time() - start_time
+    pac_values = pac.filterfit(fs, signal_2d, f_pha=f_pha, f_amp=f_amp)
+    comp_time = time.time() - start_time
     
-    # Extract PAC values - shape should be (n_amp, n_pha, n_epochs, n_times)
-    # We want the average across time for each frequency pair
-    pac_values = np.squeeze(xpac)
+    # Remove the epoch dimension
+    pac_values = pac_values.squeeze()
     
-    # Handle different output shapes
-    if pac_values.ndim == 4:
-        # Average across epochs and time
-        pac_values = pac_values.mean(axis=(2, 3))
-    elif pac_values.ndim == 3:
-        # Average across time
-        pac_values = pac_values.mean(axis=2)
-    elif pac_values.ndim == 2:
-        # Already in correct format
-        pass
-    else:
-        print(f"Warning: Unexpected TensorPAC output shape: {pac_values.shape}")
-        pac_values = np.zeros((n_amp_bands, n_pha_bands))
-    
-    # Transpose to match gPAC format (pha x amp)
-    pac_values = pac_values.T
-    
-    return pac_values, pha_freqs, amp_freqs, computation_time
+    return pac_values, f_pha, f_amp, comp_time
 
 
-def create_comparison_plot(signal, time, gpac_results, tensorpac_results, 
-                          phase_freq=6.0, amp_freq=60.0):
-    """
-    Create comparison plot between gPAC and TensorPAC.
+def create_comparison_figure(
+    signal, t, pac_gpac, pac_tensorpac, 
+    pha_freqs_gpac, amp_freqs_gpac,
+    pha_freqs_tp, amp_freqs_tp,
+    time_gpac, time_tensorpac,
+    save_path
+):
+    """Create 4-panel comparison figure."""
+    fig = plt.figure(figsize=(14, 10))
+    gs = gridspec.GridSpec(3, 3, height_ratios=[1, 2, 0.1], width_ratios=[1, 1, 1])
     
-    Parameters
-    ----------
-    signal : np.ndarray
-        Input signal
-    time : np.ndarray
-        Time vector
-    gpac_results : tuple
-        Results from gPAC (pac_values, pha_freqs, amp_freqs, time)
-    tensorpac_results : tuple
-        Results from TensorPAC (pac_values, pha_freqs, amp_freqs, time)
-    phase_freq : float
-        True phase frequency for marking
-    amp_freq : float
-        True amplitude frequency for marking
-    
-    Returns
-    -------
-    fig : matplotlib.figure.Figure
-        Figure object
-    """
-    fig = plt.figure(figsize=(15, 10))
-    gs = GridSpec(3, 3, figure=fig, height_ratios=[1, 1.5, 1.5])
-    
-    # Top: Raw signal
+    # Top panel: Raw signal
     ax_signal = fig.add_subplot(gs[0, :])
-    ax_signal.plot(time[:1000], signal[:1000], 'k-', linewidth=0.5)
+    ax_signal.plot(t[:1024], signal[:1024], 'k-', linewidth=0.8)
     ax_signal.set_xlabel('Time (s)')
     ax_signal.set_ylabel('Amplitude')
-    ax_signal.set_title('Raw Signal (first 4 seconds)', fontsize=14, fontweight='bold')
+    ax_signal.set_title('Synthetic PAC Signal (Phase: 6 Hz, Amplitude: 80 Hz)', fontsize=14)
     ax_signal.grid(True, alpha=0.3)
     
-    # Bottom left: gPAC results
-    ax_gpac = fig.add_subplot(gs[1:, 0])
-    gpac_pac, gpac_pha, gpac_amp, gpac_time = gpac_results
+    # Bottom left: gPAC
+    ax_gpac = fig.add_subplot(gs[1, 0])
+    im1 = ax_gpac.imshow(pac_gpac.T, aspect='auto', origin='lower',
+                         extent=[pha_freqs_gpac[0], pha_freqs_gpac[-1], 
+                                amp_freqs_gpac[0], amp_freqs_gpac[-1]],
+                         cmap='hot', interpolation='bilinear')
+    ax_gpac.set_xlabel('Phase Frequency (Hz)')
+    ax_gpac.set_ylabel('Amplitude Frequency (Hz)')
+    ax_gpac.set_title(f'gPAC (Time: {time_gpac:.3f}s)', fontsize=12)
+    ax_gpac.axvline(6, color='cyan', linestyle='--', alpha=0.5)
+    ax_gpac.axhline(80, color='cyan', linestyle='--', alpha=0.5)
     
-    if gpac_pac is not None:
-        im1 = ax_gpac.imshow(gpac_pac.T, aspect='auto', origin='lower',
-                            extent=[gpac_pha[0], gpac_pha[-1], gpac_amp[0], gpac_amp[-1]],
-                            cmap='hot', interpolation='bilinear')
-        ax_gpac.set_xlabel('Phase Frequency (Hz)')
-        ax_gpac.set_ylabel('Amplitude Frequency (Hz)')
-        ax_gpac.set_title(f'gPAC\n(Time: {gpac_time:.3f}s)', fontsize=12, fontweight='bold')
-        
-        # Mark true frequencies
-        ax_gpac.axvline(phase_freq, color='cyan', linestyle='--', alpha=0.7)
-        ax_gpac.axhline(amp_freq, color='cyan', linestyle='--', alpha=0.7)
-        
-        plt.colorbar(im1, ax=ax_gpac, label='PAC Value')
-    
-    # Bottom center: TensorPAC results
-    ax_tensorpac = fig.add_subplot(gs[1:, 1])
-    tensorpac_pac, tensorpac_pha, tensorpac_amp, tensorpac_time = tensorpac_results
-    
-    if tensorpac_pac is not None and TENSORPAC_AVAILABLE:
-        im2 = ax_tensorpac.imshow(tensorpac_pac.T, aspect='auto', origin='lower',
-                                 extent=[tensorpac_pha[0], tensorpac_pha[-1], 
-                                        tensorpac_amp[0], tensorpac_amp[-1]],
-                                 cmap='hot', interpolation='bilinear')
-        ax_tensorpac.set_xlabel('Phase Frequency (Hz)')
-        ax_tensorpac.set_ylabel('Amplitude Frequency (Hz)')
-        ax_tensorpac.set_title(f'TensorPAC\n(Time: {tensorpac_time:.3f}s)', 
-                             fontsize=12, fontweight='bold')
-        
-        # Mark true frequencies
-        ax_tensorpac.axvline(phase_freq, color='cyan', linestyle='--', alpha=0.7)
-        ax_tensorpac.axhline(amp_freq, color='cyan', linestyle='--', alpha=0.7)
-        
-        plt.colorbar(im2, ax=ax_tensorpac, label='PAC Value')
-    else:
-        ax_tensorpac.text(0.5, 0.5, 'TensorPAC not available', 
-                         ha='center', va='center', transform=ax_tensorpac.transAxes)
-        ax_tensorpac.set_xlabel('Phase Frequency (Hz)')
-        ax_tensorpac.set_ylabel('Amplitude Frequency (Hz)')
+    # Bottom center: TensorPAC
+    ax_tensorpac = fig.add_subplot(gs[1, 1])
+    im2 = ax_tensorpac.imshow(pac_tensorpac.T, aspect='auto', origin='lower',
+                              extent=[pha_freqs_tp[0], pha_freqs_tp[-1], 
+                                     amp_freqs_tp[0], amp_freqs_tp[-1]],
+                              cmap='hot', interpolation='bilinear')
+    ax_tensorpac.set_xlabel('Phase Frequency (Hz)')
+    ax_tensorpac.set_ylabel('')
+    ax_tensorpac.set_title(f'TensorPAC (Time: {time_tensorpac:.3f}s)', fontsize=12)
+    ax_tensorpac.axvline(6, color='cyan', linestyle='--', alpha=0.5)
+    ax_tensorpac.axhline(80, color='cyan', linestyle='--', alpha=0.5)
     
     # Bottom right: Difference
-    ax_diff = fig.add_subplot(gs[1:, 2])
+    ax_diff = fig.add_subplot(gs[1, 2])
     
-    if gpac_pac is not None and tensorpac_pac is not None and TENSORPAC_AVAILABLE:
-        # Interpolate to same grid if needed
-        diff = gpac_pac - tensorpac_pac
-        
-        im3 = ax_diff.imshow(diff.T, aspect='auto', origin='lower',
-                            extent=[gpac_pha[0], gpac_pha[-1], gpac_amp[0], gpac_amp[-1]],
-                            cmap='RdBu_r', interpolation='bilinear',
-                            vmin=-np.abs(diff).max(), vmax=np.abs(diff).max())
-        ax_diff.set_xlabel('Phase Frequency (Hz)')
-        ax_diff.set_ylabel('Amplitude Frequency (Hz)')
-        ax_diff.set_title('Difference\n(gPAC - TensorPAC)', fontsize=12, fontweight='bold')
-        
-        # Mark true frequencies
-        ax_diff.axvline(phase_freq, color='black', linestyle='--', alpha=0.7)
-        ax_diff.axhline(amp_freq, color='black', linestyle='--', alpha=0.7)
-        
-        plt.colorbar(im3, ax=ax_diff, label='Difference')
-    else:
-        ax_diff.text(0.5, 0.5, 'Comparison not available', 
-                    ha='center', va='center', transform=ax_diff.transAxes)
-        ax_diff.set_xlabel('Phase Frequency (Hz)')
-        ax_diff.set_ylabel('Amplitude Frequency (Hz)')
+    # Interpolate to common grid for difference
+    from scipy.interpolate import interp2d
+    f_gpac = interp2d(pha_freqs_gpac, amp_freqs_gpac, pac_gpac.T, kind='linear')
+    pac_gpac_interp = f_gpac(pha_freqs_tp, amp_freqs_tp)
+    
+    diff = pac_gpac_interp - pac_tensorpac.T
+    im3 = ax_diff.imshow(diff, aspect='auto', origin='lower',
+                         extent=[pha_freqs_tp[0], pha_freqs_tp[-1], 
+                                amp_freqs_tp[0], amp_freqs_tp[-1]],
+                         cmap='RdBu_r', interpolation='bilinear',
+                         vmin=-0.2, vmax=0.2)
+    ax_diff.set_xlabel('Phase Frequency (Hz)')
+    ax_diff.set_ylabel('')
+    ax_diff.set_title('Difference (gPAC - TensorPAC)', fontsize=12)
+    ax_diff.axvline(6, color='black', linestyle='--', alpha=0.5)
+    ax_diff.axhline(80, color='black', linestyle='--', alpha=0.5)
+    
+    # Add colorbars
+    cbar_ax1 = fig.add_subplot(gs[2, :2])
+    cbar1 = plt.colorbar(im1, cax=cbar_ax1, orientation='horizontal')
+    cbar1.set_label('Modulation Index', fontsize=10)
+    
+    cbar_ax2 = fig.add_subplot(gs[2, 2])
+    cbar2 = plt.colorbar(im3, cax=cbar_ax2, orientation='horizontal')
+    cbar2.set_label('Difference', fontsize=10)
+    
+    # Add performance comparison text
+    speedup = time_tensorpac / time_gpac
+    fig.text(0.5, 0.98, f'Performance: gPAC {speedup:.1f}x faster than TensorPAC', 
+             ha='center', va='top', fontsize=12, fontweight='bold')
+    
+    # Add correlation
+    corr = np.corrcoef(pac_gpac.flatten(), pac_gpac_interp.T.flatten())[0, 1]
+    fig.text(0.5, 0.96, f'Correlation: r = {corr:.3f}', 
+             ha='center', va='top', fontsize=10)
     
     plt.tight_layout()
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    mngs.gen.print_block(f"Figure saved to: {save_path}", c='green')
+    
     return fig
 
 
-def main():
+def main(args):
     """Main demo function."""
-    print("=" * 60)
-    print("gPAC Demo: Phase-Amplitude Coupling Analysis")
-    print("=" * 60)
+    # Create output directory
+    output_dir = './readme_demo_out'
+    os.makedirs(output_dir, exist_ok=True)
     
-    # Parameters
-    n_seconds = 10
-    fs = 250
-    phase_freq = 6.0  # Hz (theta band)
-    amp_freq = 60.0   # Hz (gamma band)
-    coupling_strength = 0.7
-    noise_level = 0.1
-    
-    # PAC calculation parameters
-    pha_range = (4, 8)    # Theta band
-    amp_range = (30, 100) # Gamma band
-    n_pha_bands = 10
-    n_amp_bands = 20
-    
-    print(f"\nGenerating synthetic signal:")
-    print(f"  Duration: {n_seconds} seconds")
-    print(f"  Sampling rate: {fs} Hz")
-    print(f"  Phase frequency: {phase_freq} Hz")
-    print(f"  Amplitude frequency: {amp_freq} Hz")
-    print(f"  Coupling strength: {coupling_strength}")
-    print(f"  Noise level: {noise_level}")
-    
-    # Generate synthetic signal
-    signal, time = generate_synthetic_pac_signal(
-        n_seconds=n_seconds,
-        fs=fs,
-        phase_freq=phase_freq,
-        amp_freq=amp_freq,
-        coupling_strength=coupling_strength,
-        noise_level=noise_level
+    # Generate synthetic PAC signal
+    mngs.gen.print_block("Generating synthetic PAC signal", c='cyan')
+    signal, t = generate_synthetic_pac_signal(
+        n_seconds=2,
+        fs=512,
+        f_phase=6,
+        f_amp=80,
+        pac_strength=0.5,
+        noise_level=0.1
     )
     
-    print(f"\nCalculating PAC:")
-    print(f"  Phase range: {pha_range} Hz")
-    print(f"  Amplitude range: {amp_range} Hz")
-    print(f"  Phase bands: {n_pha_bands}")
-    print(f"  Amplitude bands: {n_amp_bands}")
+    # Compute PAC with gPAC
+    mngs.gen.print_block("Computing PAC with gPAC", c='cyan')
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    pac_gpac, pha_freqs_gpac, amp_freqs_gpac, time_gpac = compute_pac_gpac(signal, 512, device)
+    print(f"gPAC computation time: {time_gpac:.3f}s")
+    print(f"PAC matrix shape: {pac_gpac.shape}")
     
-    # Calculate PAC using gPAC
-    print("\n  Computing with gPAC...", end='', flush=True)
-    gpac_results = calculate_gpac(
-        signal, fs, pha_range, amp_range, n_pha_bands, n_amp_bands
-    )
-    print(f" Done! (Time: {gpac_results[3]:.3f}s)")
+    # Compute PAC with TensorPAC
+    mngs.gen.print_block("Computing PAC with TensorPAC", c='cyan')
+    pac_tensorpac, pha_freqs_tp, amp_freqs_tp, time_tensorpac = compute_pac_tensorpac(signal, 512)
+    print(f"TensorPAC computation time: {time_tensorpac:.3f}s")
+    print(f"PAC matrix shape: {pac_tensorpac.shape}")
     
-    # Calculate PAC using TensorPAC
-    if TENSORPAC_AVAILABLE:
-        print("  Computing with TensorPAC...", end='', flush=True)
-        tensorpac_results = calculate_tensorpac(
-            signal, fs, pha_range, amp_range, n_pha_bands, n_amp_bands
-        )
-        print(f" Done! (Time: {tensorpac_results[3]:.3f}s)")
-    else:
-        tensorpac_results = (None, None, None, None)
-    
-    # Performance comparison
-    print("\n" + "=" * 60)
-    print("Performance Summary:")
-    print("=" * 60)
-    print(f"gPAC computation time: {gpac_results[3]:.3f} seconds")
-    if TENSORPAC_AVAILABLE and tensorpac_results[3] is not None:
-        print(f"TensorPAC computation time: {tensorpac_results[3]:.3f} seconds")
-        speedup = tensorpac_results[3] / gpac_results[3]
-        print(f"Speedup factor: {speedup:.2f}x")
-    
-    # Ground truth PAC location
-    print(f"\nGround truth PAC location:")
-    print(f"  Phase: {phase_freq} Hz")
-    print(f"  Amplitude: {amp_freq} Hz")
-    
-    # Create comparison plot
-    print("\nGenerating comparison plot...")
-    fig = create_comparison_plot(
-        signal, time, gpac_results, tensorpac_results, phase_freq, amp_freq
+    # Create comparison figure
+    mngs.gen.print_block("Creating comparison figure", c='cyan')
+    fig = create_comparison_figure(
+        signal, t, pac_gpac, pac_tensorpac,
+        pha_freqs_gpac, amp_freqs_gpac,
+        pha_freqs_tp, amp_freqs_tp,
+        time_gpac, time_tensorpac,
+        os.path.join(output_dir, 'comparison_figure.png')
     )
     
-    # Save plot
-    output_path = os.path.join(os.path.dirname(__file__), 'readme_demo_output.png')
-    fig.savefig(output_path, dpi=300, bbox_inches='tight')
-    print(f"Plot saved to: {output_path}")
+    # Performance summary
+    mngs.gen.print_block("Performance Summary", c='yellow')
+    print(f"gPAC time: {time_gpac:.3f}s")
+    print(f"TensorPAC time: {time_tensorpac:.3f}s")
+    print(f"Speedup: {time_tensorpac/time_gpac:.1f}x")
+    print(f"Device: {device}")
     
-    # Also save as individual frames for GIF if needed
-    # (This would require additional implementation)
-    
-    print("\nDemo completed successfully!")
+    return 0
 
 
-if __name__ == "__main__":
-    main()
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments."""
+    import mngs
+    script_mode = mngs.gen.is_script()
+    parser = argparse.ArgumentParser(description='README demo comparing gPAC vs TensorPAC')
+    args = parser.parse_args()
+    mngs.str.printc(args, c='yellow')
+    return args
+
+
+def run_main() -> None:
+    """Initialize mngs framework, run main function, and cleanup."""
+    global CONFIG, CC, sys, plt
+
+    import sys
+    import matplotlib.pyplot as plt
+    import mngs
+
+    args = parse_args()
+
+    # Start mngs framework
+    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+        sys,
+        plt,
+        args=args,
+        file=__file__,
+        sdir_suffix='readme_demo',
+        verbose=False,
+        agg=True,
+    )
+
+    # Main
+    exit_status = main(args)
+
+    # Close the mngs framework
+    mngs.gen.close(
+        CONFIG,
+        verbose=False,
+        notify=False,
+        message="",
+        exit_status=exit_status,
+    )
+
+
+if __name__ == '__main__':
+    run_main()
+
+# EOF

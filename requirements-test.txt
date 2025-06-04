@@ -1,0 +1,9 @@
+# Test requirements
+pytest>=6.0
+pytest-cov>=2.0
+matplotlib>=3.0
+psutil>=5.0
+tensorpac>=0.6.0
+mngs
+gputil>=1.0
+mne>=0.23  # For real-world demo
