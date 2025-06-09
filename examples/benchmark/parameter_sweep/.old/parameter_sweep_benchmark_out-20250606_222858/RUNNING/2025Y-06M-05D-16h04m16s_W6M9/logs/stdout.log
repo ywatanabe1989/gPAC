@@ -1,0 +1,71 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-16h04m16s_W6M9 (PID: 277995)
+########################################
+[0m
+[93m
+========================================
+/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(device='cuda', n_repeats=1, no_quick=False, quick=True)
+========================================
+[0m
+
+============================================================
+gPAC Parameter Sweep Benchmark
+============================================================
+Running parameter sweep on device: cuda
+============================================================
+
+Varying parameter: batch_size
+----------------------------------------
+  batch_size = 1... gPAC: 0.0569s, TensorPAC: 0.0496s, Speedup: 0.9x
+  batch_size = 4... gPAC: 0.2188s, TensorPAC: 0.1528s, Speedup: 0.7x
+  batch_size = 16... gPAC: 0.8543s, TensorPAC: 0.5797s, Speedup: 0.7x
+
+Varying parameter: n_channels
+----------------------------------------
+  n_channels = 1... gPAC: 0.0298s, TensorPAC: 0.0313s, Speedup: 1.1x
+  n_channels = 4... gPAC: 0.1095s, TensorPAC: 0.0825s, Speedup: 0.8x
+  n_channels = 16... gPAC: 0.4300s, TensorPAC: 0.2874s, Speedup: 0.7x
+
+Varying parameter: seq_sec
+----------------------------------------
+  seq_sec = 1.0... gPAC: 0.2030s, TensorPAC: 0.0504s, Speedup: 0.2x
+  seq_sec = 4.0... gPAC: 0.2159s, TensorPAC: 0.1498s, Speedup: 0.7x
+
+Varying parameter: fs
+----------------------------------------
+  fs = 250... gPAC: 0.2168s, TensorPAC: 0.1478s, Speedup: 0.7x
+  fs = 1000... gPAC: 0.2680s, TensorPAC: 0.8223s, Speedup: 3.1x
+
+Varying parameter: pha_n_bands
+----------------------------------------
+  pha_n_bands = 5... gPAC: 0.1728s, TensorPAC: 0.0973s, Speedup: 0.6x
+  pha_n_bands = 15... gPAC: 0.2611s, TensorPAC: 0.2055s, Speedup: 0.8x
+
+Varying parameter: amp_n_bands
+----------------------------------------
+  amp_n_bands = 5... gPAC: 0.1301s, TensorPAC: 0.0799s, Speedup: 0.6x
+  amp_n_bands = 15... gPAC: 0.2160s, TensorPAC: 0.1477s, Speedup: 0.7x
+
+Varying parameter: n_perm
+----------------------------------------
+  n_perm = 0... gPAC: 0.2157s, TensorPAC: 0.1472s, Speedup: 0.7x
+  n_perm = 50... gPAC: 0.2794s, TensorPAC: 0.1501s, Speedup: 0.5x
+  n_perm = 200... gPAC: 0.4169s, TensorPAC: 0.1485s, Speedup: 0.4x
+
+Varying parameter: fp16
+----------------------------------------
+  fp16 = False... gPAC: 0.2184s, TensorPAC: 0.1467s, Speedup: 0.7x
+  fp16 = True... gPAC: 0.2203s, TensorPAC: nans, Speedup: nanx
+
+Varying parameter: multi_gpu
+----------------------------------------
+  multi_gpu = False... gPAC: 0.2152s, TensorPAC: 0.1479s, Speedup: 0.7x
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.yaml (7.5 KiB)[0m
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.csv (5.3 KiB)[0m
+
+Creating parameter dependency plots...

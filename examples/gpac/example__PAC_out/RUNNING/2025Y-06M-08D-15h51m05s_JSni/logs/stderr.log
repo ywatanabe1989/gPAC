@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 877, in <module>
+    if __name__ == "__main__":
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 865, in run_main
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 815, in main
+    # demo_static_pac(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 355, in demo_trainable_pac
+    sample_result = pac_trainable(X_train[:2])
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 336, in extract_features
+    pac_q90 = (
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 336, in extract_features
+    pac_q90 = (
+  File "/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+
+If you suspect this is an IPython 8.37.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True
+

@@ -1,0 +1,19 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-18h59m56s_ARMu (PID: 132591)
+########################################
+[0m
+[93m
+========================================
+./examples/performance/comprehensive_benchmark.py
+Namespace(n_repeats=3)
+========================================
+[0m
+🚀 COMPREHENSIVE gPAC vs TensorPAC BENCHMARK
+============================================================
+GPU: NVIDIA A100 80GB PCIe
+Available GPUs: 4
+GPU Memory: 85.0GB
+
+--- Config: 5000 samples, batch=1, ch=1, 10×10 ---

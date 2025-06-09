@@ -1,0 +1,47 @@
+  0%|                                                                                        | 0/896 [00:00<?, ?it/s]  0%|                                                                                | 1/896 [00:02<33:44,  2.26s/it]  0%|                                                                              | 1/896 [00:22<5:40:18, 22.81s/it]
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 337, in <module>
+    notify=False,
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 324, in run_main
+    args=args,
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 258, in main
+    with warnings.catch_warnings():
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 119, in benchmark_one_condition
+    calculation_time, sample_comodulogram = compute(
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 238, in compute
+    return _compute_gpac(dataloader, device, pac_calculator)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 159, in _compute_gpac
+    last_output_gp = pac_calculator_gpac(signal.to(device))
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 171, in forward
+    results = self._forward_vectorized(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 185, in _forward_vectorized
+    x_filtered = self.bandpass(x_flat)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 655, in _fn
+    return fn(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilter.py", line 210, in forward
+    return self.filter(x)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 838, in _fn
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py", line 368, in forward
+    amp_filtered = self._apply_selected_filters_filtfilt(
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 838, in _fn
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py", line 461, in _apply_selected_filters_filtfilt
+    filtered_backward = F.conv1d(
+KeyboardInterrupt

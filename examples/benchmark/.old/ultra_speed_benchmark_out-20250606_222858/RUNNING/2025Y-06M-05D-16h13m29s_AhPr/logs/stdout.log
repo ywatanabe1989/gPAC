@@ -1,0 +1,29 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-16h13m29s_AhPr (PID: 299942)
+########################################
+[0m
+[93m
+========================================
+./examples/performance/ultra_speed_benchmark.py
+Namespace()
+========================================
+[0m
+🎯 Target: 100x faster than TensorPAC
+📏 Metric: Pure computation time (excluding init/transfer)
+
+🚀 ULTRA-SPEED BENCHMARK: Targeting 100x Speedup vs TensorPAC
+================================================================================
+⚡ Excludes initialization and GPU transfer time
+⚡ Tests PURE COMPUTATION SPEED only
+================================================================================
+
+🧪 Testing Small configuration...
+   4 batches × 8 channels × 1024 samples
+Creating test data: batch=4, channels=8, samples=1024
+🔧 Initializing models (NOT counted in timing)...
+   gPAC initialization: 0.0164s
+
+📊 PURE COMPUTATION BENCHMARKS:
+🔥 gPAC Ultra-Fast Mode: Pure computation benchmark

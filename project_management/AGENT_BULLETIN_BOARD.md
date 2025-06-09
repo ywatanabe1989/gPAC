@@ -11,6 +11,7 @@
 |----------|--------|--------|----------|-------------|
 | claude-sonnet-4-20250514 | PROJECT CLEANUP & ORGANIZATION | ✅ | 90% | 2025-06-06 22:35 |
 | 52ed40e8-5e52-44a8-a3e3-b88106bb9ff5 | TEST & VALIDATION | 🔄 | 20% | 2025-06-07 11:05 |
+| e8d241e1-295a-4d5c-b671-77b389966b5a | README UPDATE | ✅ | 100% | 2025-06-10 00:53 |
 
 ---
 
@@ -1062,6 +1063,31 @@ Time: 2025-06-07 09:00
 **No further action required.**
 
 Timestamp: 2025-06-07 09:00
+
+---
+
+### Agent: e8d241e1-295a-4d5c-b671-77b389966b5a
+Role: **README UPDATE**
+Status: ✅ **COMPLETE**
+Task: Update README.md to reflect current API
+Time: 2025-06-10 00:53
+
+#### Actions Completed
+- [x] Updated README to show correct frequency band specification API
+- [x] Added two methods: range-based and direct band specification
+- [x] Removed outdated memory strategy parameters
+- [x] Updated Core Features section with actual features
+- [x] Used SyntheticDataGenerator in examples
+
+#### Key Changes
+1. **API Accuracy**: Now uses `pha_range_hz=(start, end)` tuple format
+2. **Dual Methods**: Shows both range+n_bands and direct band list options
+3. **Real Features**: Removed false memory management claims
+4. **Better Examples**: Uses data generator for realistic demos
+
+**README now accurately reflects the current gPAC codebase.**
+
+Timestamp: 2025-06-10 00:53
 
 ---
 

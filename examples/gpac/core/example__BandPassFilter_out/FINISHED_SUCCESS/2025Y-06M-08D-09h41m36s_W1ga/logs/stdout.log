@@ -1,0 +1,78 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-09h41m36s_W1ga (PID: 271670)
+########################################
+
+
+========================================
+./examples/gpac/example__BandPassFilter.py
+Namespace()
+========================================
+
+
+----------------------------------------
+=== Demo Static BandPassFilter ===
+----------------------------------------
+
+torch.Size([4, 19, 8, 12, 1024])
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__BandPassFilter_out/02_static_bandpass_filter.csv (159.5 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__BandPassFilter_out/02_static_bandpass_filter_for_sigmaplot.csv (159.5 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__BandPassFilter_out/02_static_bandpass_filter.gif (954.6 KiB)
+Filter info: {'pha_bands_hz': tensor([[ 4.0000,  5.0000],
+        [ 4.3267,  7.2112],
+        [ 6.2403, 10.4004],
+        [ 9.0000, 12.0000]]), 'amp_bands_hz': tensor([[ 30.0000,  33.7500],
+        [ 31.1764,  40.0840],
+        [ 37.0274,  47.6067],
+        [ 43.9765,  56.5412],
+        [ 52.2297,  67.1524],
+        [ 62.0318,  79.7551],
+        [ 73.6735,  94.7230],
+        [ 87.5000, 100.0000]]), 'pha_center_freqs': tensor([ 4.0000,  5.7690,  8.3203, 12.0000]), 'amp_center_freqs': tensor([ 30.0000,  35.6302,  42.3170,  50.2588,  59.6910,  70.8934,  84.1982,
+        100.0000]), 'fs': 512.0, 'n_cycles': 4, 'n_filters': 12, 'pha_n_bands': 4, 'amp_n_bands': 8, 'filter_length': 513, 'spacing': 'log', 'trainable': False}
+Input shape: torch.Size([4, 19, 8, 1024])
+Output shape: torch.Size([4, 19, 8, 12, 1024])
+
+----------------------------------------
+=== Demo Trainable BandPassFilter ===
+----------------------------------------
+
+torch.Size([4, 19, 8, 12, 1024])
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__BandPassFilter_out/01_trainable_bandpass_filter.csv (159.9 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__BandPassFilter_out/01_trainable_bandpass_filter_for_sigmaplot.csv (159.9 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__BandPassFilter_out/01_trainable_bandpass_filter.gif (918.3 KiB)
+Filter info: {'pha_bands_hz': tensor([[ 3.0000,  5.0000],
+        [ 3.5098,  5.8497],
+        [ 4.1062,  6.8437],
+        [ 4.8040,  8.0066],
+        [ 5.6203,  9.3672],
+        [ 6.5754, 10.9590],
+        [ 7.6928, 12.8213],
+        [ 9.0000, 15.0000]]), 'amp_bands_hz': tensor([[ 26.2500,  33.7500],
+        [ 28.4438,  36.5706],
+        [ 30.8210,  39.6270],
+        [ 33.3968,  42.9388],
+        [ 36.1879,  46.5273],
+        [ 39.2123,  50.4158],
+        [ 42.4894,  54.6293],
+        [ 46.0404,  59.1948],
+        [ 49.8882,  64.1420],
+        [ 54.0576,  69.5026],
+        [ 58.5754,  75.3112],
+        [ 63.4708,  81.6053],
+        [ 68.7753,  88.4254],
+        [ 74.5231,  95.8154],
+        [ 80.7513, 103.8231],
+        [ 87.5000, 112.5000]]), 'pha_center_freqs': tensor([ 4.0000,  4.6797,  5.4750,  6.4053,  7.4938,  8.7672, 10.2570, 12.0000]), 'amp_center_freqs': tensor([ 30.0000,  32.5072,  35.2240,  38.1678,  41.3576,  44.8140,  48.5593,
+         52.6176,  57.0151,  61.7801,  66.9433,  72.5380,  78.6003,  85.1693,
+         92.2872, 100.0000]), 'pha_bandwidths': tensor([2.0000, 2.3399, 2.7375, 3.2027, 3.7469, 4.3836, 5.1285, 6.0000]), 'amp_bandwidths': tensor([ 7.5000,  8.1268,  8.8060,  9.5419, 10.3394, 11.2035, 12.1398, 13.1544,
+        14.2538, 15.4450, 16.7358, 18.1345, 19.6501, 21.2923, 23.0718, 25.0000]), 'fs': 512.0, 'n_cycles': 4, 'pha_n_bands': 4, 'amp_n_bands': 8, 'pha_n_pool': 8, 'amp_n_pool': 16, 'spacing': 'log', 'trainable': True}
+Input shape: torch.Size([4, 19, 8, 1024])
+Output shape: torch.Size([4, 19, 8, 12, 1024])

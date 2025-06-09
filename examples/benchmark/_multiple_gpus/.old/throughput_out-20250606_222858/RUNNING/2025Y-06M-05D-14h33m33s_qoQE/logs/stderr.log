@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/./examples/performance/multiple_gpus/throughput.py", line 355, in <module>
+    run_main()
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/./examples/performance/multiple_gpus/throughput.py", line 343, in run_main
+    exit_status = main(args)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/./examples/performance/multiple_gpus/throughput.py", line 291, in main
+    fig = create_throughput_comparison_plot(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/multiple_gpus/utils.py", line 371, in create_throughput_comparison_plot
+    results["single_times"],
+KeyError: 'single_times'

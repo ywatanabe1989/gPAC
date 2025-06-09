@@ -1,0 +1,36 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-10h54m16s_ehFd (PID: 76989)
+########################################
+[0m
+[93m
+========================================
+./examples/gpac/core/example__ModulationIndex.py
+Namespace(n_bins=18, temperature=0.01)
+========================================
+[0m
+[93m
+----------------------------------------
+=== Demo ModulationIndex Basic ===
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/01_modulation_index_basic.csv (823.0 B)[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/01_modulation_index_basic_for_sigmaplot.csv (1.2 KiB)[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/01_modulation_index_basic.gif (271.1 KiB)[0m
+Input signal shape: torch.Size([2, 4, 3, 1024])
+Phase shape: torch.Size([2, 4, 3, 3, 1024])
+Amplitude shape: torch.Size([2, 4, 4, 3, 1024])
+MI values shape: torch.Size([2, 4, 3, 4])
+MI per segment shape: torch.Size([2, 4, 3, 4, 3])
+Gradient flow successful: True
+Mean MI: 0.0029
+Max MI: 0.0076
+[93m
+----------------------------------------
+=== Demo ModulationIndex Surrogates ===
+----------------------------------------
+[0m

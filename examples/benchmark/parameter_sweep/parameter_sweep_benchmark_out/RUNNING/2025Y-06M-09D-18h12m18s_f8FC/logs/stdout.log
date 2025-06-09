@@ -1,0 +1,18 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-09D-18h12m18s_f8FC (PID: 301785)
+########################################
+[0m
+[93m
+========================================
+/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(no_quick=True, quick=False)
+========================================
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m

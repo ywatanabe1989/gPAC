@@ -1,0 +1,898 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-09D-18h13m26s_mddg (PID: 1033)
+########################################
+[0m
+[93m
+========================================
+/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(no_quick=True, quick=False)
+========================================
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 116.471 = (29.118 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (807.0 B)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 32)
+Computation Time [sec]: 9.261 = (2.315 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': True, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 5.045 = (1.261 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.003 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 128)
+Computation Time [sec]: 30.465 = (7.616 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.009 = (0.002 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 32.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 39.473 = (9.868 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 0.294 = (0.074 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.674 = (0.168 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 32.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 17.558 = (4.390 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 32)
+Computation Time [sec]: 0.033 = (0.008 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (27.5 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 8.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.005 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.012 = (0.003 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': False, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 12.764 = (3.191 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 16, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 175.096 = (43.774 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 64, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (64, 15)
+Computation Time [sec]: 0.088 = (0.022 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 32, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.004 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.009 = (0.002 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 64, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (64, 15)
+Computation Time [sec]: 0.092 = (0.023 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': False, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 4.882 = (1.220 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (39.0 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 1.240 = (0.310 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 0.149 = (0.037 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 64, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (64, 15)
+Computation Time [sec]: 0.092 = (0.023 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.005 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.004 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 2.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.016 = (0.004 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 32)
+Computation Time [sec]: 0.038 = (0.009 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 1024, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.005 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 17.134 = (4.284 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 32)
+Computation Time [sec]: 0.002 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (61.1 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.004 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 0.161 = (0.040 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.003 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 2.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 3.954 = (0.988 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 34.628 = (8.657 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 64, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (64, 15)
+Computation Time [sec]: 25.845 = (6.461 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 9.689 = (2.422 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 1.197 = (0.299 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 8.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 9.716 = (2.429 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (128, 15)
+Computation Time [sec]: 50.894 = (12.723 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (100.9 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 4, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 64, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (64, 15)
+Computation Time [sec]: 64.845 = (16.211 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 64, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (64, 15)
+Computation Time [sec]: 25.877 = (6.469 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 1024, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.009 = (0.002 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.482 = (0.120 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 64, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 64)
+Computation Time [sec]: 0.004 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 32, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 34.970 = (8.743 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.676 = (0.169 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 1024, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 93.225 = (23.306 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (117.4 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 8.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 32.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 39.324 = (9.831 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 8.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.129 = (0.032 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 1.222 = (0.306 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 2.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 1.194 = (0.299 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 8.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 17.618 = (4.405 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 82.763 = (20.691 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.306 = (0.076 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 1.113 = (0.278 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 4, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.001 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (124.6 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 32.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.005 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 28.987 = (7.247 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 2.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 8, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 8, 'fp16': True, 'n_cpus': 128}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 4.824 = (1.206 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 4, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.004 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.004 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 4, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.001 = (0.000 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 82.829 = (20.707 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 1.102 = (0.276 [sec/batch])
+----------------------------------------
+[0m
+[93m
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl (131.6 KiB)[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 8.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'device': 'cuda', 'device_ids': [0, 1, 2, 3], 'trainable': True}
+----------------------------------------
+[0m
+[92m
+----------------------------------------
+Comodulogram Shape: (10, 15)
+Computation Time [sec]: 0.002 = (0.001 [sec/batch])
+----------------------------------------
+[0m
+[93m
+----------------------------------------
+Parameters:
+{'package': 'gpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'device': 'cpu', 'device_ids': [0], 'trainable': False}
+----------------------------------------
+[0m

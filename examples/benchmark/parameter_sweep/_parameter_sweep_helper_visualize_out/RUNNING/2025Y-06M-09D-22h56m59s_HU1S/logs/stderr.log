@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/io/_save_image.py", line 67, in _save_image
+    # Save legend - handle GIF format specially
+NameError: name 'ext' is not defined. Did you mean: 'next'?
+ERROR:root:Error occurred while saving: local variable '_io' referenced before assignmentDebug: Initial script_path = /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.pyDebug: Final spath = /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids.gif
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 179, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 167, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 134, in main
+    fig2 = plot_comodulograms(df)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 108, in plot_comodulograms
+    axes[0].imshow_2d(comodulogram_gpac, label="gPAC")
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py", line 164, in __getattr__
+    raise AttributeError(
+AttributeError: 'AxisWrapper' object and its underlying 'Axes' have no attribute 'imshow_2d'. Did you mean: 'imshow'?

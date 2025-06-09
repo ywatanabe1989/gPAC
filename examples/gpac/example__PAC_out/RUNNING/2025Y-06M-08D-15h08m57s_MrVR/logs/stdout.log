@@ -1,0 +1,27 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-15h08m57s_MrVR (PID: 148641)
+########################################
+[0m
+[93m
+========================================
+./examples/gpac/example__PAC.py
+Namespace(n_perm=50, batch_size=2)
+========================================
+[0m
+[93m
+----------------------------------------
+=== Demo Trainable PAC Classification ===
+----------------------------------------
+[0m
+Fold 1/5
+✅ PAC compiled with default mode
+Fold 2/5
+✅ PAC compiled with default mode
+Fold 3/5
+✅ PAC compiled with default mode
+Fold 4/5
+✅ PAC compiled with default mode
+Fold 5/5
+✅ PAC compiled with default mode

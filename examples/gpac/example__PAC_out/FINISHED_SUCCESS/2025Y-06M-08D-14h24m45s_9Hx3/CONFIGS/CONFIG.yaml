@@ -1,0 +1,13 @@
+ID: 2025Y-06M-08D-14h24m45s_9Hx3
+PID: 84411
+START_TIME: 2025-06-08 14:24:45.304678
+FILE: ./examples/gpac/example__PAC.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/example__PAC_out/RUNNING/2025Y-06M-08D-14h24m45s_9Hx3/
+REL_SDIR: examples/gpac/example__PAC_out/
+ARGS:
+    n_perm: 50
+    batch_size: 2
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 14:25:27.490449
+RUN_TIME: 00:00:42

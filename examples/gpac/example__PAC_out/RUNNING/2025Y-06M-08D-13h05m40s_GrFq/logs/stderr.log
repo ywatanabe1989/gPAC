@@ -1,0 +1,56 @@
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:120: UserWarning: No valid plotting records could be formatted from 2 records. Failed records: [id=0, method=bar (error: too many values to unpack (expected 2)), id=1, method=bar (error: too many values to unpack (expected 2))]. Check that supported plot types (plot, scatter, bar, hist, boxplot, etc.) are being used.
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:120: UserWarning: No valid plotting records could be formatted from 2 records. Failed records: [id=0, method=bar (error: too many values to unpack (expected 2)), id=1, method=bar (error: too many values to unpack (expected 2))]. Check that supported plot types (plot, scatter, bar, hist, boxplot, etc.) are being used.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 993, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 981, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 932, in main
+    demo_pac_comparison(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 602, in demo_pac_comparison
+    trainable_result = trainable_pac(signal)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 160, in forward
+    results = self._forward_vectorized(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 223, in _forward_vectorized
+    x_filtered = self.bandpass(x_flat)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 655, in _fn
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilter.py", line 210, in forward
+    return self.filter(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py", line 351, in forward
+    pha_filtered = self._apply_selected_filters_filtfilt(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py", line 428, in _apply_selected_filters_filtfilt
+    x_padded = torch.nn.functional.pad(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/functional.py", line 5209, in pad
+    return torch._C._nn.pad(input, pad, mode, value)
+RuntimeError: Argument #4: Padding size should be less than the corresponding input dimension, but got: padding (512, 512) at dimension 1 of input [16, 512]

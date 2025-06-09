@@ -1,0 +1,53 @@
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 878, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 866, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 816, in main
+    demo_trainable_pac(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 391, in demo_trainable_pac
+    pac_result = pac_trainable(X_batch)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 160, in forward
+    results = self._forward_vectorized(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 223, in _forward_vectorized
+    x_filtered = self.bandpass(x_flat)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 655, in _fn
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilter.py", line 210, in forward
+    return self.filter(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 838, in _fn
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py", line 355, in forward
+    amp_filtered = self._apply_selected_filters_filtfilt(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 838, in _fn
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py", line 443, in _apply_selected_filters_filtfilt
+    filtered_forward = torch.nn.functional.conv1d(
+KeyboardInterrupt
+Exception ignored in atexit callback: <function shutdown_compile_workers at 0x154ff002d870>
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/_inductor/async_compile.py", line 113, in shutdown_compile_workers
+    pool.shutdown()
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/_inductor/compile_worker/subproc_pool.py", line 239, in shutdown
+    self.process.wait(300)
+  File "/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/lib/python3.10/subprocess.py", line 1217, in wait
+    self._wait(timeout=sigint_timeout)
+  File "/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/lib/python3.10/subprocess.py", line 1932, in _wait
+    time.sleep(delay)
+KeyboardInterrupt: 

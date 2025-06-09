@@ -1,0 +1,12 @@
+ID: 2025Y-06M-08D-15h59m44s_84vI
+PID: 218927
+START_TIME: 2025-06-08 15:59:44.116168
+FILE: ./examples/gpac/example__PAC.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/example__PAC_out/RUNNING/2025Y-06M-08D-15h59m44s_84vI/
+REL_SDIR: examples/gpac/example__PAC_out/
+ARGS:
+    n_perm: 50
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 16:00:15.474890
+RUN_TIME: 00:00:31

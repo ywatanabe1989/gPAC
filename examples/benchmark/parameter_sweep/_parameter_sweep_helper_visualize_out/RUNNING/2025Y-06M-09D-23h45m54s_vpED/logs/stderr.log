@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 249, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 237, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 201, in main
+    fig1 = plot_parameter_scaling_on_grids(df)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 73, in plot_parameter_scaling_on_grids
+    ax.sns_lineplot(
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapperMixins/_SeabornMixin.py", line 25, in wrapper
+    return func(self, *args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapperMixins/_SeabornMixin.py", line 215, in sns_lineplot
+    self._sns_base_xyhue(
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapperMixins/_SeabornMixin.py", line 58, in _sns_base_xyhue
+    self._sns_base(
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapperMixins/_SeabornMixin.py", line 46, in _sns_base
+    self._axis_mpl = sns_plot_fn(ax=self._axis_mpl, *args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/seaborn/relational.py", line 495, in lineplot
+    p.map_hue(palette=palette, order=hue_order, norm=hue_norm)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/seaborn/_base.py", line 838, in map_hue
+    mapping = HueMapping(self, palette, order, norm, saturation)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/seaborn/_base.py", line 150, in __init__
+    levels, lookup_table = self.categorical_mapping(
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/seaborn/_base.py", line 234, in categorical_mapping
+    raise ValueError(err.format(missing))
+ValueError: The palette dictionary is missing keys: {'package-tensorpac_fp16-True_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-gpac_fp16-False_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-gpac_fp16-False_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-tensorpac_fp16-True_device-cuda_trainable-True_device_ids-[0]_n_cpus-16', 'package-gpac_fp16-False_device-cuda_trainable-False_device_ids-[0]_n_cpus-16', 'package-tensorpac_fp16-True_device-cuda_trainable-False_device_ids-[0]_n_cpus-16', 'package-gpac_fp16-False_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-True_device_ids-[0]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-False_device_ids-[0]_n_cpus-16', 'package-gpac_fp16-False_device-cuda_trainable-True_device_ids-[0]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-False_device_ids-[0]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-tensorpac_fp16-False_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-tensorpac_fp16-True_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-gpac_fp16-True_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-tensorpac_fp16-False_device-cuda_trainable-True_device_ids-[0]_n_cpus-16', 'package-tensorpac_fp16-False_device-cuda_trainable-True_device_ids-[0]_n_cpus-32', 'package-tensorpac_fp16-True_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-gpac_fp16-False_device-cuda_trainable-False_device_ids-[0]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-gpac_fp16-False_device-cuda_trainable-True_device_ids-[0]_n_cpus-16', 'package-tensorpac_fp16-True_device-cuda_trainable-False_device_ids-[0]_n_cpus-32', 'package-gpac_fp16-False_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-tensorpac_fp16-False_device-cuda_trainable-False_device_ids-[0]_n_cpus-32', 'package-gpac_fp16-True_device-cuda_trainable-True_device_ids-[0]_n_cpus-16', 'package-tensorpac_fp16-False_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-16', 'package-tensorpac_fp16-True_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-tensorpac_fp16-True_device-cuda_trainable-True_device_ids-[0]_n_cpus-32', 'package-tensorpac_fp16-False_device-cuda_trainable-True_device_ids-[0, 1, 2, 3]_n_cpus-32', 'package-tensorpac_fp16-False_device-cuda_trainable-False_device_ids-[0]_n_cpus-16', 'package-tensorpac_fp16-False_device-cuda_trainable-False_device_ids-[0, 1, 2, 3]_n_cpus-32'}

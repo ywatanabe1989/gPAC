@@ -1,0 +1,78 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-14h35m59s_aGgz (PID: 90599)
+########################################
+[0m
+[93m
+========================================
+./examples/performance/multiple_gpus/speed.py
+Namespace(n_perm=0)
+========================================
+[0m
+🔧 GPU Count: 1
+🔧 GPU Memory: 79.1 GB per GPU
+🔧 Total VRAM: 79.1 GB
+
+📋 Test Configuration:
+   batch_size: 8
+   n_channels: 16
+   seq_sec: 8.0s (sequence duration)
+   n_perm: 0
+   seq_len: 4096 samples (computed from seq_sec * fs)
+   fs: 512
+
+============================================================
+🚀 Speed Test
+📋 Computational acceleration for identical workloads
+============================================================
+
+--- Testing batch size: 8 ---
+Data shape: torch.Size([8, 16, 4096])
+✅ Single GPU: 1.00s, 0.9 MB
+✅ Multi-GPU: 0.93s, 0.9 MB
+📈 Speedup: 1.08x, Efficiency: 107.6%
+
+--- Testing batch size: 16 ---
+Data shape: torch.Size([16, 16, 4096])
+✅ Single GPU: 1.78s, 1.8 MB
+✅ Multi-GPU: 1.75s, 1.8 MB
+📈 Speedup: 1.02x, Efficiency: 102.0%
+
+--- Testing batch size: 24 ---
+Data shape: torch.Size([24, 16, 4096])
+✅ Single GPU: 2.62s, 2.8 MB
+✅ Multi-GPU: 2.62s, 2.8 MB
+📈 Speedup: 1.00x, Efficiency: 100.1%
+
+--- Testing batch size: 32 ---
+Data shape: torch.Size([32, 16, 4096])
+✅ Single GPU: 3.50s, 3.7 MB
+✅ Multi-GPU: 3.48s, 3.7 MB
+📈 Speedup: 1.00x, Efficiency: 100.4%
+
+--- Testing batch size: 48 ---
+Data shape: torch.Size([48, 16, 4096])
+✅ Single GPU: 5.23s, 5.5 MB
+✅ Multi-GPU: 5.23s, 5.5 MB
+📈 Speedup: 1.00x, Efficiency: 100.1%
+
+--- Testing batch size: 64 ---
+Data shape: torch.Size([64, 16, 4096])
+✅ Single GPU: 6.99s, 7.4 MB
+✅ Multi-GPU: 6.96s, 7.4 MB
+📈 Speedup: 1.00x, Efficiency: 100.3%
+
+--- Testing batch size: 96 ---
+Data shape: torch.Size([96, 16, 4096])
+✅ Single GPU: 10.46s, 11.1 MB
+✅ Multi-GPU: 10.51s, 11.1 MB
+📈 Speedup: 0.99x, Efficiency: 99.5%
+
+📊 Results Summary:
+   Single GPU Time:  1.00s
+   Multi-GPU Time:   0.93s
+   Speedup:          1.08x
+   Efficiency:       107.6% per GPU
+   Single Throughput: 8.0 samples/sec
+   Multi Throughput:  8.6 samples/sec

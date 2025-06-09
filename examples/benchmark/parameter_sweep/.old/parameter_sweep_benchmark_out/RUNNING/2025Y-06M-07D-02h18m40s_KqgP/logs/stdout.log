@@ -1,0 +1,119 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-07D-02h18m40s_KqgP (PID: 296575)
+########################################
+[0m
+[93m
+========================================
+/data/gpfs/projects/punim2354/ywatanabe/gPAC/./examples/performance/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(device='auto', n_repeats=1, no_quick=True, quick=False)
+========================================
+[0m
+
+============================================================
+gPAC Parameter Sweep Benchmark
+============================================================
+Running parameter sweep on device: cuda
+============================================================
+
+Varying parameter: batch_size
+----------------------------------------
+  batch_size = 1... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0496s, Speedup: nanx
+  batch_size = 2... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0817s, Speedup: nanx
+  batch_size = 4... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1555s, Speedup: nanx
+  batch_size = 8... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.2966s, Speedup: nanx
+  batch_size = 16... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.5946s, Speedup: nanx
+
+Varying parameter: n_channels
+----------------------------------------
+  n_channels = 1... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0315s, Speedup: nanx
+  n_channels = 2... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0471s, Speedup: nanx
+  n_channels = 4... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0814s, Speedup: nanx
+  n_channels = 8... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1516s, Speedup: nanx
+  n_channels = 16... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.2904s, Speedup: nanx
+
+Varying parameter: seq_sec
+----------------------------------------
+  seq_sec = 1.0... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0506s, Speedup: nanx
+  seq_sec = 2.0... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0824s, Speedup: nanx
+  seq_sec = 4.0... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1509s, Speedup: nanx
+  seq_sec = 8.0... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.2821s, Speedup: nanx
+
+Varying parameter: fs
+----------------------------------------
+  fs = 250... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1562s, Speedup: nanx
+  fs = 500... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.3261s, Speedup: nanx
+  fs = 1000... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.8279s, Speedup: nanx
+
+Varying parameter: pha_n_bands
+----------------------------------------
+  pha_n_bands = 5... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0974s, Speedup: nanx
+  pha_n_bands = 10... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1481s, Speedup: nanx
+  pha_n_bands = 15... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.2086s, Speedup: nanx
+  pha_n_bands = 20... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.2627s, Speedup: nanx
+
+Varying parameter: amp_n_bands
+----------------------------------------
+  amp_n_bands = 5... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.0800s, Speedup: nanx
+  amp_n_bands = 10... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1127s, Speedup: nanx
+  amp_n_bands = 15... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1480s, Speedup: nanx
+  amp_n_bands = 20... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1814s, Speedup: nanx
+
+Varying parameter: n_perm
+----------------------------------------
+  n_perm = 0... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1480s, Speedup: nanx
+  n_perm = 16... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1479s, Speedup: nanx
+  n_perm = 50... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1482s, Speedup: nanx
+  n_perm = 100... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1487s, Speedup: nanx
+  n_perm = 200... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1508s, Speedup: nanx
+
+Varying parameter: fp16
+----------------------------------------
+  fp16 = False... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1479s, Speedup: nanx
+  fp16 = True... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: nans, Speedup: nanx
+
+Varying parameter: multi_gpu
+----------------------------------------
+  multi_gpu = False... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: 0.1498s, Speedup: nanx
+  multi_gpu = True... gPAC error: PAC.__init__() got an unexpected keyword argument 'return_as_dict'
+gPAC: nans, TensorPAC: nans, Speedup: nanx
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.yaml (11.3 KiB)[0m
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.csv (7.1 KiB)[0m
+
+Creating parameter dependency plots...

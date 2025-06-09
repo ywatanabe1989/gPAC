@@ -1,0 +1,28 @@
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 930, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 918, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 868, in main
+    demo_trainable_pac(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 357, in demo_trainable_pac
+    sample_result = pac_trainable(X_train[:1])
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 145, in forward
+    raise ValueError(f"Input must be 3D or 4D, got {x.dim()}D")
+ValueError: Input must be 3D or 4D, got 2D

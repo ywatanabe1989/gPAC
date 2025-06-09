@@ -1,0 +1,39 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-15h47m50s_wGPP (PID: 201823)
+########################################
+
+
+========================================
+./examples/gpac/example__PAC.py
+Namespace(n_perm=50, batch_size=2)
+========================================
+
+
+----------------------------------------
+=== Demo Trainable PAC Classification ===
+----------------------------------------
+
+Fold 1/5
+✅ PAC compiled with default mode
+Fold 2/5
+✅ PAC compiled with default mode
+Fold 3/5
+✅ PAC compiled with default mode
+Fold 4/5
+✅ PAC compiled with default mode
+Fold 5/5
+✅ PAC compiled with default mode
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/02_trainable_pac_classification.csv (8.7 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/02_trainable_pac_classification_for_sigmaplot.csv (9.3 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/02_trainable_pac_classification.gif (534.2 KiB)
+5-fold CV Results:
+  Mean test accuracy: 0.533 ± 0.267
+Ground truth frequencies:
+  Class 0: 6.0Hz -> 50.0Hz
+  Class 1: 10.0Hz -> 75.0Hz
+  Class 2: 14.0Hz -> 100.0Hz

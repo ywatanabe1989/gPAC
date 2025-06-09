@@ -1,0 +1,24 @@
+/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py:286: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.detach().clone() or sourceTensor.detach().clone().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  all_labels.append(torch.tensor(label))
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 929, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 917, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 867, in main
+    demo_trainable_pac(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 418, in demo_trainable_pac
+    logits = classifier(pac_features_noisy)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/container.py", line 240, in forward
+    input = module(input)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (13x38 and 57x64)

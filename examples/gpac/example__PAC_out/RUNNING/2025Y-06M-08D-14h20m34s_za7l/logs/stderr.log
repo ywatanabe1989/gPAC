@@ -1,0 +1,24 @@
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 953, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 941, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 891, in main
+    demo_trainable_pac(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 422, in demo_trainable_pac
+    loss = torch.nn.functional.cross_entropy(logits, y_train)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument target in method wrapper_CUDA_nll_loss_forward)

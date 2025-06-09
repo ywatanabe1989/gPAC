@@ -1,0 +1,73 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-17h13m16s_tkvX (PID: 155773)
+########################################
+
+
+========================================
+./examples/performance/comprehensive_benchmark.py
+Namespace(n_repeats=3)
+========================================
+
+🚀 COMPREHENSIVE gPAC vs TensorPAC BENCHMARK
+============================================================
+GPU: NVIDIA A100 80GB PCIe
+Available GPUs: 4
+GPU Memory: 85.0GB
+
+--- Config: 5000 samples, batch=1, ch=1, 10×10 ---
+  gPAC: 11.5±1.6ms
+  TensorPAC: 5.6±1.0ms
+  Speedup: 0.5x
+  Memory: 0.1GB
+
+--- Config: 20000 samples, batch=1, ch=1, 20×20 ---
+  gPAC: 34.2±0.1ms
+  TensorPAC: 8.6±0.3ms
+  Speedup: 0.3x
+  Memory: 0.6GB
+
+--- Config: 50000 samples, batch=1, ch=1, 20×20 ---
+  gPAC: 68.4±3.1ms
+  TensorPAC: 16.0±0.9ms
+  Speedup: 0.2x
+  Memory: 1.5GB
+
+--- Config: 100000 samples, batch=1, ch=1, 20×20 ---
+  gPAC: 114.7±4.3ms
+  TensorPAC: 28.4±1.9ms
+  Speedup: 0.2x
+  Memory: 3.1GB
+
+--- Config: 50000 samples, batch=2, ch=2, 20×20 ---
+  gPAC: 249.0±4.7ms
+  TensorPAC: 61.2±1.3ms
+  Speedup: 0.2x
+  Memory: 6.0GB
+
+--- Config: 50000 samples, batch=1, ch=1, 30×30 ---
+  gPAC: 97.5±0.1ms
+  TensorPAC: 15.8±0.5ms
+  Speedup: 0.2x
+  Memory: 6.0GB
+
+============================================================
+📊 BENCHMARK SUMMARY
+============================================================
+Configurations tested: 6
+Maximum speedup: 0.5x
+Average speedup: 0.3x
+Best throughput: 871598 samples/sec
+
+💡 MATRIX COMPUTATION ADVANTAGE:
+  - gPAC uses parallel GPU matrix operations
+  - TensorPAC uses sequential CPU loops
+  - Speedup scales with data size (confirmed)
+
+🚀 MULTI-GPU PROJECTION:
+  Current best: 0.5x (single GPU)
+  With 4 GPUs: 1.9x (projected)
+  📈 Need 51.3x more optimization
+
+📁 Results saved to: comprehensive_benchmark_results.yaml

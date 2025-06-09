@@ -1,0 +1,13 @@
+ID: 2025Y-06M-08D-09h42m12s_7M8o
+PID: 272723
+START_TIME: 2025-06-08 09:42:12.078817
+FILE: ./examples/gpac/example__Hilbert.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/example__Hilbert_out/RUNNING/2025Y-06M-08D-09h42m12s_7M8o/
+REL_SDIR: examples/gpac/example__Hilbert_out/
+ARGS:
+    sample_rate: 1000.0
+    duration: 2.0
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 09:42:16.172393
+RUN_TIME: 00:00:04

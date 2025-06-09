@@ -1,0 +1,103 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-09D-23h28m36s_HTSH (PID: 159632)
+########################################
+[0m
+[93m
+========================================
+/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py
+Namespace()
+========================================
+[0m
+[93m
+----------------------------------------
+PARAMS_BASE:
+----------------------------------------
+[0m
+{'amp_n_bands': 16,
+ 'batch_size': 4,
+ 'device': 'cuda',
+ 'device_ids': '[0]',
+ 'duration_sec': 4.0,
+ 'fp16': False,
+ 'fs': 512,
+ 'n_batches': 4,
+ 'n_channels': 8,
+ 'n_cpus': 32,
+ 'n_perm': 0,
+ 'package': 'gpac',
+ 'pha_n_bands': 16,
+ 'trainable': False}
+[93m
+----------------------------------------
+PARAMS_GRID:
+----------------------------------------
+[0m
+{'device': ['cuda'],
+ 'device_ids': ['[0]', '[0, 1, 2, 3]'],
+ 'fp16': [False, True],
+ 'n_cpus': [16, 32],
+ 'package': ['gpac', 'tensorpac'],
+ 'trainable': [False, True]}
+[93m
+----------------------------------------
+PARAMS_VARIATION:
+----------------------------------------
+[0m
+{'amp_n_bands': [16, 32, 64],
+ 'batch_size': [1, 4, 16],
+ 'duration_sec': [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0],
+ 'fs': [512, 1024],
+ 'n_batches': [4, 16],
+ 'n_channels': [1, 4, 16],
+ 'n_perm': [0, 8, 16, 32, 64],
+ 'pha_n_bands': [16, 32, 64]}
+[?12l[?25h
+Loading /home/ywatanabe/.pystartup ... (PID: 159632)
+
+----------------------------------------
+
+Random seeds of the following packages have been fixed as 42
+os random np torch 
+
+----------------------------------------
+
+> [0;32m/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py[0m(124)[0;36mplot_comodulograms[0;34m()[0m
+[0;32m    123 [0;31m[0;34m[0m[0m
+[0m[0;32m--> 124 [0;31m    fig.supxyt(
+[0m[0;32m    125 [0;31m        [0;34m"Frequency for Phase [Index; fixme to hz]"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[6n[?2004h[?1l[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[0maxes[1].plot_image[?7h[0m[?12l[?25h[?25l[?7l[24D[0m[J[0;32mipdb> [0maxes[1].plot_image[24D[0m
+[J[?7h[0m[?12l[?25h[?2004l<bound method plot_image of <mngs.plt._subplots._AxisWrapper.AxisWrapper object at 0x14d413bc62c0>>
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[0maxes[1].plot_image[?7h[0m[?12l[?25h[?25l[?7l[0m?[?7h[0m[?12l[?25h[?25l[?7l[25D[0m[J[0;32mipdb> [0maxes[1].plot_image?[25D[0m
+[J[?7h[0m[?12l[?25h[?2004l[0;31mSignature:[0m
+[0maxes[0m[0;34m[[0m[0;36m1[0m[0;34m][0m[0;34m.[0m[0mplot_image[0m[0;34m([0m[0;34m[0m
+[0;34m[0m    [0marr_2d[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mcbar[0m[0;34m=[0m[0;32mTrue[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mcbar_label[0m[0;34m=[0m[0;32mNone[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mcbar_shrink[0m[0;34m=[0m[0;36m1.0[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mcbar_fraction[0m[0;34m=[0m[0;36m0.046[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mcbar_pad[0m[0;34m=[0m[0;36m0.04[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mcmap[0m[0;34m=[0m[0;34m'viridis'[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0maspect[0m[0;34m=[0m[0;34m'auto'[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mvmin[0m[0;34m=[0m[0;32mNone[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0mvmax[0m[0;34m=[0m[0;32mNone[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m    [0;34m**[0m[0mkwargs[0m[0;34m,[0m[0;34m[0m
+[0;34m[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;31mDocstring:[0m
+Imshows an two-dimensional array with theese two conditions:
+1) The first dimension represents the x dim, from left to right.
+2) The second dimension represents the y dim, from bottom to top
+[0;31mFile:[0m      /data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/ax/_plot/_plot_image.py
+[0;31mType:[0m      method
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[0mp[?7h[0m[?12l[?25h[?25l[?7l[0mh[?7h[0m[?12l[?25h[?25l[?7l[0ma[?7h[0m[?12l[?25h[?25l[?7l[0m_[?7h[0m[?12l[?25h[?25l[?7l[0mm[?7h[0m[?12l[?25h[?25l[?7l[0mi[?7h[0m[?12l[?25h[?25l[?7l[0md[?7h[0m[?12l[?25h[?25l[?7l[0ms[?7h[0m[?12l[?25h[?25l[?7l[0m_[?7h[0m[?12l[?25h[?25l[?7l[0mh[?7h[0m[?12l[?25h[?25l[?7l[0mz[?7h[0m[?12l[?25h[?25l[?7l[17D[0m[J[0;32mipdb> [0mpha_mids_hz[17D[0m
+[J[?7h[0m[?12l[?25h[?2004larray([ 2.875,  4.625,  6.375,  8.125,  9.875, 11.625, 13.375, 15.125,
+       16.875, 18.625, 20.375, 22.125, 23.875, 25.625, 27.375, 29.125])
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[0ma[?7h[0m[?12l[?25h[?25l[?7l[0mm[?7h[0m[?12l[?25h[?25l[?7l[0mp[?7h[0m[?12l[?25h[?25l[?7l[0m_[?7h[0m[?12l[?25h[?25l[?7l[0mm[?7h[0m[?12l[?25h[?25l[?7l[0mi[?7h[0m[?12l[?25h[?25l[?7l[0md[?7h[0m[?12l[?25h[?25l[?7l[0ms[?7h[0m[?12l[?25h[?25l[?7l[0m_[?7h[0m[?12l[?25h[?25l[?7l[0mh[?7h[0m[?12l[?25h[?25l[?7l[0ms[?7h[0m[?12l[?25h[?25l[?7l[0m[K[?7h[0m[?12l[?25h[?25l[?7l[0mz[?7h[0m[?12l[?25h[?25l[?7l[17D[0m[J[0;32mipdb> [0mamp_mids_hz[17D[0m
+[J[?7h[0m[?12l[?25h[?2004larray([ 36.25,  48.75,  61.25,  73.75,  86.25,  98.75, 111.25, 123.75,
+       136.25, 148.75, 161.25, 173.75, 186.25, 198.75, 211.25, 223.75])
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[C[0m   axes[0].set_xticks(pha_mids_hz)[?7h[0m[?12l[?25h[?25l[?7l[41D[0m[J[0;32mipdb> [0m    axes[0].set_xticks(pha_mids_hz)[41D[0m
+[J[?7h[0m[?12l[?25h[?2004l[<matplotlib.axis.XTick object at 0x14d413df64d0>, <matplotlib.axis.XTick object at 0x14d413df5120>, <matplotlib.axis.XTick object at 0x14d4106ae740>, <matplotlib.axis.XTick object at 0x14d410a732e0>, <matplotlib.axis.XTick object at 0x14d4106e1150>, <matplotlib.axis.XTick object at 0x14d4106e2290>, <matplotlib.axis.XTick object at 0x14d4106ae9b0>, <matplotlib.axis.XTick object at 0x14d4106e28c0>, <matplotlib.axis.XTick object at 0x14d4106e35b0>, <matplotlib.axis.XTick object at 0x14d4107182e0>, <matplotlib.axis.XTick object at 0x14d4106e2bc0>, <matplotlib.axis.XTick object at 0x14d410719210>, <matplotlib.axis.XTick object at 0x14d410719f00>, <matplotlib.axis.XTick object at 0x14d41071abf0>, <matplotlib.axis.XTick object at 0x14d41071aef0>, <matplotlib.axis.XTick object at 0x14d41071bb20>]
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[6D[0m[J[0;38;5;102mipdb>                                                                                                               [116C [0m
+[J[?7h[0m[?12l[?25h[?2004l

@@ -1,0 +1,3 @@
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapperMixins/_AdjustmentMixin.py:71: UserWarning: No legend handles found. Create plots with labels first.
+  warnings.warn("No legend handles found. Create plots with labels first.")
+ERROR:root:Error occurred while saving: local variable '_io' referenced before assignmentDebug: Initial script_path = /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.pyDebug: Final spath = /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/02_comodulograms.gif

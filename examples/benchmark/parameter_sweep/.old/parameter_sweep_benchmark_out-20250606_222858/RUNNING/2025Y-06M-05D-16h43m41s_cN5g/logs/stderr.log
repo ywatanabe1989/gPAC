@@ -1,0 +1,2 @@
+/home/ywatanabe/.env-3.10/lib/python3.10/site-packages/tensorpac/methods/meth_pac.py:59: RuntimeWarning: invalid value encountered in multiply
+  p_j = p_j * np.ma.log(p_j).filled(-np.inf)

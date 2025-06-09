@@ -1,0 +1,79 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-16h15m01s_bj62 (PID: 2850)
+########################################
+[0m
+[93m
+========================================
+./examples/performance/ultra_speed_benchmark.py
+Namespace()
+========================================
+[0m
+🎯 Target: 100x faster than TensorPAC
+📏 Metric: Pure computation time (excluding init/transfer)
+
+🚀 ULTRA-SPEED BENCHMARK: Targeting 100x Speedup vs TensorPAC
+================================================================================
+⚡ Excludes initialization and GPU transfer time
+⚡ Tests PURE COMPUTATION SPEED only
+================================================================================
+
+🧪 Testing Small configuration...
+   4 batches × 8 channels × 1024 samples
+Creating test data: batch=4, channels=8, samples=1024
+🔧 Initializing models (NOT counted in timing)...
+   gPAC initialization: 0.0171s
+
+📊 PURE COMPUTATION BENCHMARKS:
+🔥 gPAC Ultra-Fast Mode: Pure computation benchmark
+  Trial 1/20: 0.2201s
+  Trial 6/20: 0.2204s
+  Trial 11/20: 0.2206s
+  Trial 16/20: 0.2204s
+🐢 TensorPAC: Pure computation benchmark
+  Trial 1/10: 0.1553s
+  Trial 4/10: 0.1557s
+  Trial 7/10: 0.1537s
+  Trial 10/10: 0.1556s
+
+🏆 Small Results:
+   gPAC:      0.2207s ± 0.0004s (0.1 MSamples/s)
+   TensorPAC: 0.1551s ± 0.0011s (0.2 MSamples/s)
+   SPEEDUP:   0.7x 🐌
+   ⚠️  NEEDS OPTIMIZATION
+
+🧪 Testing Medium configuration...
+   8 batches × 16 channels × 2048 samples
+Creating test data: batch=8, channels=16, samples=2048
+🔧 Initializing models (NOT counted in timing)...
+   gPAC initialization: 0.0013s
+
+📊 PURE COMPUTATION BENCHMARKS:
+🔥 gPAC Ultra-Fast Mode: Pure computation benchmark
+  Trial 1/20: 0.9497s
+  Trial 6/20: 0.9502s
+  Trial 11/20: 0.9465s
+  Trial 16/20: 0.9464s
+🐢 TensorPAC: Pure computation benchmark
+  Trial 1/10: 1.1505s
+  Trial 4/10: 1.1550s
+  Trial 7/10: 1.1533s
+  Trial 10/10: 1.1633s
+
+🏆 Medium Results:
+   gPAC:      0.9493s ± 0.0014s (0.3 MSamples/s)
+   TensorPAC: 1.1571s ± 0.0037s (0.2 MSamples/s)
+   SPEEDUP:   1.2x 📈
+   ⚠️  NEEDS OPTIMIZATION
+
+🧪 Testing Large configuration...
+   16 batches × 32 channels × 4096 samples
+Creating test data: batch=16, channels=32, samples=4096
+🔧 Initializing models (NOT counted in timing)...
+   gPAC initialization: 0.0015s
+
+📊 PURE COMPUTATION BENCHMARKS:
+🔥 gPAC Ultra-Fast Mode: Pure computation benchmark
+  Trial 1/20: 4.6217s
+  Trial 6/20: 4.6266s

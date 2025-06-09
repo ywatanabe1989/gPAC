@@ -1,0 +1,145 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-15h52m48s_k6ec (PID: 209216)
+########################################
+[0m
+[93m
+========================================
+./examples/gpac/example__PAC.py
+Namespace(n_perm=50, batch_size=2)
+========================================
+[0m
+[93m
+----------------------------------------
+=== Demo Trainable PAC Classification ===
+----------------------------------------
+[0m
+[?12l[?25h
+Loading /home/ywatanabe/.pystartup ... (PID: 209216)
+
+----------------------------------------
+
+Random seeds of the following packages have been fixed as 42
+os random np torch 
+
+----------------------------------------
+
+> [0;32m/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py[0m(296)[0;36mdemo_trainable_pac[0;34m()[0m
+[0;32m    295 [0;31m    [0;31m# 5-fold cross-validation[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m--> 296 [0;31m    [0mskf[0m [0;34m=[0m [0mStratifiedKFold[0m[0;34m([0m[0mn_splits[0m[0;34m=[0m[0;36m5[0m[0;34m,[0m [0mshuffle[0m[0;34m=[0m[0;32mTrue[0m[0;34m,[0m [0mrandom_state[0m[0;34m=[0m[0;36m42[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m    297 [0;31m    [0mfold_results[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m
+[6n[?2004h[?1l[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0m[J[0;32mipdb> [0mX.shape[13D[0m
+[J[?7h[0m[?12l[?25h[?2004ltorch.Size([16, 19, 8, 1024])
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0;32mipdb> [0m
+
+
+
+
+
+
+
+
+
+
+
+
+
+[0m [14A[6C[?7h[0m[?12l[?25h[?25l[?7l[C[0m   dataset = gpac.dataset.generate_pac_dataset([?7h[0m[?12l[?25h[?25l[?7l[0m
+[0m        n_samples=1024, n_chs=1, n_segements=1, pac_config=pac_config[?7h[0m[?12l[?25h[?25l[?7l[?7h[0m[?12l[?25h[?25l[?7l[0m
+[0m        )[?7h[0m[?12l[?25h[?25l[?7l[2A[9D[0m[J[0;32mipdb> [0m    dataset = gpac.dataset.generate_pac_dataset([0m
+[0m        n_samples=1024, n_chs=1, n_segements=1, pac_config=pac_config[0m
+[0m        )[9D[0m
+[J[?7h[0m[?12l[?25h[?2004l*** TypeError: generate_pac_dataset() got an unexpected keyword argument 'n_chs'
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0;32mipdb> [0m
+
+
+
+
+
+
+
+
+
+[0m [10A[6C[?7h[0m[?12l[?25h[?25l[?7l[C[0m   dataset = gpac.dataset.generate_pac_dataset([?7h[0m[?12l[?25h[?25l[?7l[0m
+[0m        n_samples=1024, n_channels=1, n_segements=1, pac_config=pac_config[?7h[0m[?12l[?25h[?25l[?7l[0m
+[0m        )[?7h[0m[?12l[?25h[?25l[?7l[2A[9D[0m[J[0;32mipdb> [0m    dataset = gpac.dataset.generate_pac_dataset([0m
+[0m        n_samples=1024, n_channels=1, n_segements=1, pac_config=pac_config[0m
+[0m        )[9D[0m
+[J[?7h[0m[?12l[?25h[?2004l*** TypeError: generate_pac_dataset() got an unexpected keyword argument 'n_segements'
+[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0;32mipdb> [0m
+
+
+
+
+
+[0m [6A[6C[?7h[0m[?12l[?25h[?25l[?7l[C[0m   dataset = gpac.dataset.generate_pac_dataset([?7h[0m[?12l[?25h[?25l[?7l[0m
+[0m        n_samples=1024, n_channels=1, n_segments=1, pac_config=pac_config[?7h[0m[?12l[?25h[?25l[?7l[0m
+[0m        )[?7h[0m[?12l[?25h[?25l[?7l[2A[9D[0m[J[0;32mipdb> [0m    dataset = gpac.dataset.generate_pac_dataset([0m
+[0m        n_samples=1024, n_channels=1, n_segments=1, pac_config=pac_config[0m
+[0m        )[9D[0m
+[J[?7h[0m[?12l[?25h[?2004l[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0;32mipdb> [0m
+
+
+[0m [3A[6C[?7h[0m[?12l[?25h[6D[J[0m[?7h[?2004l[2J[0;0H[6n[?2004h[?25l[0m[?7l[0m[J[0;32mipdb> [6D[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0;32mipdb> [0m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[0m [59A[6C[?7h[0m[?12l[?25h[?25l[?7l[6D[0m[J[0;38;5;102mipdb>                                                                                                               [116C [0m
+[J[?7h[0m[?12l[?25h[?2004l

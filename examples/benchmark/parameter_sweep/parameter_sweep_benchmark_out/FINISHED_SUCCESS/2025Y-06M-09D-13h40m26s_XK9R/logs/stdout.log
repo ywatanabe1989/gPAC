@@ -1,0 +1,2924 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-09D-13h40m26s_XK9R (PID: 203085)
+########################################
+
+
+========================================
+/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(no_quick=False, quick=True)
+========================================
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 1.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 128, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 16.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 32, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 1, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 16, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 16, 'fp16': True, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 64.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 128, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 16, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': True, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 32, 'n_perm': 0, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 4, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 64, 'fp16': False, 'n_cpus': 32}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+
+
+----------------------------------------
+Parameters:
+{'package': 'tensorpac', 'n_batches': 4, 'batch_size': 1, 'n_channels': 8, 'duration_sec': 4.0, 'fs': 512, 'pha_n_bands': 10, 'amp_n_bands': 15, 'n_perm': 0, 'fp16': False, 'n_cpus': 128}
+
+Amplitude:
+Not implemented yet
+
+Phase Bands:
+Not implemented yet
+
+Output Shape:
+Not implemented yet
+----------------------------------------
+
+
+----------------------------------------
+=== Benchmark gPAC ===
+----------------------------------------
+
+
+----------------------------------------
+Computation Time [sec]: 
+None
+----------------------------------------
+

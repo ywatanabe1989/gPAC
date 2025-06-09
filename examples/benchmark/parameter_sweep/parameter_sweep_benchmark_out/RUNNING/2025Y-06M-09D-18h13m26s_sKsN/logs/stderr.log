@@ -1,0 +1,33 @@
+  0%|          | 0/768 [00:00<?, ?it/s]  0%|          | 1/768 [02:37<33:30:27, 157.27s/it]  0%|          | 2/768 [02:49<15:18:43, 71.96s/it]   0%|          | 3/768 [02:56<8:58:53, 42.27s/it]   1%|          | 4/768 [02:57<5:28:45, 25.82s/it]  1%|          | 5/768 [03:36<6:31:50, 30.81s/it]  1%|          | 5/768 [03:38<9:16:01, 43.72s/it]
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 337, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 324, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 258, in main
+    comp_time, sample_comodulogram = benchmark_one_condition(
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 119, in benchmark_one_condition
+    calculation_time, sample_comodulogram = compute(
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 238, in compute
+    return _compute_gpac(dataloader, device, pac_calculator)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 152, in _compute_gpac
+    _ = pac_calculator_gpac(signal.to(device))
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 171, in forward
+    results = self._forward_vectorized(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 213, in _forward_vectorized
+    pac_values = self._compute_mi_vectorized(phase, amplitude)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 260, in _compute_mi_vectorized
+    mi_result = self.mi_calculator(
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_ModulationIndex.py", line 135, in forward
+    weights = self._phase_binning(phase_flat)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_ModulationIndex.py", line 217, in _phase_binning
+    diff = torch.fmod(diff + np.pi, 2 * np.pi) - np.pi
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.81 GiB. GPU 0 has a total capacity of 79.14 GiB of which 1.35 GiB is free. Process 1034 has 7.40 GiB memory in use. Including non-PyTorch memory, this process has 7.46 GiB memory in use. Process 1035 has 7.39 GiB memory in use. Process 1033 has 55.52 GiB memory in use. Of the allocated memory 6.97 GiB is allocated by PyTorch, and 1.88 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

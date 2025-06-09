@@ -1,0 +1,15 @@
+,visual parameter label,visual parameter value,xticks,yticks,ax_00_0_bar_x,ax_00_0_bar_y,preserved 0,preserved 1,ax_01_0_bar_x,ax_01_0_bar_y
+0,xlabel,X-Axis Label,auto,auto,Input,10000.0,NONE_STR,NONE_STR,Processing Time,0.5936312675476074
+1,xrot,45,,,Output Phase,10000.0,NONE_STR,NONE_STR,Throughput,16845.47386008105
+2,xmm,40,,,Output Amplitude,10000.0,NONE_STR,NONE_STR,,
+3,xscale,category,,,,,NONE_STR,NONE_STR,,
+4,xmin,auto,,,,,NONE_STR,NONE_STR,,
+5,xmax,auto,,,,,NONE_STR,NONE_STR,,
+6,xticks,['auto'],,,,,NONE_STR,NONE_STR,,
+7,ylabel,Y-Axis Label,,,,,NONE_STR,NONE_STR,,
+8,yrot,0,,,,,NONE_STR,NONE_STR,,
+9,ymm,28,,,,,NONE_STR,NONE_STR,,
+10,yscale,linear,,,,,NONE_STR,NONE_STR,,
+11,ymin,0,,,,,NONE_STR,NONE_STR,,
+12,ymax,auto,,,,,NONE_STR,NONE_STR,,
+13,yticks,['auto'],,,,,NONE_STR,NONE_STR,,

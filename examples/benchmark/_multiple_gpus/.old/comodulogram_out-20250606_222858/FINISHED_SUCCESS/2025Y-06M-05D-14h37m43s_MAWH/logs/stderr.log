@@ -1,0 +1,2 @@
+/data/gpfs/projects/punim2354/ywatanabe/gPAC/./examples/performance/multiple_gpus/comodulogram.py:159: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout()
