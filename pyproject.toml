@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpac"
+dynamic = ["version"]
+authors = [
+  { name="Yusuke Watanabe", email="ywatanabe@alumni.u-tokyo.ac.jp" },
+]
+description = "GPU-Accelerated Phase-Amplitude Coupling calculation using PyTorch"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+keywords = ["neuroscience", "phase-amplitude-coupling", "PAC", "GPU", "PyTorch", "signal-processing"]
+dependencies = [
+    "torch",
+    "numpy",
+    "scipy",
+    "torchaudio",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "psutil",
+    "tensorpac",
+    "gputil",
+    "mne",
+]
+all = [
+    "scikit-learn",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ywatanabe1989/gPAC"
+"Repository" = "https://github.com/ywatanabe1989/gPAC"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["gpac*"]
+exclude = ["*.old*", "*.__pycache__*", "*.egg-info*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "gpac.__version__"}
