@@ -1,0 +1,80 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-13h00m39s_KS19 (PID: 265472)
+########################################
+
+
+========================================
+./examples/gpac/example__PAC.py
+Namespace(n_perm=50, batch_size=2)
+========================================
+
+
+----------------------------------------
+=== Demo Static PAC ===
+----------------------------------------
+
+✅ PAC compiled with default mode
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/01_static_pac_analysis.csv (108.1 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/01_static_pac_analysis_for_sigmaplot.csv (140.0 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/01_static_pac_analysis.gif (374.0 KiB)
+Input shape: torch.Size([2, 8, 4, 1024])
+PAC shape: torch.Size([2, 8, 50, 50])
+Mean PAC: 0.0083
+Max PAC: 0.0635
+Significant pairs (|z| > 2): 10409/40000
+Ground truth couplings for sample 0:
+  8.0 Hz -> 80.0 Hz (strength: 0.400)
+  12.0 Hz -> 120.0 Hz (strength: 0.300)
+  6.0 Hz -> 60.0 Hz (strength: 0.500)
+
+----------------------------------------
+=== Demo Trainable PAC Classification ===
+----------------------------------------
+
+Fold 1/5
+✅ PAC compiled with default mode
+Fold 2/5
+✅ PAC compiled with default mode
+Fold 3/5
+✅ PAC compiled with default mode
+Fold 4/5
+✅ PAC compiled with default mode
+Fold 5/5
+✅ PAC compiled with default mode
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/02_trainable_pac_classification.csv (30.9 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/02_trainable_pac_classification_for_sigmaplot.csv (32.7 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/02_trainable_pac_classification.gif (390.9 KiB)
+5-fold CV Results:
+  Mean test accuracy: 0.533 ± 0.163
+  Mean train accuracy: 1.000 ± 0.000
+
+----------------------------------------
+=== Demo PAC Comparison ===
+----------------------------------------
+
+✅ PAC compiled with default mode
+✅ PAC compiled with default mode
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/03_pac_comparison.csv (154.8 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/03_pac_comparison_for_sigmaplot.csv (186.7 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/example__PAC_out/03_pac_comparison.gif (505.9 KiB)
+=== Comparison Results ===
+Static PAC:
+  - Computation time: 380.01 ms
+  - Mean PAC: 0.0180
+  - Max PAC: 0.1361
+Trainable PAC:
+  - Computation time: 291.28 ms
+  - Mean PAC: 0.0050
+  - Max PAC: 0.0197
+Performance ratio: 0.77x

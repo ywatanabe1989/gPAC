@@ -1,0 +1,42 @@
+/home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex.py:171: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout()
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:120: UserWarning: No valid plotting records could be formatted from 1 records. Failed records: [id=0, method=plot (returned empty)]. Check that supported plot types (plot, scatter, bar, hist, boxplot, etc.) are being used.
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:716: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  data_df = pd.concat([data_df, padding_df], ignore_index=True)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:120: UserWarning: No valid plotting records could be formatted from 1 records. Failed records: [id=0, method=plot (returned empty)]. Check that supported plot types (plot, scatter, bar, hist, boxplot, etc.) are being used.
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:716: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  data_df = pd.concat([data_df, padding_df], ignore_index=True)
+/home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex.py:310: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout()
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex.py", line 394, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex.py", line 382, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex.py", line 333, in main
+    demo_modulation_index_surrogates(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex.py", line 311, in demo_modulation_index_surrogates
+    mngs.io.save(fig, "02_modulation_index_surrogates.gif")
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/io/_save.py", line 295, in save
+    _save(
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/io/_save.py", line 343, in _save
+    _FILE_HANDLERS[ext](obj, spath, no_csv=no_csv, symlink_from_cwd=symlink_from_cwd, dry_run=dry_run, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/io/_save.py", line 624, in _handle_image
+    _save_image(obj, spath, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/io/_save_image.py", line 125, in _save_image
+    img.save(spath, "GIF")
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/PIL/Image.py", line 2581, in save
+    save_handler(self, fp, filename)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/PIL/GifImagePlugin.py", line 798, in _save
+    _write_single_frame(im, fp, palette)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/PIL/GifImagePlugin.py", line 611, in _write_single_frame
+    im_out = _normalize_mode(im)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/PIL/GifImagePlugin.py", line 521, in _normalize_mode
+    im = im.convert("P", palette=Image.Palette.ADAPTIVE)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/PIL/Image.py", line 1023, in convert
+    return self.quantize(colors)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/PIL/Image.py", line 1253, in quantize
+    im = self._new(self.im.quantize(colors, method, kmeans))
+KeyboardInterrupt

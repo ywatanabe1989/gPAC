@@ -1,0 +1,12 @@
+ID: 2025Y-06M-08D-16h03m58s_kyow
+PID: 226199
+START_TIME: 2025-06-08 16:03:58.967115
+FILE: ./examples/gpac/example__PAC.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/example__PAC_out/RUNNING/2025Y-06M-08D-16h03m58s_kyow/
+REL_SDIR: examples/gpac/example__PAC_out/
+ARGS:
+    n_perm: 50
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 16:04:29.968096
+RUN_TIME: 00:00:31

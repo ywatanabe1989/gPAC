@@ -1,0 +1,13 @@
+ID: 2025Y-06M-08D-15h50m07s_ARXY
+PID: 205245
+START_TIME: 2025-06-08 15:50:07.946827
+FILE: ./examples/gpac/example__PAC.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/example__PAC_out/RUNNING/2025Y-06M-08D-15h50m07s_ARXY/
+REL_SDIR: examples/gpac/example__PAC_out/
+ARGS:
+    n_perm: 50
+    batch_size: 2
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 15:50:21.656834
+RUN_TIME: 00:00:13

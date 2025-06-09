@@ -1,0 +1,11 @@
+ID: 2025Y-06M-08D-09h41m36s_W1ga
+PID: 271670
+START_TIME: 2025-06-08 09:41:36.110039
+FILE: ./examples/gpac/example__BandPassFilter.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/example__BandPassFilter_out/RUNNING/2025Y-06M-08D-09h41m36s_W1ga/
+REL_SDIR: examples/gpac/example__BandPassFilter_out/
+ARGS: {}
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 09:41:42.516732
+RUN_TIME: 00:00:06

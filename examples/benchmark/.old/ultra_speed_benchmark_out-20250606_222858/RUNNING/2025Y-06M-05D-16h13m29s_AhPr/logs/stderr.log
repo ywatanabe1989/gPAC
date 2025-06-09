@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/ultra_speed_benchmark.py", line 347, in <module>
+    run_main()
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/ultra_speed_benchmark.py", line 336, in run_main
+    exit_status = main(args)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/ultra_speed_benchmark.py", line 278, in main
+    results = run_ultra_speed_benchmark()
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/ultra_speed_benchmark.py", line 181, in run_ultra_speed_benchmark
+    gpac_time, gpac_std, gpac_result = benchmark_gpac_pure_computation(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/ultra_speed_benchmark.py", line 63, in benchmark_gpac_pure_computation
+    _ = pac_model(data)
+  File "/home/ywatanabe/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py", line 313, in forward
+    return self._compute_pac_core_fast(x)
+  File "/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py", line 1052, in _compute_pac_core_fast
+    mi_results = self.modulation_index._compute_mi(
+  File "/home/ywatanabe/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1928, in __getattr__
+    raise AttributeError(
+AttributeError: 'ModulationIndex' object has no attribute '_compute_mi'

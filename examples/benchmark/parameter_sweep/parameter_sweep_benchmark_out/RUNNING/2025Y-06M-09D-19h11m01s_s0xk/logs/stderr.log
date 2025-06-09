@@ -1,0 +1,33 @@
+  0%|                                                                                        | 0/384 [00:00<?, ?it/s]  0%|2                                                                               | 1/384 [00:02<14:01,  2.20s/it]  1%|4                                                                               | 2/384 [00:02<06:52,  1.08s/it]  1%|6                                                                               | 3/384 [00:03<06:38,  1.05s/it]  1%|8                                                                               | 4/384 [00:03<04:31,  1.40it/s]  1%|#                                                                               | 5/384 [00:05<07:45,  1.23s/it]  2%|#2                                                                              | 6/384 [00:06<05:32,  1.14it/s]  2%|#4                                                                              | 7/384 [00:07<06:29,  1.03s/it]  2%|#4                                                                              | 7/384 [00:11<10:06,  1.61s/it]
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 344, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 331, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 260, in main
+    comp_time, sample_comodulogram = benchmark_one_condition(
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 119, in benchmark_one_condition
+    calculation_time, sample_comodulogram = compute(
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 238, in compute
+    return _compute_gpac(dataloader, device, pac_calculator)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 152, in _compute_gpac
+    _ = pac_calculator_gpac(signal.to(device))
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 171, in forward
+    results = self._forward_vectorized(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 213, in _forward_vectorized
+    pac_values = self._compute_mi_vectorized(phase, amplitude)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 260, in _compute_mi_vectorized
+    mi_result = self.mi_calculator(
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_ModulationIndex.py", line 148, in forward
+    self._compute_mi_vectorized(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_ModulationIndex.py", line 304, in _compute_mi_vectorized
+    weighted_distributions = weights_exp * amp_exp
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 144.00 GiB. GPU 0 has a total capacity of 79.14 GiB of which 65.62 GiB is free. Including non-PyTorch memory, this process has 13.51 GiB memory in use. Of the allocated memory 12.52 GiB is allocated by PyTorch, and 512.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

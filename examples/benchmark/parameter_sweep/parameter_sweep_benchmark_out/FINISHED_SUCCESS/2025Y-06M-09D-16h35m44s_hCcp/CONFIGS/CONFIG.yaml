@@ -1,0 +1,15 @@
+ID: 2025Y-06M-09D-16h35m44s_hCcp
+PID: 148411
+START_TIME: 2025-06-09 16:35:44.142816
+FILE: 
+    /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py
+SDIR: 
+    /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/RUNNING/2025Y-06M-09D-16h35m44s_hCcp/
+REL_SDIR: 
+    ../../../../../../home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/
+ARGS:
+    no_quick: false
+    quick: true
+EXIT_STATUS: 0
+END_TIME: 2025-06-09 18:03:27.679373
+RUN_TIME: 01:27:43

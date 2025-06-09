@@ -1,0 +1,71 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-09D-23h41m37s_v2wK (PID: 179099)
+########################################
+
+
+========================================
+/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py
+Namespace()
+========================================
+
+
+----------------------------------------
+PARAMS_BASE:
+----------------------------------------
+
+{'amp_n_bands': 16,
+ 'batch_size': 4,
+ 'device': 'cuda',
+ 'device_ids': '[0]',
+ 'duration_sec': 4.0,
+ 'fp16': False,
+ 'fs': 512,
+ 'n_batches': 4,
+ 'n_channels': 8,
+ 'n_cpus': 32,
+ 'n_perm': 0,
+ 'package': 'gpac',
+ 'pha_n_bands': 16,
+ 'trainable': False}
+
+----------------------------------------
+PARAMS_GRID:
+----------------------------------------
+
+{'device': ['cuda'],
+ 'device_ids': ['[0]', '[0, 1, 2, 3]'],
+ 'fp16': [False, True],
+ 'n_cpus': [16, 32],
+ 'package': ['gpac', 'tensorpac'],
+ 'trainable': [False, True]}
+
+----------------------------------------
+PARAMS_VARIATION:
+----------------------------------------
+
+{'amp_n_bands': [16, 32, 64],
+ 'batch_size': [1, 4, 16],
+ 'duration_sec': [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0],
+ 'fs': [512, 1024],
+ 'n_batches': [4, 16],
+ 'n_channels': [1, 4, 16],
+ 'n_perm': [0, 8, 16, 32, 64],
+ 'pha_n_bands': [16, 32, 64]}
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_00_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_01_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_02_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_03_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_04_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_05_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_06_legend.gif
+Legend saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_ax_07_legend.gif
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids.csv (512.8 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_for_sigmaplot.csv (1.7 MiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids.gif (57.5 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/02_comodulograms.gif (84.3 KiB)

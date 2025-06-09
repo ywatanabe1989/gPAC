@@ -1,0 +1,13 @@
+ID: 2025Y-06M-09D-21h14m58s_Wb4M
+PID: 274116
+START_TIME: 2025-06-09 21:14:58.935019
+FILE: 
+    /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py
+SDIR: 
+    /home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/RUNNING/2025Y-06M-09D-21h14m58s_Wb4M/
+REL_SDIR: 
+    ../../../../../../home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/
+ARGS: {}
+EXIT_STATUS: 0
+END_TIME: 2025-06-09 21:15:11.673363
+RUN_TIME: 00:00:12

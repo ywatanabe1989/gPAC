@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 177, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 165, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 132, in main
+    plot_parameter_scaling_on_grids(df)
+  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py", line 111, in plot_parameter_scaling_on_grids
+    ax.sns_lineplot(
+  File "/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py", line 164, in __getattr__
+    raise AttributeError(
+AttributeError: 'AxisWrapper' object and its underlying 'Axes' have no attribute 'sns_lineplot'. Did you mean: 'sns_histplot'?

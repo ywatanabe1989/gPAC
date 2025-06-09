@@ -1,0 +1,187 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-17h49m28s_Ilhl (PID: 246550)
+########################################
+[0m
+[93m
+========================================
+/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(device='auto', n_repeats=3, no_quick=True, quick=False)
+========================================
+[0m
+
+============================================================
+gPAC Parameter Sweep Benchmark
+============================================================
+Running parameter sweep on device: cuda
+============================================================
+
+Varying parameter: batch_size
+----------------------------------------
+  batch_size = 1... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0476s, Speedup: nanx
+  batch_size = 2... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[400, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[400, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[400, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0809s, Speedup: nanx
+  batch_size = 4... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1563s, Speedup: nanx
+  batch_size = 8... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[1600, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[1600, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[1600, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.2950s, Speedup: nanx
+  batch_size = 16... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[3200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[3200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[3200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.5924s, Speedup: nanx
+
+Varying parameter: n_channels
+----------------------------------------
+  n_channels = 1... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[100, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[100, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[100, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0303s, Speedup: nanx
+  n_channels = 2... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[200, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0465s, Speedup: nanx
+  n_channels = 4... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[400, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[400, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[400, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0809s, Speedup: nanx
+  n_channels = 8... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1497s, Speedup: nanx
+  n_channels = 16... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[1600, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[1600, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[1600, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.2929s, Speedup: nanx
+
+Varying parameter: seq_sec
+----------------------------------------
+  seq_sec = 1.0... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 250] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 250] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 250] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0488s, Speedup: nanx
+  seq_sec = 2.0... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 500] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 500] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 500] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0830s, Speedup: nanx
+  seq_sec = 4.0... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1503s, Speedup: nanx
+  seq_sec = 8.0... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 2000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 2000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 2000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.2874s, Speedup: nanx
+
+Varying parameter: fs
+----------------------------------------
+  fs = 250... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1517s, Speedup: nanx
+  fs = 500... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 2000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 2000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 2000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.3329s, Speedup: nanx
+  fs = 1000... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 4000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 4000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 4000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.8159s, Speedup: nanx
+
+Varying parameter: pha_n_bands
+----------------------------------------
+  pha_n_bands = 5... gPAC error: Given groups=20, weight of size [20, 1, 51], expected input[640, 1, 1000] to have 20 channels, but got 1 channels instead
+gPAC error: Given groups=20, weight of size [20, 1, 51], expected input[640, 1, 1000] to have 20 channels, but got 1 channels instead
+gPAC error: Given groups=20, weight of size [20, 1, 51], expected input[640, 1, 1000] to have 20 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0937s, Speedup: nanx
+  pha_n_bands = 10... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1501s, Speedup: nanx
+  pha_n_bands = 15... gPAC error: Given groups=30, weight of size [30, 1, 51], expected input[960, 1, 1000] to have 30 channels, but got 1 channels instead
+gPAC error: Given groups=30, weight of size [30, 1, 51], expected input[960, 1, 1000] to have 30 channels, but got 1 channels instead
+gPAC error: Given groups=30, weight of size [30, 1, 51], expected input[960, 1, 1000] to have 30 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.2074s, Speedup: nanx
+  pha_n_bands = 20... gPAC error: Given groups=35, weight of size [35, 1, 51], expected input[1120, 1, 1000] to have 35 channels, but got 1 channels instead
+gPAC error: Given groups=35, weight of size [35, 1, 51], expected input[1120, 1, 1000] to have 35 channels, but got 1 channels instead
+gPAC error: Given groups=35, weight of size [35, 1, 51], expected input[1120, 1, 1000] to have 35 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.2637s, Speedup: nanx
+
+Varying parameter: amp_n_bands
+----------------------------------------
+  amp_n_bands = 5... gPAC error: Given groups=15, weight of size [15, 1, 51], expected input[480, 1, 1000] to have 15 channels, but got 1 channels instead
+gPAC error: Given groups=15, weight of size [15, 1, 51], expected input[480, 1, 1000] to have 15 channels, but got 1 channels instead
+gPAC error: Given groups=15, weight of size [15, 1, 51], expected input[480, 1, 1000] to have 15 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.0798s, Speedup: nanx
+  amp_n_bands = 10... gPAC error: Given groups=20, weight of size [20, 1, 51], expected input[640, 1, 1000] to have 20 channels, but got 1 channels instead
+gPAC error: Given groups=20, weight of size [20, 1, 51], expected input[640, 1, 1000] to have 20 channels, but got 1 channels instead
+gPAC error: Given groups=20, weight of size [20, 1, 51], expected input[640, 1, 1000] to have 20 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1147s, Speedup: nanx
+  amp_n_bands = 15... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1493s, Speedup: nanx
+  amp_n_bands = 20... gPAC error: Given groups=30, weight of size [30, 1, 51], expected input[960, 1, 1000] to have 30 channels, but got 1 channels instead
+gPAC error: Given groups=30, weight of size [30, 1, 51], expected input[960, 1, 1000] to have 30 channels, but got 1 channels instead
+gPAC error: Given groups=30, weight of size [30, 1, 51], expected input[960, 1, 1000] to have 30 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1843s, Speedup: nanx
+
+Varying parameter: n_perm
+----------------------------------------
+  n_perm = 0... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1489s, Speedup: nanx
+  n_perm = 16... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1493s, Speedup: nanx
+  n_perm = 50... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1487s, Speedup: nanx
+  n_perm = 100... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1487s, Speedup: nanx
+  n_perm = 200... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1488s, Speedup: nanx
+
+Varying parameter: fp16
+----------------------------------------
+  fp16 = False... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1489s, Speedup: nanx
+  fp16 = True... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: nans, Speedup: nanx
+
+Varying parameter: multi_gpu
+----------------------------------------
+  multi_gpu = False... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: 0.1491s, Speedup: nanx
+  multi_gpu = True... gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC error: Given groups=25, weight of size [25, 1, 51], expected input[800, 1, 1000] to have 25 channels, but got 1 channels instead
+gPAC: nans, TensorPAC: nans, Speedup: nanx
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.yaml (11.9 KiB)[0m
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.csv (7.6 KiB)[0m
+
+Creating parameter dependency plots...

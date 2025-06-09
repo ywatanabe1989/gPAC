@@ -1,0 +1,95 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-14h33m33s_qoQE (PID: 87537)
+########################################
+[0m
+[93m
+========================================
+./examples/performance/multiple_gpus/throughput.py
+Namespace(n_perm=0)
+========================================
+[0m
+🔧 GPU Count: 1
+🔧 GPU Memory: 79.1 GB per GPU
+🔧 Total VRAM: 79.1 GB
+
+📋 Test Configuration:
+   batch_size: 8
+   n_channels: 16
+   seq_sec: 8.0s (sequence duration)
+   n_perm: 0
+   seq_len: 4096 samples (computed from seq_sec * fs)
+   fs: 512
+
+============================================================
+🚀 Throughput Scaling Test
+📋 Multi-GPU throughput across different configurations
+============================================================
+🔍 Finding optimal single GPU batch size...
+   Testing batch sizes for optimal throughput...
+   Batch 8: 8.0 samples/sec (0.99s)
+   Batch 16: 9.1 samples/sec (1.75s)
+   Batch 24: 9.2 samples/sec (2.62s)
+   Batch 32: 9.2 samples/sec (3.48s)
+   Batch 48: 9.2 samples/sec (5.22s)
+   Batch 64: 9.2 samples/sec (6.99s)
+   Batch 96: 9.2 samples/sec (10.48s)
+   Batch 128: 9.1 samples/sec (14.14s)
+🎯 Optimal single GPU batch: 48 (9.2 samples/sec)
+
+============================================================
+🔧 Testing with 1 GPU(s)
+============================================================
+
+--- 1 GPU(s): Small (24) ---
+Data shape: torch.Size([24, 16, 4096])
+✅ 1 GPU(s): 2.70s, 8.9 samples/sec, 2.8 MB
+
+--- 1 GPU(s): Optimal (48) ---
+Data shape: torch.Size([48, 16, 4096])
+✅ 1 GPU(s): 5.22s, 9.2 samples/sec, 5.5 MB
+
+--- 1 GPU(s): 2x (96) ---
+Data shape: torch.Size([96, 16, 4096])
+✅ 1 GPU(s): 10.86s, 8.8 samples/sec, 11.1 MB
+
+--- 1 GPU(s): 4x (192) ---
+Data shape: torch.Size([192, 16, 4096])
+✅ 1 GPU(s): 20.87s, 9.2 samples/sec, 22.2 MB
+
+============================================================
+🔧 Testing with 1 GPU(s)
+============================================================
+
+--- 1 GPU(s): Small (24) ---
+Data shape: torch.Size([24, 16, 4096])
+✅ 1 GPU(s): 2.61s, 9.2 samples/sec, 2.8 MB
+
+--- 1 GPU(s): Optimal (48) ---
+Data shape: torch.Size([48, 16, 4096])
+✅ 1 GPU(s): 5.21s, 9.2 samples/sec, 5.5 MB
+
+--- 1 GPU(s): 2x (96) ---
+Data shape: torch.Size([96, 16, 4096])
+✅ 1 GPU(s): 10.43s, 9.2 samples/sec, 11.1 MB
+
+--- 1 GPU(s): 4x (192) ---
+Data shape: torch.Size([192, 16, 4096])
+✅ 1 GPU(s): 20.86s, 9.2 samples/sec, 22.2 MB
+
+============================================================
+📊 Throughput Scaling Summary
+============================================================
+
+🔧 1 GPU(s):
+   Best throughput: 9.2 samples/sec
+   Best scenario: 2x (96)
+     Small (24): 8.9 samples/sec
+     Optimal (48): 9.2 samples/sec
+     2x (96): 8.8 samples/sec
+     4x (192): 9.2 samples/sec
+     Small (24): 9.2 samples/sec
+     Optimal (48): 9.2 samples/sec
+     2x (96): 9.2 samples/sec
+     4x (192): 9.2 samples/sec

@@ -1,0 +1,40 @@
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_AxisWrapper.py:89: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  result = orig_attr(*args, **kwargs)
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+/data/gpfs/projects/punim2354/ywatanabe/.claude-worktree/mngs_repo/src/mngs/plt/_subplots/_export_as_csv.py:130: UserWarning: Successfully exported 1 records, but 3 failed: [id=1, method=scatter (error: If using all scalar values, you must pass an index), id=2, method=scatter (error: If using all scalar values, you must pass an index), id=3, method=scatter (error: If using all scalar values, you must pass an index)]
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 930, in <module>
+    run_main()
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 918, in run_main
+    exit_status = main(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 868, in main
+    demo_trainable_pac(args)
+  File "/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py", line 397, in demo_trainable_pac
+    pac_result = pac_trainable(X_train)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 160, in forward
+    results = self._forward_vectorized(x)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 251, in _forward_vectorized
+    pac_values = self._compute_mi_vectorized(phase, amplitude)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/_PAC.py", line 298, in _compute_mi_vectorized
+    mi_result = self.mi_calculator(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/.env-3.10/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_ModulationIndex.py", line 117, in forward
+    self._compute_mi_vectorized(
+  File "/data/gpfs/projects/punim2354/ywatanabe/gPAC/src/gpac/core/_ModulationIndex.py", line 280, in _compute_mi_vectorized
+    weighted_distributions = weights_exp * amp_exp
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 112.34 GiB. GPU 0 has a total capacity of 79.14 GiB of which 21.05 GiB is free. Including non-PyTorch memory, this process has 58.08 GiB memory in use. Of the allocated memory 32.63 GiB is allocated by PyTorch, and 24.95 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

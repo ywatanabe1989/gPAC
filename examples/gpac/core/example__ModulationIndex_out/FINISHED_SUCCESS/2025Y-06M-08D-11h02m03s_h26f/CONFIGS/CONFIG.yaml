@@ -1,0 +1,13 @@
+ID: 2025Y-06M-08D-11h02m03s_h26f
+PID: 88974
+START_TIME: 2025-06-08 11:02:03.103193
+FILE: ./examples/gpac/core/example__ModulationIndex.py
+SDIR: 
+    /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/gpac/core/example__ModulationIndex_out/RUNNING/2025Y-06M-08D-11h02m03s_h26f/
+REL_SDIR: examples/gpac/core/example__ModulationIndex_out/
+ARGS:
+    n_bins: 18
+    temperature: 0.01
+EXIT_STATUS: 0
+END_TIME: 2025-06-08 11:02:08.671501
+RUN_TIME: 00:00:05

@@ -1,0 +1,46 @@
+
+########################################
+## mngs v1.11.0
+## 2025Y-06M-08D-11h20m22s_jXdS (PID: 113783)
+########################################
+
+
+========================================
+./examples/gpac/core/example__ModulationIndex.py
+Namespace(n_bins=18, temperature=0.01)
+========================================
+
+
+----------------------------------------
+=== Demo ModulationIndex Basic ===
+----------------------------------------
+
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/01_modulation_index_basic.csv (379.4 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/01_modulation_index_basic_for_sigmaplot.csv (506.5 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/01_modulation_index_basic.gif (363.9 KiB)
+Input signal shape: torch.Size([2, 4, 3, 1024])
+Phase shape: torch.Size([2, 4, 100, 3, 1024])
+Amplitude shape: torch.Size([2, 4, 100, 3, 1024])
+MI values shape: torch.Size([2, 4, 100, 100])
+MI per segment shape: torch.Size([2, 4, 100, 100, 3])
+Gradient flow successful: True
+Mean MI: 0.0026
+Max MI: 0.0216
+
+----------------------------------------
+=== Demo ModulationIndex Surrogates ===
+----------------------------------------
+
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/02_modulation_index_surrogates.csv (834.3 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/02_modulation_index_surrogates_for_sigmaplot.csv (961.5 KiB)
+
+Saved to: /home/ywatanabe/proj/gPAC/examples/gpac/core/example__ModulationIndex_out/02_modulation_index_surrogates.gif (477.9 KiB)
+Original MI range: 0.0001 - 0.0139
+Surrogate mean range: 0.0046 - 0.0167
+Z-score range: -6.62 - 0.90
+Significant pairs (|z| > 2): 4678/20000

@@ -1,0 +1,85 @@
+[94m
+########################################
+## mngs v1.11.0
+## 2025Y-06M-05D-15h57m35s_U1FN (PID: 258268)
+########################################
+[0m
+[93m
+========================================
+/data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark.py
+Namespace(device='cuda', n_repeats=1, no_quick=True, quick=False)
+========================================
+[0m
+
+============================================================
+gPAC Parameter Sweep Benchmark
+============================================================
+Running parameter sweep on device: cuda
+============================================================
+
+Varying parameter: batch_size
+----------------------------------------
+  batch_size = 1... gPAC: 0.0585s, TensorPAC: 0.0538s, Speedup: 0.9x
+  batch_size = 2... gPAC: 0.1135s, TensorPAC: 0.0812s, Speedup: 0.7x
+  batch_size = 4... gPAC: 0.2239s, TensorPAC: 0.1526s, Speedup: 0.7x
+  batch_size = 8... gPAC: 0.4453s, TensorPAC: 0.2905s, Speedup: 0.7x
+  batch_size = 16... gPAC: 0.8872s, TensorPAC: 0.5863s, Speedup: 0.7x
+
+Varying parameter: n_channels
+----------------------------------------
+  n_channels = 1... gPAC: 0.0308s, TensorPAC: 0.0319s, Speedup: 1.0x
+  n_channels = 2... gPAC: 0.0583s, TensorPAC: 0.0474s, Speedup: 0.8x
+  n_channels = 4... gPAC: 0.1136s, TensorPAC: 0.0810s, Speedup: 0.7x
+  n_channels = 8... gPAC: 0.2249s, TensorPAC: 0.1517s, Speedup: 0.7x
+  n_channels = 16... gPAC: 0.4465s, TensorPAC: 0.2892s, Speedup: 0.6x
+
+Varying parameter: seq_sec
+----------------------------------------
+  seq_sec = 1.0... gPAC: 0.2117s, TensorPAC: 0.0504s, Speedup: 0.2x
+  seq_sec = 2.0... gPAC: 0.2165s, TensorPAC: 0.0825s, Speedup: 0.4x
+  seq_sec = 4.0... gPAC: 0.2241s, TensorPAC: 0.1513s, Speedup: 0.7x
+  seq_sec = 8.0... gPAC: 0.2415s, TensorPAC: 0.2827s, Speedup: 1.2x
+
+Varying parameter: fs
+----------------------------------------
+  fs = 250... gPAC: 0.2236s, TensorPAC: 0.1552s, Speedup: 0.7x
+  fs = 500... gPAC: 0.2426s, TensorPAC: 0.3301s, Speedup: 1.4x
+  fs = 1000... gPAC: 0.2738s, TensorPAC: 0.8200s, Speedup: 3.0x
+
+Varying parameter: pha_n_bands
+----------------------------------------
+  pha_n_bands = 5... gPAC: 0.1813s, TensorPAC: 0.0967s, Speedup: 0.5x
+  pha_n_bands = 10... gPAC: 0.2252s, TensorPAC: 0.1482s, Speedup: 0.7x
+  pha_n_bands = 15... gPAC: 0.2670s, TensorPAC: 0.2032s, Speedup: 0.8x
+  pha_n_bands = 20... gPAC: 0.3095s, TensorPAC: 0.2616s, Speedup: 0.8x
+
+Varying parameter: amp_n_bands
+----------------------------------------
+  amp_n_bands = 5... gPAC: 0.1389s, TensorPAC: 0.0802s, Speedup: 0.6x
+  amp_n_bands = 10... gPAC: 0.1818s, TensorPAC: 0.1118s, Speedup: 0.6x
+  amp_n_bands = 15... gPAC: 0.2237s, TensorPAC: 0.1469s, Speedup: 0.7x
+  amp_n_bands = 20... gPAC: 0.2671s, TensorPAC: 0.1824s, Speedup: 0.7x
+
+Varying parameter: n_perm
+----------------------------------------
+  n_perm = 0... gPAC: 0.2255s, TensorPAC: 0.1504s, Speedup: 0.7x
+  n_perm = 16... gPAC: 0.3965s, TensorPAC: 0.1481s, Speedup: 0.4x
+  n_perm = 50... gPAC: 0.7678s, TensorPAC: 0.1478s, Speedup: 0.2x
+  n_perm = 100... gPAC: 1.2911s, TensorPAC: 0.1497s, Speedup: 0.1x
+  n_perm = 200... gPAC: 2.3572s, TensorPAC: 0.1502s, Speedup: 0.1x
+
+Varying parameter: fp16
+----------------------------------------
+  fp16 = False... gPAC: 0.2245s, TensorPAC: 0.1484s, Speedup: 0.7x
+  fp16 = True... gPAC: 0.2281s, TensorPAC: nans, Speedup: nanx
+
+Varying parameter: multi_gpu
+----------------------------------------
+  multi_gpu = False... gPAC: 0.2239s, TensorPAC: 0.1473s, Speedup: 0.7x
+  multi_gpu = True... gPAC: 0.2251s, TensorPAC: nans, Speedup: nanx
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.yaml (12.7 KiB)[0m
+[93m
+Saved to: /data/gpfs/projects/punim2354/ywatanabe/gPAC/examples/performance/parameter_sweep/parameter_sweep_benchmark_out/parameter_sweep_results.csv (9.0 KiB)[0m
+
+Creating parameter dependency plots...
