@@ -1,33 +1,0 @@
-  0%|                                                                                        | 0/448 [00:00<?, ?it/s]  0%|1                                                                               | 1/448 [00:02<18:00,  2.42s/it]  0%|3                                                                               | 2/448 [00:03<10:40,  1.44s/it]  1%|5                                                                               | 3/448 [00:12<36:25,  4.91s/it]  1%|7                                                                               | 4/448 [00:12<23:44,  3.21s/it]  1%|8                                                                               | 5/448 [00:13<15:48,  2.14s/it]  1%|#                                                                             | 6/448 [00:34<1:03:08,  8.57s/it]  2%|#2                                                                              | 7/448 [00:34<42:53,  5.83s/it]  2%|#4                                                                              | 8/448 [00:34<30:11,  4.12s/it]  2%|#6                                                                              | 9/448 [00:35<21:40,  2.96s/it]  2%|#7                                                                             | 10/448 [00:39<24:53,  3.41s/it]  2%|#9                                                                             | 11/448 [00:41<21:15,  2.92s/it]  3%|##                                                                           | 12/448 [01:45<2:36:29, 21.54s/it]  3%|##2                                                                          | 13/448 [01:45<1:49:08, 15.05s/it]  3%|##4                                                                          | 14/448 [01:45<1:16:15, 10.54s/it]  4%|##8                                                                            | 16/448 [01:49<47:08,  6.55s/it]  4%|##9                                                                          | 17/448 [02:59<2:39:53, 22.26s/it]  4%|###                                                                          | 18/448 [03:06<2:11:26, 18.34s/it]  4%|###2                                                                         | 19/448 [03:07<1:36:08, 13.45s/it]  4%|###4                                                                         | 20/448 [03:07<1:09:25,  9.73s/it]  5%|###6                                                                         | 21/448 [03:24<1:23:54, 11.79s/it]  5%|###7                                                                         | 22/448 [03:24<1:00:16,  8.49s/it]  5%|####                                                                           | 23/448 [03:25<43:29,  6.14s/it]  5%|####2                                                                          | 24/448 [03:25<30:50,  4.37s/it]  6%|####4                                                                          | 25/448 [03:25<22:25,  3.18s/it]  6%|####5                                                                          | 26/448 [03:26<17:32,  2.49s/it]  6%|####7                                                                          | 27/448 [03:48<57:56,  8.26s/it]  6%|####9                                                                          | 28/448 [03:48<41:25,  5.92s/it]  6%|#####1                                                                         | 29/448 [03:50<32:30,  4.65s/it]  7%|#####2                                                                         | 30/448 [03:50<22:58,  3.30s/it]  7%|#####4                                                                         | 31/448 [03:50<16:34,  2.39s/it]  7%|#####6                                                                         | 32/448 [03:51<12:45,  1.84s/it]  7%|#####8                                                                         | 33/448 [03:52<11:47,  1.71s/it]  8%|#####9                                                                         | 34/448 [03:53<09:00,  1.31s/it]  8%|#####9                                                                         | 34/448 [04:25<53:58,  7.82s/it]
-Traceback (most recent call last):
-  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 327, in <module>
-  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 314, in run_main
-  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 250, in main
-    with warnings.catch_warnings():
-  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 111, in benchmark_one_condition
-  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 232, in compute
-    return _compute_gpac(dataloader, device, pac_calculator)
-  File "/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/parameter_sweep_benchmark.py", line 208, in _compute_tensorpac
-    )
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/tensorpac/pac.py", line 486, in filterfit
-    return self.fit(pha, amp, p=p, mcp=mcp, n_perm=n_perm, n_jobs=n_jobs,
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/tensorpac/pac.py", line 393, in fit
-    pac = fcn(pha, amp)
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/tensorpac/methods/meth_pac.py", line 55, in modulation_index
-    p_j = _kl_hr(pha, amp, n_bins)
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/tensorpac/methods/meth_pac.py", line 113, in _kl_hr
-    abin_pha = np.einsum('i...j, k...j->ik...', amp, idx) / m
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/numpy/_core/einsumfunc.py", line 1423, in einsum
-    return c_einsum(*operands, **kwargs)
-KeyboardInterrupt
-Exception ignored in atexit callback: <function shutdown_compile_workers at 0x15002004c4c0>
-Traceback (most recent call last):
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/_inductor/async_compile.py", line 113, in shutdown_compile_workers
-    pool.shutdown()
-  File "/home/ywatanabe/.local/lib/python3.10/site-packages/torch/_inductor/compile_worker/subproc_pool.py", line 239, in shutdown
-    self.process.wait(300)
-  File "/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/lib/python3.10/subprocess.py", line 1217, in wait
-    self._wait(timeout=sigint_timeout)
-  File "/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/lib/python3.10/subprocess.py", line 1932, in _wait
-    time.sleep(delay)
-KeyboardInterrupt: 

@@ -1,0 +1,204 @@
+# Example SciTeX Configuration File
+# Copy this to scitex.yaml and modify for your project
+
+project:
+  name: "Example Research Project"
+  title: "Your Paper Title: A Comprehensive Study"
+  short_title: "Your Paper Title"
+  version: "0.1.0"
+  
+  # Author information
+  authors:
+    - name: "First Author"
+      affiliation: "1,2"
+      email: "first.author@university.edu"
+      orcid: "0000-0000-0000-0000"
+      corresponding: true
+    
+    - name: "Second Author"
+      affiliation: "2"
+      email: "second.author@institute.org"
+      orcid: "0000-0000-0000-0001"
+    
+    - name: "Senior Author"
+      affiliation: "1"
+      email: "senior.author@university.edu"
+      orcid: "0000-0000-0000-0002"
+  
+  # Affiliations
+  affiliations:
+    1: "Department of Computer Science, University Name, City, Country"
+    2: "Research Institute, Organization Name, City, Country"
+  
+  # Keywords for the paper
+  keywords:
+    - "machine learning"
+    - "scientific computing"
+    - "GPU acceleration"
+    - "your domain"
+
+# Directory structure
+directories:
+  manuscript: "manuscript"
+  revision: "revision"
+  supplementary: "supplementary"
+  figures: "figures"
+  tables: "tables"
+  build: "build"
+  templates: "templates"
+  data: "data"
+  analysis: "analysis"
+
+# LaTeX compilation settings
+latex:
+  engine: "pdflatex"  # or xelatex, lualatex
+  bibtex: "bibtex"    # or biber
+  options:
+    - "-shell-escape"
+    - "-interaction=nonstopmode"
+  
+  # Required packages
+  packages:
+    - "graphicx"
+    - "amsmath"
+    - "amssymb"
+    - "natbib"
+    - "hyperref"
+    - "cleveref"
+    - "booktabs"
+    - "algorithm"
+    - "algorithmic"
+    - "subfigure"
+    - "color"
+    - "xcolor"
+    - "listings"
+
+# Output settings
+output:
+  formats:
+    - "pdf"
+    # - "docx"  # Requires pandoc
+  versioning: true
+  timestamp: true
+  build_dir_structure: "flat"  # or "dated"
+
+# Feature toggles
+features:
+  clean_build: true           # Clean aux files before building
+  version_output: true        # Create versioned PDFs
+  open_after_compile: false   # Open PDF after compilation
+  word_count: true           # Enable word counting
+  diff: true                 # Enable diff generation
+  auto_bibliography: true    # Auto-update bibliography
+  figure_tracking: true      # Track figure usage
+  table_tracking: true       # Track table usage
+  equation_numbering: true   # Number equations
+  line_numbers: false        # Add line numbers (for review)
+  double_spacing: false      # Double space (for review)
+  watermark: false          # Add draft watermark
+
+# Journal/Conference settings
+journal:
+  name: "Journal of Example Sciences"
+  type: "journal"  # or "conference"
+  style: "elsarticle"  # Document class
+  
+  # Document class options
+  options:
+    - "preprint"
+    # - "review"
+    # - "final"
+    - "times"
+    - "authoryear"
+    # - "3p"  # 3-column
+    # - "5p"  # 5-column
+  
+  # Formatting requirements
+  requirements:
+    abstract_word_limit: 250
+    manuscript_word_limit: 8000
+    references_limit: 50
+    figures_limit: 10
+    tables_limit: 5
+
+# Metadata for the paper
+metadata:
+  # Dates
+  submission_date: "2024-01-01"
+  revision_date: ""
+  acceptance_date: ""
+  
+  # Identifiers
+  doi: ""
+  arxiv_id: ""
+  paper_id: ""
+  
+  # Categories/Classifications
+  categories:
+    - "cs.LG"  # arXiv category
+    - "q-bio.NC"
+  
+  # Funding information
+  funding:
+    - agency: "National Science Foundation"
+      grant_number: "ABC-1234567"
+    - agency: "Research Council"
+      grant_number: "XYZ-987654"
+  
+  # Other metadata
+  highlights:
+    - "First key contribution or finding"
+    - "Second key contribution or finding"
+    - "Third key contribution or finding"
+    - "Fourth key contribution or finding"
+    - "Fifth key contribution or finding"
+  
+  graphical_abstract: true
+  supplementary_material: true
+  data_availability: true
+  code_availability: true
+  
+  # Repository/Archive information
+  code_repository: "https://github.com/username/repository"
+  data_repository: "https://doi.org/10.5281/zenodo.xxxxx"
+  preprint_server: "https://arxiv.org/abs/xxxx.xxxxx"
+
+# Build profiles for different purposes
+profiles:
+  draft:
+    features:
+      line_numbers: true
+      double_spacing: true
+      watermark: true
+    latex:
+      options:
+        - "draft"
+  
+  submission:
+    features:
+      line_numbers: true
+      double_spacing: true
+      watermark: false
+    output:
+      anonymous: true
+  
+  camera_ready:
+    features:
+      line_numbers: false
+      double_spacing: false
+      watermark: false
+    latex:
+      options:
+        - "final"
+
+# Custom commands/shortcuts
+shortcuts:
+  # Quick compile commands
+  draft: "compile --profile draft"
+  submit: "compile --profile submission"
+  final: "compile --profile camera_ready"
+  
+  # Utility commands
+  clean: "clean --all"
+  pkg: "package --submission"
+  diff: "diff --vs last"

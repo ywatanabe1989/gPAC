@@ -6,6 +6,12 @@
 
 # gPAC: GPU-Accelerated Phase-Amplitude Coupling
 
+[![PyPI version](https://badge.fury.io/py/gpu-pac.svg)](https://badge.fury.io/py/gpu-pac)
+[![pytest](https://github.com/ywatanabe1989/gPAC/actions/workflows/tests.yml/badge.svg)](https://github.com/ywatanabe1989/gPAC/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/ywatanabe1989/gPAC/branch/main/graph/badge.svg)](https://codecov.io/gh/ywatanabe1989/gPAC)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
 `gPAC` is a PyTorch-based package for efficient computation of Phase-Amplitude Coupling (PAC) using Modulation Index (MI) with GPU acceleration. It provides:
 
 - **341.8x speedup** over TensorPAC (tested on real benchmarks)

@@ -1,0 +1,84 @@
+% SciTeX Paper Template - Main Document
+\documentclass[preprint,12pt,authoryear]{elsarticle}
+
+% Essential packages
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm,algorithmic}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{subcaption}
+
+% Bibliography style
+\bibliographystyle{elsarticle-harv}
+
+% Custom commands
+\newcommand{\pkg}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+\begin{frontmatter}
+    % Title
+    \title{Your Paper Title Here}
+    
+    % Authors
+    \author[inst1,inst2]{First Author\corref{cor1}}
+    \ead{first.author@university.edu}
+    
+    \author[inst2]{Second Author}
+    \ead{second.author@institute.org}
+    
+    % Affiliations
+    \affiliation[inst1]{organization={Department of Computer Science},
+                       addressline={University Name}, 
+                       city={City},
+                       postcode={12345}, 
+                       state={State},
+                       country={Country}}
+                       
+    \affiliation[inst2]{organization={Research Institute},
+                       addressline={Organization Name},
+                       city={City},
+                       postcode={67890},
+                       state={State}, 
+                       country={Country}}
+    
+    % Corresponding author
+    \cortext[cor1]{Corresponding author}
+    
+    % Abstract
+    \begin{abstract}
+        \input{sections/abstract}
+    \end{abstract}
+    
+    % Keywords
+    \begin{keyword}
+        keyword1 \sep keyword2 \sep keyword3 \sep keyword4
+    \end{keyword}
+\end{frontmatter}
+
+% Main content
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methods}
+\input{sections/experiments}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+% Acknowledgments
+\section*{Acknowledgments}
+\input{sections/acknowledgments}
+
+% Bibliography
+\bibliography{references}
+
+% Appendices (if any)
+\appendix
+\input{sections/appendix}
+
+\end{document}

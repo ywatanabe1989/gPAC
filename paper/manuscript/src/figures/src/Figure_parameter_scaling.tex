@@ -1,0 +1,16 @@
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{../../links/01_parameter_scaling_on_grids_y-not-shared.gif}
+\caption{Computational performance scaling of gPAC across key parameters. 
+Each subplot shows speedup factor (GPU/CPU computation time) as a function of: 
+(a) Batch size: Near-linear speedup up to 64 samples, plateauing due to memory bandwidth. 
+(b) Number of channels: Super-linear speedup with increasing channel count. 
+(c) Signal duration: Consistent acceleration across all time scales. 
+(d) Sampling frequency: Minimal impact on relative performance. 
+(e) Phase frequency bands: Efficient parallelization across frequency space. 
+(f) Amplitude frequency bands: Similar scaling to phase bands. 
+(g) Number of permutations: Linear scaling maintains real-time capability. 
+(h) Chunk size: Optimal performance at intermediate chunk sizes. 
+Shaded regions indicate standard deviation across 5 runs.}
+\label{fig:parameter_scaling}
+\end{figure*}
