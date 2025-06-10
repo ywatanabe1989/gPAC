@@ -1,4 +1,0 @@
-/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py:307: UserWarning: std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /pytorch/aten/src/ATen/native/ReduceOps.cpp:1831.)
-  std_surr = surrogates.std(dim=-1, keepdim=True)
-/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py:211: UserWarning: std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /pytorch/aten/src/ATen/native/ReduceOps.cpp:1831.)
-  surrogate_std = surrogates.std(dim=-1)

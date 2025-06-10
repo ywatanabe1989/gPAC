@@ -1,0 +1,58 @@
+%% -*- mode: latex -*-
+%% Time-stamp: "2024-11-04 14:48:19 (ywatanabe)"
+%% File: ./torchPAC/paper/manuscript/src/methods.tex
+
+\section{Methods}
+\subsection{Synthetic Data}
+We utilized synthetic data for profiling computational speed and accuracy.
+
+\subsection{Physiological Data}
+Additionally, we verified our method using physiological recordings from [fixme ->] XXX [<- fixme] for event-related analyses.
+
+
+\subsection{Implementation of GPU-accelerated PAC}
+To enable seamless integration with artificial intelligence (AI) training frameworks, we developed a graphics processing unit (GPU)-accelerated phase-amplitude coupling (PAC) implementation using PyTorch as the computational foundation. The implementation comprises three primary components: bandpass filtering, Hilbert transformation, and mutual information index calculations, which are modularly integrated into a unified PAC class and function. This implementation is publicly available in the mngs package, an open-source Python toolbox (https://github.com/ywata1989/mngs/dsp).
+
+\indent GPU-accelerated PAC calculation can be executed with three lines of code:
+\begin{verbatim}
+import mngs
+signal, _time, fs = mngs.dsp.demo_sig()
+pac, freqs_pha, freqs_amp = mngs.dsp.pac(signal, fs, batch_size=1, batch_size_ch=1, n_perm=20)
+\end{verbatim}
+where \texttt{signal} represents the input time series data ($\mathbb{R}^{n_\text{samples} \times n_\text{channels} \times n_\text{sequence}}$), \texttt{\_time} contains the corresponding time points, \texttt{fs} specifies the sampling frequency in Hz, \texttt{batch\_size} defines the number of temporal segments processed simultaneously, \texttt{batch\_size\_ch} specifies the number of channels processed in parallel, \texttt{n\_perm} indicates the number of permutations for surrogate testing, \texttt{pac} returns the calculated PAC values, and \texttt{freqs\_pha} and \texttt{freqs\_amp} represent the frequency bands for phase and amplitude components, respectively.
+
+\subsection{Machine Specification}
+All computations were performed on a workstation running Rocky Linux 9.4 with an AMD Ryzen 9 7950X 16-core/32-thread CPU (maximum frequency: 5.88 GHz) and 61.7 GiB of RAM. GPU acceleration was implemented using an NVIDIA GeForce RTX 4090 with CUDA 12.6.20. Our implementation utilized PyTorch [fixme ->] version X.X.X [<- fixme] and was tested on both CPU and GPU configurations.
+
+\subsection{Calculation Quality}
+Mean squared error (MSE) was employed to measure calculation differences between our implementation and an existing PAC calculation package, TensorPAC.
+
+
+\subsection{Speed Comparison}
+Performance benchmarking was conducted using a baseline data chunk of dimensions $(n_\text{samples}, n_\text{channels}, n_\text{sequence}) = (4, 19, 2^8)$. Each condition was measured three times with the following parameters:
+
+- Batch size: $2^3, 2^4, 2^5, 2^6$
+- Number of channels: $2^3, 2^4, 2^5, 2^6$  
+- Number of segments: $2^0, 2^1, 2^2, 2^3, 2^4$
+- Time duration: $2^0, 2^1, 2^2, 2^3$ seconds
+- Sampling rate: $2^9, 2^{10}$ Hz
+- Phase frequency bands: $10, 30, 50, 70, 10^2$
+- Amplitude frequency bands: $10, 30, 50, 70, 10^2$
+- Number of permutations: $2^0, 2^1, 2^2$
+- Chunk size: $2^0, 2^1, 2^2, 2^3$
+- FP16 precision: enabled, disabled
+- Gradient calculation: enabled, disabled
+- In-place operations: enabled, disabled
+- Model trainability: enabled, disabled
+- Computing device: CPU, GPU (CUDA)
+- Multi-threading: enabled, disabled
+- Number of calculations: $2^0, 2^1, 2^2, 2^3$
+
+Computation times were compared between TensorPAC and our mngs package implementation across all parameter combinations to assess relative performance advantages.
+
+
+
+\subsection{Statistical Evaluation}
+Both the Brunner--Munzel test and the Kruskal--Wallis test were executed using the SciPy package in Python \cite{virtanen_scipy_2020}. Correlational analysis was conducted by determining the rank of the observed correlation coefficient within its associated set-size-shuffled surrogate using a customized Python script. The bootstrap test was implemented with an in-house Python script.
+\label{sec:methods}
+

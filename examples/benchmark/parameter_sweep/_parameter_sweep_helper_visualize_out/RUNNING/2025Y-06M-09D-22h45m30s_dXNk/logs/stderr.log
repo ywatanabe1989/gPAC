@@ -1,2 +1,0 @@
-/home/ywatanabe/.local/lib/python3.10/site-packages/IPython/core/interactiveshell.py:937: UserWarning: Attempting to work in a virtualenv. If you encounter problems, please install IPython inside the virtualenv.
-  warn(

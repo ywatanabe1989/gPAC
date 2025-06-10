@@ -1,0 +1,67 @@
+project:
+  name: gPAC
+  title: "gPAC: GPU-Accelerated Phase-Amplitude Coupling Analysis for Large-Scale Neural Data"
+  short_title: "gPAC: GPU-Accelerated PAC Analysis"
+  version: 1.0.0
+  authors:
+    - name: "Your Name"
+      affiliation: "1"
+      email: "your.email@institution.edu"
+      orcid: "0000-0000-0000-0000"
+  affiliations:
+    1: "Department, Institution, City, Country"
+  keywords:
+    - Phase-amplitude coupling
+    - GPU acceleration
+    - Neural oscillations
+    - Deep learning
+    - PyTorch
+    - Computational neuroscience
+
+# Link to analysis directories
+analysis:
+  figures: "../benchmark"
+  results: "../benchmark/parameter_sweep"
+  comparison: "../benchmark/pac_values_comparison_with_tensorpac"
+  examples: "../examples/gpac"
+
+directories:
+  manuscript: manuscript
+  revision: revision
+  supplementary: supplementary
+  figures: figures
+  tables: tables
+  build: build
+  templates: templates
+  guidelines: guidelines
+
+latex:
+  engine: pdflatex
+  bibtex: bibtex
+  options:
+    - -shell-escape
+    - -interaction=nonstopmode
+  packages:
+    - graphicx
+    - amsmath
+    - amssymb
+    - natbib
+    - hyperref
+    - cleveref
+    - booktabs
+    - algorithm
+    - algorithmic
+
+features:
+  clean_build: true
+  version_output: true
+  open_after_compile: false
+  validation: true
+  figure_tracking: true
+  
+journal:
+  name: "Journal of Computational Neuroscience"
+  style: "elsarticle"
+  requirements:
+    abstract_word_limit: 250
+    manuscript_word_limit: 8000

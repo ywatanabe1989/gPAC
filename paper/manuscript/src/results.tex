@@ -1,0 +1,29 @@
+%% -*- mode: latex -*-
+%% Time-stamp: "2024-11-06 09:04:52 (ywatanabe)"
+%% File: ./torchPAC/paper/manuscript/src/results.tex
+
+\section{Results}
+
+We developed a novel computational framework for trainable phase-amplitude coupling (PAC) analysis implemented in PyTorch. The framework enables end-to-end optimization of PAC parameters through gradient descent while maintaining neurophysiological interpretability.
+
+\subsection{Schematic Overview}
+\subsection{Data Preparation}
+We validated our framework using two types of datasets. First, we generated synthetic data with known ground truth coupling between low-frequency phase (4-8 Hz) and high-frequency amplitude (80-150 Hz) components \hlref{fig:00_synthetic_raw}. The synthetic dataset included 1000 trials with varying coupling strengths and phase preferences. Second, we analyzed EEG recordings from ... during ..., focusing on theta-gamma coupling \hlref{fig:00_phisiiological_raw}.
+
+\subsection{Phase-Amplitude Coupling}
+The PAC computation follows established methods while introducing trainable parameters \hlref{fig:00_designe}. The signal first undergoes bandpass filtering using finite impulse response (FIR) filters with learnable cut-off frequencies \hlref{fig:00_bandpass}. Hilbert transformation extracts instantaneous phase and amplitude from the filtered signals \hlref{fig:00_hilbert}. The modulation index quantifies the coupling strength between the phase of slower oscillations and the amplitude of faster oscillations \hlref{fig:modulation_index}.
+
+\subsection{PAC Value Confirmation with an Existing Package}
+PAC value comparison \hlref{fig:00_pac_value_comparision}.
+
+\subsection{Speed Comparison with an Existing Package}
+batch size (Figure~\hlref{fig:01_batch_size})\\
+chunk size (Figure~\hlref{fig:02_chunk_size})\\
+number of channels (Figure~\hlref{fig:03_n_chs})\\
+duration (Figure~\hlref{fig:04_t_sec})\\
+sampling frequency (Figure~\hlref{fig:05_fs})\\
+number of frequency bands for phase (Figure~\hlref{fig:07_pha_n_bands})\\
+number of frequency bands for amplitude (Figure~\hlref{fig:08_n_perm})\\
+
+\subsection{Trainable Phase-Amplitude Coupling}
+Another key innovation is making PAC parameters fully differenciable, for being trainable through backpropagation algorithms. Specifically, we implemented: (i) Learnable filter parameters for optimal frequency band selection (ii), (ii) differenciable hilbert transformation, (iii) adaptable phase-amplitude binning for modulation index calculation. To demonstrate, we trained a model with trainable PAC module for a classification task distinguishing between coupled and uncoupled oscillations. The framework achieved 95\% classification accuracy on synthetic data and successfully identified physiological theta-gamma coupling patterns.
