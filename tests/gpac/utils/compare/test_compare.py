@@ -86,13 +86,11 @@ class TestBandUtilities:
         return gpac.PAC(
             seq_len=1024,
             fs=256,
-            pha_start_hz=2,
-            pha_end_hz=20,
+            pha_range_hz=(2, 20),
             pha_n_bands=10,
-            amp_start_hz=30,
-            amp_end_hz=100,
+            amp_range_hz=(30, 100),
             amp_n_bands=10,
-            compile_mode=False
+            trainable=False
         )
     
     def test_extract_gpac_bands(self, pac_gp_obj):
@@ -353,13 +351,11 @@ class TestIntegration:
         pac_gp = gpac.PAC(
             seq_len=n_samples,
             fs=fs,
-            pha_start_hz=2,
-            pha_end_hz=20,
+            pha_range_hz=(2, 20),
             pha_n_bands=8,
-            amp_start_hz=30,
-            amp_end_hz=100,
+            amp_range_hz=(30, 100),
             amp_n_bands=8,
-            compile_mode=False
+            trainable=False
         )
         
         # Extract bands
@@ -401,13 +397,11 @@ class TestIntegration:
         pac_gp = gpac.PAC(
             seq_len=1024,
             fs=256,
-            pha_start_hz=4,
-            pha_end_hz=16,
+            pha_range_hz=(4, 16),
             pha_n_bands=6,
-            amp_start_hz=40,
-            amp_end_hz=120,
+            amp_range_hz=(40, 120),
             amp_n_bands=8,
-            compile_mode=False
+            trainable=False
         )
         
         # Extract and verify bands
@@ -462,13 +456,11 @@ class TestPerformance:
         pac_gp = gpac.PAC(
             seq_len=1024,
             fs=256,
-            pha_start_hz=2,
-            pha_end_hz=20,
+            pha_range_hz=(2, 20),
             pha_n_bands=50,  # Large number of bands
-            amp_start_hz=30,
-            amp_end_hz=100,
+            amp_range_hz=(30, 100),
             amp_n_bands=50,
-            compile_mode=False
+            trainable=False
         )
         
         start_time = time.time()

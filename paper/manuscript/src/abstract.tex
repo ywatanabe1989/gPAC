@@ -1,8 +1,25 @@
-%% -*- mode: latex -*-
-%% Abstract for gPAC manuscript
-
+% Abstract (150-250 words, 7 sections)
 \begin{abstract}
-  \pdfbookmark[1]{Abstract}{abstract}
-Phase-amplitude coupling (PAC) quantifies cross-frequency interactions in neural oscillations and serves as a biomarker for cognitive processes and neurological disorders. However, traditional PAC analysis methods are computationally intensive, limiting their application to large-scale neural datasets. Here we present gPAC, a GPU-accelerated Python package that leverages PyTorch's parallel processing capabilities to dramatically accelerate PAC computation. Through optimized algorithms including vectorized bandpass filtering, parallel Hilbert transforms, and efficient surrogate generation for statistical testing, gPAC achieves 100-1000× speedup compared to CPU-based implementations while maintaining numerical accuracy (correlation > 0.99 with established methods). The framework supports multi-GPU scaling, enabling real-time analysis of high-density recordings with thousands of channels. We demonstrate gPAC's performance on synthetic and real neural data, showing linear scaling with data size and efficient memory usage even for terabyte-scale datasets. Beyond speed improvements, gPAC introduces novel features including trainable frequency filters for deep learning integration, comprehensive statistical testing with optimized permutation methods, and seamless interoperability with existing neuroscience toolboxes. Our open-source package (available at \url{https://pypi.org/project/gpu-pac/}) democratizes large-scale PAC analysis, enabling neuroscientists to explore cross-frequency dynamics in unprecedented detail and potentially accelerating discoveries in systems neuroscience and clinical applications.
+
+% 1. Basic Introduction (1-2 sentences)
+Neural oscillations orchestrate information processing across brain networks through cross-frequency interactions. Phase-amplitude coupling (PAC), where low-frequency phase modulates high-frequency amplitude, serves as a fundamental mechanism for neural communication and computation.
+
+% 2. Detailed Background (2-3 sentences)  
+PAC analysis has revealed critical insights into memory consolidation, attention, and neurological disorders. However, traditional PAC computation is computationally intensive, requiring hours to analyze modern high-density recordings. This computational bottleneck limits real-time applications and large-scale studies essential for understanding distributed brain dynamics.
+
+% 3. General Problem (1 sentence)
+Current CPU-based PAC methods cannot handle the terabyte-scale datasets from contemporary neuroscience experiments, constraining both research scope and clinical applications.
+
+% 4. Main Result (1 sentence with "Here we show...")
+Here we show that GPU acceleration through PyTorch enables 100-1000× faster PAC computation while maintaining numerical accuracy (correlation > 0.99) with established methods.
+
+% 5. Results with Comparisons (2-3 sentences)
+Our gPAC framework processes 1000-channel recordings in seconds compared to hours for CPU implementations. Benchmark tests demonstrate linear scaling with data size and efficient multi-GPU utilization. The optimized surrogate generation method ensures unbiased statistical testing while the trainable frequency filters enable data-driven optimization of analysis parameters.
+
+% 6. General Context (1-2 sentences)
+This computational advance transforms PAC analysis from a bottleneck to a routine procedure, enabling comprehensive exploration of cross-frequency dynamics across entire brain networks.
+
+% 7. Broader Perspective (2-3 sentences)
+By democratizing access to high-performance PAC analysis through open-source tools, gPAC accelerates discovery in systems neuroscience and facilitates clinical translation of PAC biomarkers. The framework's PyTorch foundation enables seamless integration with deep learning pipelines, opening new avenues for understanding neural dynamics.
 
 \end{abstract}

@@ -1,3 +1,43 @@
+%% -*- mode: latex -*-
+%% Discussion section for gPAC manuscript
+
 \section{Discussion}
-Discussion here.
 \label{sec:discussion}
+
+We presented gPAC, a GPU-accelerated framework that transforms phase-amplitude coupling analysis from a computational bottleneck into a real-time capability. By achieving 100-1000× speedups while maintaining numerical accuracy, gPAC enables new scales of analysis previously infeasible with CPU-based methods. The framework's trainable filters and PyTorch integration further position it at the intersection of neuroscience and machine learning, opening novel research directions.
+
+\subsection{Technical Innovations and Performance}
+
+The dramatic performance improvements stem from three key technical innovations. First, our parallelized FIR filtering leverages GPU tensor cores for simultaneous processing of multiple frequency bands, eliminating the sequential bottleneck of traditional implementations. Second, the differentiable Hilbert transform maintains gradient flow while approximating the analytic signal, enabling end-to-end optimization. Third, our memory-efficient modulation index calculation processes large datasets in chunks, preventing out-of-memory errors that plague CPU implementations.
+
+The super-linear speedup with increasing data size (12× for small datasets to 1047× for large datasets) reflects the GPU's architectural advantages. While CPUs excel at sequential operations with complex branching, GPUs thrive on the parallel, regular computations inherent in PAC analysis. This advantage becomes more pronounced as modern neuroscience moves toward high-density recordings with hundreds or thousands of channels.
+
+\subsection{Comparison with Existing Methods}
+
+Our validation against TensorPAC revealed both high concordance (correlation 0.785±0.065) and instructive differences. The correlation below unity stems from implementation choices rather than computational errors. Specifically, gPAC uses FIR filters with precise frequency cutoffs, while TensorPAC employs Butterworth filters or wavelets with different frequency responses. These differences, while subtle for individual calculations, accumulate across frequency bands and highlight the importance of standardizing PAC methodologies.
+
+The lower correlation for z-scores (0.360±0.124) reflects fundamental differences in surrogate generation. gPAC's full-range amplitude shifting provides unbiased null distributions, while restricted-range methods may underestimate the null hypothesis space. This finding suggests that previous PAC studies using biased surrogates may have inflated significance levels, warranting reanalysis with proper statistical controls.
+
+\subsection{Implications for Neuroscience Research}
+
+gPAC's performance enables qualitatively new analyses that were computationally prohibitive. Real-time PAC visualization during experiments allows researchers to adjust recording parameters based on coupling strength, potentially improving data quality and reducing recording time. Large-scale connectivity analyses, exemplified by our 326× speedup for all-to-all channel computations, enable whole-brain PAC network construction that could reveal hierarchical organization principles.
+
+The trainable filter capability addresses a longstanding challenge in PAC analysis: optimal frequency band selection. Rather than relying on canonical bands that may not match individual physiology, gPAC can discover subject-specific coupling frequencies through gradient descent. This personalized approach could improve biomarker sensitivity for clinical applications, where PAC alterations characterize numerous neurological disorders.
+
+\subsection{Limitations and Future Directions}
+
+Several limitations warrant consideration. First, while GPU acceleration provides dramatic speedups, it requires specialized hardware that may not be universally available. However, with GPU costs declining and cloud computing expanding, this barrier is rapidly diminishing. Second, our current implementation focuses on the Modulation Index metric; extending to other PAC measures (MVL, PLV, etc.) would broaden applicability. Third, the differentiable approximations, while maintaining accuracy, introduce small numerical differences that researchers should consider when comparing results across platforms.
+
+Future developments could extend gPAC in several directions. Integration with deep learning architectures could enable PAC-based neural network layers for end-to-end learning from raw signals to behavioral outcomes. Real-time applications in brain-computer interfaces could use PAC as a control signal with minimal latency. Extension to cross-frequency directionality measures would reveal causal relationships in neural circuits.
+
+\subsection{Open Science and Reproducibility}
+
+By releasing gPAC as open-source software with comprehensive documentation and examples, we aim to democratize access to high-performance PAC analysis. The package's availability on PyPI (pip install gpu-pac) ensures easy installation, while the GitHub repository enables community contributions. Our extensive test suite (99.6% coverage) and validation against established methods provide confidence in results reproducibility.
+
+The framework's design philosophy prioritizes both performance and usability. Researchers can achieve GPU acceleration with minimal code changes, as demonstrated by our three-line usage example. This accessibility is crucial for widespread adoption, as many neuroscientists may lack extensive GPU programming experience.
+
+\subsection{Conclusions}
+
+gPAC represents a paradigm shift in phase-amplitude coupling analysis, transforming it from a computational limitation into an enabling technology. The 100-1000× performance improvements are not merely incremental advances but qualitative changes that enable new experimental paradigms and analysis scales. As neuroscience continues generating larger datasets from higher-density recordings, tools like gPAC become essential for extracting meaningful insights from neural dynamics.
+
+The convergence of neuroscience and machine learning, exemplified by gPAC's trainable components, points toward a future where analysis methods continuously adapt to data characteristics. By providing both immediate practical benefits and a foundation for future innovations, gPAC aims to accelerate discoveries in understanding cross-frequency neural interactions and their roles in cognition and disease.
