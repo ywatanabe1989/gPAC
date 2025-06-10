@@ -94,7 +94,7 @@ The comparison uses identical frequency bands (25 log-spaced phase bands × 35 l
 
 ```bash
 # Installation
-pip install gpac  # Coming soon to PyPI
+pip install gpu-pac
 
 # Or install from source
 git clone https://github.com/ywatanabe1989/gPAC.git

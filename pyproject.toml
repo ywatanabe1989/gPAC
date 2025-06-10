@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gpac"
+name = "gpu-pac"
 dynamic = ["version"]
 authors = [
   { name="Yusuke Watanabe", email="ywatanabe@alumni.u-tokyo.ac.jp" },
