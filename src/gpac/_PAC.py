@@ -145,6 +145,16 @@ class PAC(nn.Module):
     def amp_mids(self):
         """Amplitude band center frequencies."""
         return self.bandpass.amp_mids
+    
+    @property
+    def pha_bands_hz(self):
+        """Phase frequency bands as tensor (n_bands, 2) with [low, high] Hz."""
+        return self.bandpass.pha_bands_hz
+    
+    @property
+    def amp_bands_hz(self):
+        """Amplitude frequency bands as tensor (n_bands, 2) with [low, high] Hz."""
+        return self.bandpass.amp_bands_hz
 
     def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
         if x.dim() == 3:
@@ -232,6 +242,8 @@ class PAC(nn.Module):
             "pac": pac_values,
             "phase_frequencies": self.pha_mids,
             "amplitude_frequencies": self.amp_mids,
+            "phase_bands_hz": self.pha_bands_hz,
+            "amplitude_bands_hz": self.amp_bands_hz,
             "pac_z": pac_z,
             "surrogates": surrogates,
             "surrogate_mean": surrogate_mean,
