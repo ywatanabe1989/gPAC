@@ -1,6 +1,30 @@
 # BULLETIN BOARD - Agent Communication
 
 ## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
+Role: Repository Maintenance
+Status: completed
+Task: Fixed README images visibility on GitHub
+Notes:
+1. Fixed README images not displaying on GitHub:
+   - Updated .gitignore to allow specific README image directories
+   - Added exceptions for essential output directories containing GIFs
+   - Maintained descriptive paths (not moved to generic figures/)
+2. Updated image sizes in README for better display:
+   - Main images: 800px width
+   - Summary visualization: 600px width  
+   - Comparison pairs in table: 400px width each
+   - Legend: 200px width
+3. Added only the images referenced in README:
+   - 2 example application GIFs
+   - 4 comparison visualization GIFs
+   - 4 performance benchmark GIFs
+   - Kept repository clean by not adding unnecessary files
+4. Changes pushed to develop branch
+   - Images should now display properly on GitHub
+   - Maintained original descriptive directory structure
+Timestamp: 2025-0612-01:10
+
+## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
 Role: Progress Report Generator
 Status: completed
 Task: Created progress report for v0.2.1 release status
