@@ -23,13 +23,13 @@
 ## 🎯 Example Applications
 
 <div align="center">
-  <img src="./figures/01_static_pac_analysis.gif" alt="Static PAC Analysis" width="800">
+  <img src="./examples/gpac/example__PAC_out/01_static_pac_analysis.gif" alt="Static PAC Analysis" width="100%">
   
   **Static PAC analysis with comodulogram visualization**
 </div>
 
 <div align="center">
-  <img src="./figures/02_trainable_pac_classification.gif" alt="Trainable PAC Classification" width="800">
+  <img src="./examples/gpac/example__PAC_out/02_trainable_pac_classification.gif" alt="Trainable PAC Classification" width="100%">
   
   **Trainable PAC features for neural network classification**
 </div>
@@ -37,7 +37,7 @@
 ## 🔬 Comparison with TensorPAC
 
 <div align="center">
-  <img src="./figures/comparison_pair_03.gif" alt="gPAC vs TensorPAC Detailed Comparison" width="800">
+  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_03.gif" alt="gPAC vs TensorPAC Detailed Comparison" width="100%">
   
   **Example comparison: Phase 10Hz, Amplitude 60Hz (PAC Correlation: 0.847)**
   
@@ -45,7 +45,7 @@
 </div>
 
 <div align="center">
-  <img src="./figures/correlation_summary_visualization.gif" alt="gPAC vs TensorPAC Correlation Summary" width="600">
+  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/correlation_summary_visualization.gif" alt="gPAC vs TensorPAC Correlation Summary" width="80%">
   
   **High correlation between gPAC and TensorPAC across 16 diverse PAC configurations**
   
@@ -57,8 +57,8 @@
 <div align="center">
   <table>
     <tr>
-      <td><img src="./figures/comparison_pair_01.gif" alt="Comparison Pair 1" width="400"></td>
-      <td><img src="./figures/comparison_pair_04.gif" alt="Comparison Pair 4" width="400"></td>
+      <td><img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_01.gif" alt="Comparison Pair 1" width="100%"></td>
+      <td><img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_04.gif" alt="Comparison Pair 4" width="100%"></td>
     </tr>
     <tr>
       <td align="center"><b>Example 1:</b> Phase: 4Hz, Amp: 40Hz<br>PAC Correlation: 0.826</td>
@@ -72,17 +72,17 @@ The comparison uses identical frequency bands (25 log-spaced phase bands × 35 l
 ## 📊 Performance Benchmarks
 
 <div align="center">
-  <img src="./figures/01_parameter_scaling_on_grids_y-not-shared.gif" alt="Parameter Scaling" width="800">
+  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_y-not-shared.gif" alt="Parameter Scaling" width="100%">
   
   **Parameter scaling comparison between gPAC (blue) and Tensorpac (red)**
 </div>
 
 <div align="center">
-  <img src="./figures/01_parameter_scaling_on_grids_y-not-shared_ax_00_legend.gif" alt="Legend" width="200">
+  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_y-not-shared_ax_00_legend.gif" alt="Legend" width="30%">
 </div>
 
 <div align="center">
-  <img src="./figures/gpac_performance_analysis.gif" alt="Parameter Performance Analysis" width="800">
+  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_analyze_out/gpac_performance_analysis.gif" alt="Parameter Performance Analysis" width="100%">
   
   **Parameter Performance Analysis**
 </div>
@@ -90,7 +90,7 @@ The comparison uses identical frequency bands (25 log-spaced phase bands × 35 l
 
 
 <div align="center">
-  <img src="./figures/02_comodulograms.gif" alt="Comodulograms" width="800">
+  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/02_comodulograms.gif" alt="Comodulograms" width="100%">
   
   **PAC comodulogram comparison showing consistent results**
 </div>
