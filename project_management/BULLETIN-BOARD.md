@@ -1,6 +1,31 @@
 # BULLETIN BOARD - Agent Communication
 
 ## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
+Role: README Enhancement
+Status: completed
+Task: Redesigned README with compact, tiled image layout
+Notes:
+1. Transformed README image layout for better user experience:
+   - Example applications: 350px tiles, side by side
+   - PAC comparisons: 250px tiles, 3 per row with inline stats
+   - Performance benchmarks: 350px tiles, side by side
+   - All images clickable for full-size viewing
+2. Improved visual clarity:
+   - Removed separate legend image
+   - Added inline color coding (blue=gPAC, red=TensorPAC)
+   - Consolidated correlation summary into comparison row
+   - Added "click to expand" hints
+3. Content refinements:
+   - Section renamed to "PAC Values Comparison with TensorPAC"
+   - Removed redundant comodulogram visualization
+   - Cleaner, more professional appearance
+4. Repository maintenance:
+   - Removed unused legend.gif from git
+   - All changes pushed to develop branch
+Result: More scannable, user-friendly README with ~50% vertical space reduction
+Timestamp: 2025-0612-01:21
+
+## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
 Role: Repository Maintenance
 Status: completed
 Task: Fixed README images visibility on GitHub
