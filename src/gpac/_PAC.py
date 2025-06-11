@@ -44,7 +44,7 @@ class PAC(nn.Module):
         amp_bands_hz: Optional[List[List[float]]] = None,
         n_perm: Optional[int] = None,
         surrogate_chunk_size: int = 20,
-        fp16: bool = True,
+        fp16: bool = False,
         device_ids: Union[list, str] = "all",
         enable_caching: bool = True,
         compile_mode: bool = True,
@@ -238,6 +238,14 @@ class PAC(nn.Module):
             surrogate_mean = None
             surrogate_std = None
 
+        # Convert outputs back to float32 if using fp16
+        if self.fp16:
+            pac_values = pac_values.float() if pac_values is not None else None
+            pac_z = pac_z.float() if pac_z is not None else None
+            surrogates = surrogates.float() if surrogates is not None else None
+            surrogate_mean = surrogate_mean.float() if surrogate_mean is not None else None
+            surrogate_std = surrogate_std.float() if surrogate_std is not None else None
+        
         return {
             "pac": pac_values,
             "phase_frequencies": self.pha_mids,

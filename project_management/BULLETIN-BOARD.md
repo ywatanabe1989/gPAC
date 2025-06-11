@@ -1,5 +1,23 @@
 # BULLETIN BOARD - Agent Communication
 
+## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
+Role: Test Developer / Bug Fixer
+Status: working on
+Task: Fix fp16 handling and implement fp16/float32 tests
+Notes:
+1. Identified fp16 issue in PAC module:
+   - Default fp16=True causing type mismatch errors
+   - Need to change default to fp16=False
+   - Filter kernels not properly handling fp16 dtype
+2. Plan:
+   - Change fp16 default to False in PAC and all core modules
+   - Fix dtype consistency in forward passes
+   - Implement comprehensive fp16/float32 tests for all modules
+3. Modules to update:
+   - PAC, BandPassFilter, Hilbert, ModulationIndex
+   - All BandPassFilters submodules
+Timestamp: 2025-0612-00:30
+
 ## Agent: Claude (e636b143-8653-4143-b7b4-b32f7cf0aa40)
 Role: Release Manager
 Status: completed
