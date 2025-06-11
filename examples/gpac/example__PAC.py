@@ -28,6 +28,7 @@ IO:
     - 01_static_pac_analysis.gif
     - 02_trainable_pac_analysis.gif
     - 03_pac_comparison.gif
+    - 04_pac_distributions_analysis.gif
 """
 
 """Imports"""
@@ -87,7 +88,11 @@ def demo_static_pac(args):
 
     # Detected PAC comodulogram
     ax_pac = axes[0, 0]
-    pac_data = pac_result["pac"][sample_idx, channel_idx].cpu().numpy()
+    # Handle both 3D and 4D outputs (with/without segments)
+    if pac_result["pac"].dim() == 5:  # Has segments dimension
+        pac_data = pac_result["pac"][sample_idx, channel_idx, 0].cpu().numpy()  # First segment
+    else:
+        pac_data = pac_result["pac"][sample_idx, channel_idx].cpu().numpy()
     im1 = ax_pac.imshow(
         pac_data,
         aspect="auto",
@@ -96,10 +101,12 @@ def demo_static_pac(args):
     ax_pac.set_xyt(
         "Amplitude Frequency [Hz]", "Phase Frequency [Hz]", "Detected PAC"
     )
-    ax_pac.set_xticks(range(0, len(pac_static.amp_mids), 20))
-    ax_pac.set_xticklabels([f"{f:.0f}" for f in pac_static.amp_mids[::20]])
-    ax_pac.set_yticks(range(0, len(pac_static.pha_mids), 20))
-    ax_pac.set_yticklabels([f"{f:.0f}" for f in pac_static.pha_mids[::20]])
+    amp_centers = pac_static.amp_bands_hz.mean(dim=1).cpu()
+    pha_centers = pac_static.pha_bands_hz.mean(dim=1).cpu()
+    ax_pac.set_xticks(range(0, len(amp_centers), 20))
+    ax_pac.set_xticklabels([f"{f:.0f}" for f in amp_centers[::20]])
+    ax_pac.set_yticks(range(0, len(pha_centers), 20))
+    ax_pac.set_yticklabels([f"{f:.0f}" for f in pha_centers[::20]])
     plt.colorbar(im1, ax=ax_pac)
 
     # Add ground truth markers
@@ -107,8 +114,8 @@ def demo_static_pac(args):
         "pac_components" in metadata
         and len(metadata["pac_components"][sample_idx]) > 0
     ):
-        pha_freqs = pac_static.pha_mids.cpu().numpy()
-        amp_freqs = pac_static.amp_mids.cpu().numpy()
+        pha_freqs = pac_static.pha_bands_hz.mean(dim=1).cpu().numpy()
+        amp_freqs = pac_static.amp_bands_hz.mean(dim=1).cpu().numpy()
         for coupling in metadata["pac_components"][sample_idx]:
             pha_hz = coupling["phase_hz"]
             amp_hz = coupling["amp_hz"]
@@ -126,7 +133,11 @@ def demo_static_pac(args):
     # Z-scores
     ax_z = axes[0, 1]
     if pac_result["pac_z"] is not None:
-        z_data = pac_result["pac_z"][sample_idx, channel_idx].cpu().numpy()
+        # Handle both 3D and 4D outputs (with/without segments)
+        if pac_result["pac_z"].dim() == 5:  # Has segments dimension
+            z_data = pac_result["pac_z"][sample_idx, channel_idx, 0].cpu().numpy()  # First segment
+        else:
+            z_data = pac_result["pac_z"][sample_idx, channel_idx].cpu().numpy()
         im2 = ax_z.imshow(
             z_data,
             aspect="auto",
@@ -137,10 +148,10 @@ def demo_static_pac(args):
         ax_z.set_xyt(
             "Amplitude Frequency [Hz]", "Phase Frequency [Hz]", "Z-scores"
         )
-        ax_z.set_xticks(range(0, len(pac_static.amp_mids), 20))
-        ax_z.set_xticklabels([f"{f:.0f}" for f in pac_static.amp_mids[::20]])
-        ax_z.set_yticks(range(0, len(pac_static.pha_mids), 20))
-        ax_z.set_yticklabels([f"{f:.0f}" for f in pac_static.pha_mids[::20]])
+        ax_z.set_xticks(range(0, len(amp_centers), 20))
+        ax_z.set_xticklabels([f"{f:.0f}" for f in amp_centers[::20]])
+        ax_z.set_yticks(range(0, len(pha_centers), 20))
+        ax_z.set_yticklabels([f"{f:.0f}" for f in pha_centers[::20]])
         plt.colorbar(im2, ax=ax_z)
 
         # Add ground truth markers
@@ -166,7 +177,7 @@ def demo_static_pac(args):
     ax_pha = axes[1, 0]
     pac_mean_amp = pac_data.mean(axis=1)
     ax_pha.plot(
-        pac_static.pha_mids.cpu(), pac_mean_amp, "o-", label="Detected"
+        pha_centers, pac_mean_amp, "o-", label="Detected"
     )
     if (
         "pac_components" in metadata
@@ -201,7 +212,7 @@ def demo_static_pac(args):
     ax_amp = axes[1, 1]
     pac_mean_pha = pac_data.mean(axis=0)
     ax_amp.plot(
-        pac_static.amp_mids.cpu(), pac_mean_pha, "s-", label="Detected"
+        amp_centers, pac_mean_pha, "s-", label="Detected"
     )
     if (
         "pac_components" in metadata
@@ -524,6 +535,183 @@ def demo_trainable_pac(args):
     plt.close()
 
 
+def demo_pac_distributions(args):
+    """Demonstrate PAC with amplitude distributions for seizure analysis."""
+    import mngs
+    
+    mngs.str.printc("=== Demo PAC with Distributions ===", c=CC["green"])
+    
+    # Generate synthetic data with strong PAC
+    pac_config = {
+        "seizure_like": {
+            "components": [
+                {"phase_hz": 4.0, "amp_hz": 80.0, "strength": 0.7},  # Strong theta-gamma
+                {"phase_hz": 8.0, "amp_hz": 120.0, "strength": 0.5},  # Alpha-high gamma
+            ],
+            "noise_levels": [0.2],
+        }
+    }
+    
+    batch = gpac.dataset.generate_pac_batch(
+        batch_size=2,
+        n_channels=4,
+        n_segments=3,  # Multiple time windows
+        duration_sec=10,
+        fs=512,
+        pac_config=pac_config,
+    )
+    signal, label, metadata = batch
+    
+    # Create PAC calculator
+    pac_calc = gpac.PAC(
+        seq_len=signal.shape[-1],
+        fs=metadata["fs"][0],
+        pha_range_hz=(2.0, 20.0),
+        pha_n_bands=20,
+        amp_range_hz=(30.0, 150.0),
+        amp_n_bands=20,
+        trainable=False,
+        n_perm=args.n_perm,
+        fp16=False,
+    )
+    
+    if torch.cuda.is_available():
+        pac_calc = pac_calc.cuda()
+        signal = signal.cuda()
+    
+    # Compute PAC without and with distributions
+    pac_result = pac_calc(signal, compute_distributions=False)
+    pac_result_dist = pac_calc(signal, compute_distributions=True)
+    
+    # Visualize distributions
+    fig, axes = mngs.plt.subplots(2, 3, figsize=(15, 10))
+    
+    sample_idx, channel_idx = 0, 0
+    
+    # PAC comodulogram
+    ax_pac = axes[0, 0]
+    pac_data = pac_result["pac"][sample_idx, channel_idx, 0].cpu().numpy()  # First segment
+    im1 = ax_pac.imshow(pac_data, aspect="auto", cmap="viridis")
+    ax_pac.set_xyt("Amplitude [Hz]", "Phase [Hz]", "PAC Values")
+    plt.colorbar(im1, ax=ax_pac)
+    
+    # Select strongest PAC coupling
+    max_idx = np.unravel_index(pac_data.argmax(), pac_data.shape)
+    pha_idx, amp_idx = max_idx
+    
+    # Phase preference distribution
+    ax_dist = axes[0, 1]
+    phase_bins = pac_result_dist["phase_bin_centers"].cpu().numpy()
+    amp_dist = pac_result_dist["amplitude_distributions"][
+        sample_idx, channel_idx, 0, pha_idx, amp_idx
+    ].cpu().numpy()
+    
+    ax_dist.plot(phase_bins * 180 / np.pi, amp_dist, 'o-', linewidth=2)
+    ax_dist.fill_between(phase_bins * 180 / np.pi, amp_dist, alpha=0.3)
+    ax_dist.set_xyt("Phase [degrees]", "Amplitude Distribution", 
+                    f"Phase Preference\n(Phase: {pha_idx}, Amp: {amp_idx})")
+    ax_dist.set_xlim(-180, 180)
+    ax_dist.grid(True, alpha=0.3)
+    
+    # Distribution entropy across segments
+    ax_entropy = axes[0, 2]
+    n_segments = pac_result_dist["amplitude_distributions"].shape[2]
+    entropies = []
+    
+    for seg_idx in range(n_segments):
+        seg_dist = pac_result_dist["amplitude_distributions"][
+            sample_idx, channel_idx, seg_idx, pha_idx, amp_idx
+        ].cpu().numpy()
+        # Calculate entropy
+        seg_dist_norm = seg_dist / seg_dist.sum()
+        entropy = -np.sum(seg_dist_norm * np.log(seg_dist_norm + 1e-10))
+        entropies.append(entropy)
+    
+    ax_entropy.plot(range(n_segments), entropies, 's-', markersize=10)
+    ax_entropy.set_xyt("Segment", "Distribution Entropy", 
+                       "Temporal Evolution\nof Phase Coupling")
+    ax_entropy.grid(True, alpha=0.3)
+    
+    # Compare distributions across different frequency pairs
+    ax_compare = axes[1, 0]
+    n_pairs = 3
+    for i in range(n_pairs):
+        pha_i = i * (pac_data.shape[0] // n_pairs)
+        amp_i = i * (pac_data.shape[1] // n_pairs)
+        
+        dist_i = pac_result_dist["amplitude_distributions"][
+            sample_idx, channel_idx, 0, pha_i, amp_i
+        ].cpu().numpy()
+        
+        pha_center = pac_calc.pha_bands_hz[pha_i].mean().item()
+        amp_center = pac_calc.amp_bands_hz[amp_i].mean().item()
+        
+        ax_compare.plot(phase_bins * 180 / np.pi, dist_i, 
+                       label=f"{pha_center:.1f}-{amp_center:.1f} Hz",
+                       alpha=0.7, linewidth=2)
+    
+    ax_compare.set_xyt("Phase [degrees]", "Amplitude Distribution", 
+                       "Distribution Comparison")
+    ax_compare.legend()
+    ax_compare.grid(True, alpha=0.3)
+    
+    # PAC strength vs distribution width
+    ax_scatter = axes[1, 1]
+    pac_flat = pac_data.flatten()
+    dist_widths = []
+    
+    for p_idx in range(pac_data.shape[0]):
+        for a_idx in range(pac_data.shape[1]):
+            dist = pac_result_dist["amplitude_distributions"][
+                sample_idx, channel_idx, 0, p_idx, a_idx
+            ].cpu().numpy()
+            # Calculate circular standard deviation as width metric
+            angles = phase_bins
+            mean_angle = np.arctan2(np.sum(dist * np.sin(angles)), 
+                                   np.sum(dist * np.cos(angles)))
+            width = np.sqrt(-2 * np.log(np.abs(np.sum(dist * np.exp(1j * (angles - mean_angle))))))
+            dist_widths.append(width)
+    
+    ax_scatter.scatter(pac_flat, dist_widths, alpha=0.5, s=20)
+    ax_scatter.set_xyt("PAC Strength", "Distribution Width", 
+                       "PAC vs Phase Preference Width")
+    ax_scatter.grid(True, alpha=0.3)
+    
+    # Clinical interpretation
+    ax_clinical = axes[1, 2]
+    ax_clinical.text(0.1, 0.9, "Clinical Relevance:", fontweight='bold', 
+                    transform=ax_clinical.transAxes)
+    
+    clinical_text = """
+• Strong PAC with narrow phase preference
+  → Highly synchronized coupling
+  → Potential seizure precursor
+  
+• Distribution changes over time
+  → Dynamic coupling evolution
+  → State transitions
+  
+• Multi-frequency analysis
+  → Network-wide synchronization
+  → Pathological patterns
+    """
+    
+    ax_clinical.text(0.1, 0.1, clinical_text, transform=ax_clinical.transAxes,
+                    verticalalignment='bottom', fontsize=10)
+    ax_clinical.axis('off')
+    
+    plt.tight_layout()
+    mngs.io.save(fig, "04_pac_distributions_analysis.gif")
+    plt.close()
+    
+    # Print statistics
+    print(f"Distribution analysis complete:")
+    print(f"  - Strongest PAC: {pac_data.max():.3f}")
+    print(f"  - Preferred phase: {phase_bins[amp_dist.argmax()] * 180/np.pi:.1f}°")
+    print(f"  - Distribution entropy range: [{min(entropies):.3f}, {max(entropies):.3f}]")
+    print(f"  - Average distribution width: {np.mean(dist_widths):.3f}")
+
+
 def demo_pac_comparison(args):
     """Compare static vs trainable PAC performance."""
     import mngs
@@ -558,11 +746,9 @@ def demo_pac_comparison(args):
     static_pac = gpac.PAC(
         seq_len=signal.shape[-1],
         fs=metadata["fs"][0],
-        pha_start_hz=2.0,
-        pha_end_hz=30.0,
+        pha_range_hz=(2.0, 30.0),
         pha_n_bands=50,
-        amp_start_hz=30.0,
-        amp_end_hz=230.0,
+        amp_range_hz=(30.0, 230.0),
         amp_n_bands=50,
         trainable=False,
         n_perm=None,
@@ -573,11 +759,9 @@ def demo_pac_comparison(args):
     trainable_pac = gpac.PAC(
         seq_len=signal.shape[-1],
         fs=metadata["fs"][0],
-        pha_start_hz=2.0,
-        pha_end_hz=30.0,
+        pha_range_hz=(2.0, 30.0),
         pha_n_bands=50,
-        amp_start_hz=30.0,
-        amp_end_hz=230.0,
+        amp_range_hz=(30.0, 230.0),
         amp_n_bands=50,
         trainable=True,
         pha_n_pool_ratio=1.5,
@@ -622,8 +806,8 @@ def demo_pac_comparison(args):
         {"phase_hz": 8.0, "amp_hz": 80.0},
         {"phase_hz": 12.0, "amp_hz": 120.0},
     ]
-    pha_freqs = static_pac.pha_mids.cpu().numpy()
-    amp_freqs = static_pac.amp_mids.cpu().numpy()
+    pha_freqs = static_pac.pha_bands_hz.mean(dim=1).cpu().numpy()
+    amp_freqs = static_pac.amp_bands_hz.mean(dim=1).cpu().numpy()
     for coupling in expected_couplings:
         pha_hz = coupling["phase_hz"]
         amp_hz = coupling["amp_hz"]
@@ -668,8 +852,8 @@ def demo_pac_comparison(args):
     print(f"  Amp bands: {[f'{f:.1f}' for f in selected_amp[:5]]}...")
 
     # Add consistent ground truth markers to trainable PAC
-    pha_freqs_trainable = trainable_pac.pha_mids.cpu().numpy()
-    amp_freqs_trainable = trainable_pac.amp_mids.cpu().numpy()
+    pha_freqs_trainable = trainable_pac.pha_bands_hz.mean(dim=1).cpu().numpy()
+    amp_freqs_trainable = trainable_pac.amp_bands_hz.mean(dim=1).cpu().numpy()
     for coupling in expected_couplings:
         pha_hz = coupling["phase_hz"]
         amp_hz = coupling["amp_hz"]
@@ -755,6 +939,7 @@ def main(args):
     demo_static_pac(args)
     demo_trainable_pac(args)
     demo_pac_comparison(args)
+    demo_pac_distributions(args)
     return 0
 
 

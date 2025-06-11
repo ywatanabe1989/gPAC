@@ -36,6 +36,18 @@
         <br>Deep learning integration
       </td>
     </tr>
+    <tr>
+      <td align="center">
+        <img src="./examples/gpac/example__PAC_out/03_pac_comparison.gif" alt="PAC Comparison" width="350">
+        <br><b>Static vs Trainable Comparison</b>
+        <br>Performance & accuracy analysis
+      </td>
+      <td align="center">
+        <img src="./examples/gpac/example__PAC_out/04_pac_distributions_analysis.gif" alt="Amplitude Distributions" width="350">
+        <br><b>Amplitude Distributions</b>
+        <br>Phase preference for clinical analysis
+      </td>
+    </tr>
   </table>
 </div>
 
@@ -144,10 +156,52 @@ for signals, labels, metadata in dataloader:
     # Access frequency band definitions
     print(f"Phase bands: {pac_model.pha_bands_hz}")  # Tensor of shape (n_pha, 2) with [low, high] Hz
     print(f"Amplitude bands: {pac_model.amp_bands_hz}")  # Tensor of shape (n_amp, 2) with [low, high] Hz
+    
+    # Advanced: Get amplitude distributions for phase preference analysis
+    results_with_dist = pac_model(signals, compute_distributions=True)
+    amp_distributions = results_with_dist['amplitude_distributions']
+    print(f"Amplitude distributions shape: {amp_distributions.shape}")
+    # Shape: (batch, channels, pha_bands, amp_bands, n_phase_bins=18)
+    
     break  # Just show first batch
 ```
 
 For more examples, see the [examples directory](./examples/).
+
+### 📊 Amplitude Distributions for Clinical Analysis
+
+The `compute_distributions=True` option provides detailed phase preference analysis, particularly useful for seizure detection and neurophysiological research:
+
+```python
+# Compute PAC with amplitude distributions
+results = pac_model(signals, compute_distributions=True)
+
+# Access distributions
+pac_values = results['pac']
+amp_distributions = results['amplitude_distributions']
+phase_bin_centers = results['phase_bin_centers']  # Phase bins in radians
+
+# Analyze phase preference for strongest coupling
+batch_idx, ch_idx = 0, 0
+max_idx = pac_values[batch_idx, ch_idx].argmax()
+pha_idx, amp_idx = np.unravel_index(max_idx, pac_values[batch_idx, ch_idx].shape)
+
+# Get the amplitude distribution across phase bins
+phase_dist = amp_distributions[batch_idx, ch_idx, pha_idx, amp_idx]
+
+# Calculate phase preference metrics
+preferred_phase = phase_bin_centers[phase_dist.argmax()]
+distribution_entropy = -torch.sum(phase_dist * torch.log(phase_dist + 1e-10))
+
+print(f"Preferred phase: {preferred_phase * 180/np.pi:.1f}°")
+print(f"Distribution entropy: {distribution_entropy:.3f}")
+```
+
+**Clinical Applications:**
+- **Seizure onset detection**: Phase preference changes may precede visible PAC strength changes
+- **Distribution shape analysis**: Bimodal distributions indicate competing neural dynamics
+- **Temporal tracking**: Monitor distribution evolution for state transitions
+- **Network synchronization**: Compare distributions across frequency pairs
 
 ## 🔧 Core Features
 
@@ -169,6 +223,7 @@ For more examples, see the [examples directory](./examples/).
 - **Z-score normalization**: Automatic statistical significance testing
 - **Modulation Index**: Standard MI calculation with 18 phase bins
 - **Full differentiability**: Gradient support for deep learning applications
+- **Amplitude distributions**: Optional phase preference analysis for clinical applications
 
 ## 🤝 Contributing
 

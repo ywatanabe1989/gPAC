@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-09 16:20:41 (ywatanabe)"
+# Timestamp: "2025-06-12 03:31:04 (ywatanabe)"
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py
 # ----------------------------------------
 import os
@@ -137,26 +137,16 @@ class PAC(nn.Module):
             self.result_cache = {} if enable_caching else None
 
     @property
-    def pha_mids(self):
-        """Phase band center frequencies."""
-        return self.bandpass.pha_mids
-
-    @property
-    def amp_mids(self):
-        """Amplitude band center frequencies."""
-        return self.bandpass.amp_mids
-    
-    @property
     def pha_bands_hz(self):
         """Phase frequency bands as tensor (n_bands, 2) with [low, high] Hz."""
         return self.bandpass.pha_bands_hz
-    
+
     @property
     def amp_bands_hz(self):
         """Amplitude frequency bands as tensor (n_bands, 2) with [low, high] Hz."""
         return self.bandpass.amp_bands_hz
 
-    def forward(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
+    def forward(self, x: torch.Tensor, compute_distributions: bool = False) -> Dict[str, torch.Tensor]:
         if x.dim() == 3:
             x = x.unsqueeze(2)
             squeeze_segments = True
@@ -178,7 +168,7 @@ class PAC(nn.Module):
         if self.fp16:
             x = x.half()
 
-        results = self._forward_vectorized(x)
+        results = self._forward_vectorized(x, compute_distributions)
 
         if self.enable_caching and self.result_cache is not None:
             self.result_cache[cache_key] = results
@@ -188,7 +178,7 @@ class PAC(nn.Module):
 
         return results
 
-    def _forward_vectorized(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
+    def _forward_vectorized(self, x: torch.Tensor, compute_distributions: bool = False) -> Dict[str, torch.Tensor]:
         batch_size, n_channels, segments, seq_len = x.shape
         x_flat = x.reshape(-1, seq_len)
 
@@ -220,7 +210,7 @@ class PAC(nn.Module):
             batch_size, n_channels, segments, n_amp, seq_len
         )
 
-        pac_values = self._compute_mi_vectorized(phase, amplitude)
+        pac_values, amplitude_distributions = self._compute_mi_vectorized(phase, amplitude, compute_distributions)
 
         # Skip surrogates during training to preserve gradients
         # if self.n_perm is not None and not self.training:
@@ -243,22 +233,27 @@ class PAC(nn.Module):
             pac_values = pac_values.float() if pac_values is not None else None
             pac_z = pac_z.float() if pac_z is not None else None
             surrogates = surrogates.float() if surrogates is not None else None
-            surrogate_mean = surrogate_mean.float() if surrogate_mean is not None else None
-            surrogate_std = surrogate_std.float() if surrogate_std is not None else None
-        
+            surrogate_mean = (
+                surrogate_mean.float() if surrogate_mean is not None else None
+            )
+            surrogate_std = (
+                surrogate_std.float() if surrogate_std is not None else None
+            )
+            amplitude_distributions = (
+                amplitude_distributions.float() if amplitude_distributions is not None else None
+            )
+
         return {
             "pac": pac_values,
-            "phase_frequencies": self.pha_mids,
-            "amplitude_frequencies": self.amp_mids,
             "phase_bands_hz": self.pha_bands_hz,
             "amplitude_bands_hz": self.amp_bands_hz,
             "pac_z": pac_z,
-            "surrogates": surrogates,
-            "surrogate_mean": surrogate_mean,
-            "surrogate_std": surrogate_std,
+            "amplitude_distributions": amplitude_distributions if compute_distributions else None,
+            "phase_bin_centers": self.mi_calculator.phase_bin_centers if compute_distributions else None,
+            "phase_bin_edges": self.mi_calculator.phase_bins if compute_distributions else None,
         }
 
-    def _compute_mi_vectorized(self, phase, amplitude):
+    def _compute_mi_vectorized(self, phase, amplitude, compute_distributions=False):
         """Compute MI using the extracted ModulationIndex class."""
         batch, channels, segments, n_pha, time = phase.shape
         _, _, _, n_amp, _ = amplitude.shape
@@ -280,10 +275,10 @@ class PAC(nn.Module):
         mi_result = self.mi_calculator(
             phase_reshaped,
             amplitude_reshaped,
-            compute_distributions=False,
+            compute_distributions=compute_distributions,
         )
         # Return shape (batch, channels, segments, freqs_phase, freqs_amplitude)
-        return mi_result["mi"]
+        return mi_result["mi"], mi_result.get("amplitude_distributions", None)
 
     def _compute_surrogates_vectorized(self, phase, amplitude, pac_values):
         """Compute surrogates using ModulationIndex class."""
