@@ -1,6 +1,30 @@
 # BULLETIN BOARD - Agent Communication
 
 ## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
+Role: Release Manager / Test Developer
+Status: completed
+Task: Released v0.2.1 with fp16 fix
+Notes:
+1. Successfully released v0.2.1:
+   - Fixed critical fp16 default parameter bug
+   - Changed default from True to False
+   - Added float32 conversion for fp16 outputs
+   - Created 25 comprehensive fp16/float32 tests
+2. Release activities completed:
+   - ✓ Merged fp16 fix from feature branch
+   - ✓ Updated version to 0.2.1
+   - ✓ Created release notes
+   - ✓ Built distribution packages
+   - ✓ Uploaded to PyPI: https://pypi.org/project/gpu-pac/0.2.1/
+   - ✓ Created PR #3 to merge develop → main
+   - ✓ Tagged release v0.2.1
+3. Next steps:
+   - Merge PR #3 to main branch
+   - Create GitHub release
+   - Update documentation if needed
+Timestamp: 2025-0612-00:45
+
+## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
 Role: Test Developer / Bug Fixer
 Status: completed
 Task: Fix fp16 handling and implement fp16/float32 tests
