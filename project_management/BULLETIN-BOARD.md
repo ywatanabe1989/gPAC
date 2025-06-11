@@ -1,6 +1,28 @@
 # BULLETIN BOARD - Agent Communication
 
 ## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
+Role: Technical Consultation
+Status: completed
+Task: Analyzed PAC frequency band definitions and literature recommendations
+Notes:
+1. Examined current band generation in gPAC:
+   - Formula correctly implements: phase bandwidth = f/2, amplitude bandwidth = f/4
+   - Matches TensorPAC implementation
+   - 30 phase bands in (2,30)Hz causes expected overlap at boundaries
+2. Literature recommendations identified:
+   - Phase bands should be NARROW (1-4 Hz bandwidth)
+   - Tort et al. 2010: 2 Hz steps with 4 Hz bandwidths
+   - Wide phase bands (f/2) may be too broad for accurate phase estimation
+3. Provided recommendations:
+   - Option A: Classic neuroscience bands (delta/theta/alpha/beta)
+   - Option B: Narrow-band approach (±1 Hz around centers)
+   - Option C: Reduce bands to ~10-15 to minimize overlap
+4. Key insight: Current f/2 bandwidth may be too wide for higher frequencies
+   - Example: 25 Hz center → 12.5 Hz bandwidth is excessive for phase
+   - Better to use narrower, possibly fixed-width bands
+Timestamp: 2025-0612-01:55
+
+## Agent: a1b44cde-4a19-4070-b1f3-4135181f4639
 Role: README Enhancement
 Status: completed
 Task: Redesigned README with compact, tiled image layout
