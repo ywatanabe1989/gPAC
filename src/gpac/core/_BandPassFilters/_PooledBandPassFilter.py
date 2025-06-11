@@ -46,8 +46,8 @@ class PooledBandPassFilter(nn.Module):
     def __init__(
         self,
         fs: float,
-        pha_range_hz: Optional[Tuple[float, float]] = (4, 30),
-        amp_range_hz: Optional[Tuple[float, float]] = (60, 150),
+        pha_range_hz: Optional[Tuple[float, float]] = (2, 20),
+        amp_range_hz: Optional[Tuple[float, float]] = (60, 160),
         pha_n_bands: Optional[int] = 10,
         amp_n_bands: Optional[int] = 10,
         pha_bands_hz: Optional[List[List[float]]] = None,
@@ -57,7 +57,7 @@ class PooledBandPassFilter(nn.Module):
         n_cycles: int = 4,
         temperature: float = 1.0,
         hard_selection: bool = False,
-        spacing: str = "log",
+        spacing: str = "linear",
         fp16: bool = False,
     ):
         """
