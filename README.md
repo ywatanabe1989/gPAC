@@ -1,5 +1,5 @@
 <!-- ---
-!-- Timestamp: 2025-06-10 17:13:21
+!-- Timestamp: 2025-06-12 01:13:57
 !-- Author: ywatanabe
 !-- File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/README.md
 !-- --- -->
@@ -34,25 +34,7 @@
   **Trainable PAC features for neural network classification**
 </div>
 
-## 🔬 Comparison with TensorPAC
-
-<div align="center">
-  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_03.gif" alt="gPAC vs TensorPAC Detailed Comparison" width="800">
-  
-  **Example comparison: Phase 10Hz, Amplitude 60Hz (PAC Correlation: 0.847)**
-  
-  Shows side-by-side PAC comodulograms with ground truth markers (cyan crosses) and difference plots
-</div>
-
-<div align="center">
-  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/correlation_summary_visualization.gif" alt="gPAC vs TensorPAC Correlation Summary" width="600">
-  
-  **High correlation between gPAC and TensorPAC across 16 diverse PAC configurations**
-  
-  Mean correlation: 0.8113 ± 0.0419 (range: 0.7365 - 0.8585)
-</div>
-
-### Sample Comparison Results
+## 🔬 PAC Values Comparison with TensorPAC
 
 <div align="center">
   <table>
@@ -68,6 +50,15 @@
 </div>
 
 The comparison uses identical frequency bands (25 log-spaced phase bands × 35 log-spaced amplitude bands) for both methods, ensuring a fair comparison. Ground truth PAC locations are marked with crosses.
+
+<div align="center">
+  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/correlation_summary_visualization.gif" alt="gPAC vs TensorPAC Correlation Summary" width="600">
+  
+  **High correlation between gPAC and TensorPAC across 16 diverse PAC configurations**
+  
+  Mean correlation: 0.8113 ± 0.0419 (range: 0.7365 - 0.8585)
+</div>
+
 
 ## 📊 Performance Benchmarks
 
