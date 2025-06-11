@@ -404,8 +404,10 @@ class ModulationIndex(nn.Module):
             end_idx = min(start_idx + chunk_size, n_perm)
             current_chunk = end_idx - start_idx
 
+            # Use full range of shifts (1 to time-1) for unbiased surrogate generation
+            # Avoid shift=0 (no change) and shift=time (same as no change due to circular shift)
             shifts = torch.randint(
-                time // 4, 3 * time // 4, (current_chunk,), device=phase.device
+                1, time, (current_chunk,), device=phase.device
             )
 
             for perm_idx, shift in enumerate(shifts):

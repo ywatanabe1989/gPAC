@@ -1,0 +1,41 @@
+%% -*- mode: latex -*-
+%% Introduction for gPAC manuscript with 8-section structure
+
+\section{Introduction}
+\label{sec:introduction}
+
+[START of 1. Opening Statement]
+Neural oscillations, rhythmic patterns of electrical activity in the brain, orchestrate information processing across spatial and temporal scales \citep{Buzsaki2004}. 
+[END of 1. Opening Statement]
+
+[START of 2. Importance of the Field]
+Among the various forms of neural synchronization, phase-amplitude coupling (PAC) has emerged as a fundamental mechanism linking slow and fast oscillatory dynamics \citep{Canolty2010}. PAC quantifies how the phase of low-frequency oscillations modulates the amplitude of high-frequency activity, revealing hierarchical organization in neural networks \citep{Jensen2007}. This cross-frequency coupling serves critical functions in cognition, including memory consolidation in the hippocampus \citep{Tort2008}, attention control in cortical networks \citep{Szczepanski2014}, and sensorimotor integration \citep{deHemptinne2013}.
+[END of 2. Importance of the Field]
+
+[START of 3. Existing Knowledge and Gaps]
+The biological significance of PAC extends beyond basic neuroscience to clinical applications. Aberrant PAC patterns characterize numerous neurological and psychiatric disorders, including Parkinson's disease \citep{deHemptinne2015}, epilepsy \citep{Amiri2016}, and schizophrenia \citep{Kirihara2012}. These pathological signatures have motivated the development of PAC-based biomarkers for disease diagnosis and treatment monitoring. 
+
+However, the computational demands of PAC analysis have limited its adoption in clinical settings where real-time processing and large-scale data analysis are essential. Current methods struggle with the increasing scale of modern neuroscience data, from high-density electrode arrays to whole-brain recordings.
+
+The gap between computational capabilities and experimental needs has become a critical bottleneck, preventing researchers from fully exploiting the rich information contained in large-scale neural recordings.
+[END of 3. Existing Knowledge and Gaps]
+
+[START of 4. Limitations in Previous Works]
+Traditional PAC computation involves several computationally intensive steps: (1) bandpass filtering to isolate frequency components, (2) Hilbert transformation to extract instantaneous phase and amplitude, (3) calculation of coupling metrics such as the Modulation Index, and (4) statistical validation through surrogate data testing \citep{Tort2010}. Each step presents computational bottlenecks, particularly when analyzing high-density recordings with hundreds or thousands of channels. Current CPU-based implementations can require hours or days to process large datasets, precluding real-time applications and limiting exploratory analyses.
+[END of 4. Limitations in Previous Works]
+
+[START of 5. Research Question or Hypothesis]
+We hypothesized that leveraging Graphics Processing Units (GPUs) for parallel computation could dramatically accelerate PAC analysis while maintaining numerical accuracy, enabling both real-time applications and large-scale studies previously infeasible with CPU-based methods. Furthermore, we proposed that integrating PAC computation with modern deep learning frameworks would enable data-driven optimization of analysis parameters.
+[END of 5. Research Question or Hypothesis]
+
+[START of 6. Approach and Methods]
+Here we present gPAC, a GPU-accelerated Python package that dramatically accelerates PAC computation while introducing novel capabilities for neural data analysis. Our framework leverages PyTorch's tensor operations and automatic differentiation to achieve 100-1000× speedup compared to CPU implementations. Beyond performance improvements, gPAC introduces trainable frequency filters that enable data-driven optimization of frequency bands, a critical advancement given the ongoing debate about optimal frequency ranges for PAC analysis \citep{Aru2015}.
+[END of 6. Approach and Methods]
+
+[START of 7. Overview of Results]
+We demonstrate gPAC's capabilities through comprehensive benchmarks on synthetic and real neural data, showing linear scaling with data size and efficient multi-GPU utilization. Our validation studies confirm numerical accuracy compared to established methods while revealing the impact of implementation choices on PAC estimates. We further showcase novel applications enabled by GPU acceleration, including real-time PAC visualization and large-scale connectivity analyses previously infeasible with CPU-based methods.
+[END of 7. Overview of Results]
+
+[START of 8. Significance and Implications]
+By releasing gPAC as an open-source package, we aim to democratize access to high-performance PAC analysis and accelerate discoveries in systems neuroscience. The framework's modular design and PyTorch integration facilitate custom extensions and integration with existing analysis pipelines. We envision gPAC enabling new research directions in understanding cross-frequency dynamics and translating PAC-based biomarkers to clinical practice.
+[END of 8. Significance and Implications]

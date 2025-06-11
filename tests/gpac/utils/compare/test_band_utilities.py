@@ -25,13 +25,11 @@ class TestBandUtilitiesDetailed:
         return gpac.PAC(
             seq_len=512,
             fs=128,
-            pha_start_hz=1,
-            pha_end_hz=10,
+            pha_range_hz=(1, 10),
             pha_n_bands=5,
-            amp_start_hz=20,
-            amp_end_hz=60,
+            amp_range_hz=(20, 60),
             amp_n_bands=5,
-            compile_mode=False,
+            trainable=False,
         )
 
     @pytest.fixture
@@ -40,13 +38,11 @@ class TestBandUtilitiesDetailed:
         return gpac.PAC(
             seq_len=2048,
             fs=512,
-            pha_start_hz=0.5,
-            pha_end_hz=50,
+            pha_range_hz=(0.5, 50),
             pha_n_bands=50,
-            amp_start_hz=60,
-            amp_end_hz=200,
+            amp_range_hz=(60, 200),
             amp_n_bands=30,
-            compile_mode=False,
+            trainable=False,
         )
 
     def test_extract_gpac_bands_small(self, pac_gp_small):
@@ -166,13 +162,11 @@ class TestBandUtilitiesDetailed:
         pac_mres = gpac.PAC(
             seq_len=1024,
             fs=512,  # Higher fs to accommodate higher frequencies
-            pha_start_hz=2,
-            pha_end_hz=20,
+            pha_range_hz=(2, 20),
             pha_n_bands=10,  # Fewer bands to avoid issues
-            amp_start_hz=60,
-            amp_end_hz=150,  # Lower max frequency
+            amp_range_hz=(60, 150),  # Lower max frequency
             amp_n_bands=10,  # Fewer bands
-            compile_mode=False,
+            trainable=False,
         )
 
         pha_bands, amp_bands = compare.extract_gpac_bands(pac_mres)
@@ -201,13 +195,11 @@ class TestBandUtilitiesDetailed:
         pac_obj = gpac.PAC(
             seq_len=1024,
             fs=256,
-            pha_start_hz=1,
-            pha_end_hz=30,
+            pha_range_hz=(1, 30),
             pha_n_bands=15,
-            amp_start_hz=30,
-            amp_end_hz=120,
+            amp_range_hz=(30, 120),
             amp_n_bands=20,
-            compile_mode=False,
+            trainable=False,
         )
 
         pha_bands, amp_bands = compare.extract_gpac_bands(pac_obj)
