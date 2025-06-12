@@ -250,7 +250,6 @@ class PAC(nn.Module):
             "pac_z": pac_z,
             "amplitude_distributions": amplitude_distributions if compute_distributions else None,
             "phase_bin_centers": self.mi_calculator.phase_bin_centers if compute_distributions else None,
-            "phase_bin_edges": self.mi_calculator.phase_bins if compute_distributions else None,
         }
 
     def _compute_mi_vectorized(self, phase, amplitude, compute_distributions=False):
