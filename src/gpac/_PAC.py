@@ -264,14 +264,6 @@ class PAC(nn.Module):
         # amplitude: (batch, channels, freqs_amplitude, segments, time)
         amplitude_reshaped = amplitude.permute(0, 1, 3, 2, 4)
 
-        if not hasattr(self, "mi_calculator"):
-            self.mi_calculator = ModulationIndex(
-                n_bins=self.n_bins, temperature=0.01
-            )
-            self.mi_calculator.to(self.device)
-            if self.fp16:
-                self.mi_calculator.half()
-
         mi_result = self.mi_calculator(
             phase_reshaped,
             amplitude_reshaped,
@@ -302,8 +294,8 @@ class PAC(nn.Module):
         for key, value in results.items():
             if isinstance(value, torch.Tensor) and value.dim() > 2:
                 if (
-                    key in ["pac", "pac_z", "surrogate_mean", "surrogate_std"]
-                    and value.dim() == 5
+                    key in ["pac", "pac_z", "surrogate_mean", "surrogate_std", "amplitude_distributions"]
+                    and value.dim() in [5, 6]  # amplitude_distributions has 6 dims
                 ):
                     # Remove segment dimension if it's 1
                     squeezed[key] = (

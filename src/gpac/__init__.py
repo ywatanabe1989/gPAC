@@ -6,7 +6,7 @@
 from ._PAC import PAC
 from . import core, utils, dataset
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __all__ = ["PAC", "core", "utils", "dataset"]
 
 # EOF

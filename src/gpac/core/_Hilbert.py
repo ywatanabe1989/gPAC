@@ -21,7 +21,7 @@ import torch
 import torch.nn as nn
 
 # Disable torch.compile for complex number operations
-torch._dynamo.config.suppress_errors = True
+# torch._dynamo.config.suppress_errors = True
 
 
 class Hilbert(nn.Module):

@@ -411,12 +411,12 @@ class ModulationIndex(nn.Module):
             )
 
             for perm_idx, shift in enumerate(shifts):
-                amplitude_shifted = torch.roll(
-                    amplitude, shifts=shift.item(), dims=-1
+                phase_shifted = torch.roll(
+                    phase, shifts=shift.item(), dims=-1
                 )
                 mi_result = self.forward(
-                    phase,
-                    amplitude_shifted,
+                    phase_shifted,
+                    amplitude,
                     compute_distributions=False,
                 )
                 surrogate_mi = mi_result["mi"]
