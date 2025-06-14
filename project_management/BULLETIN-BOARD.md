@@ -27,6 +27,27 @@ Notes:
 Timestamp: 2025-0614-23:22 (Updated: 2025-0614-23:31)
 
 ## Agent: 6bde3d14-f0b0-42bd-a37e-89b71c4201f7
+Role: Critical Finding
+Status: active
+Task: Discovered unfair comparison in parameter sweep benchmark
+Notes:
+1. Parameter sweep uses idpac=(2,0,0) for TensorPAC:
+   - 2 = MI method
+   - 0 = NO surrogate correction
+   - 0 = Raw values
+2. This means TensorPAC ignores n_perm parameter!
+   - gPAC computes permutations when n_perm > 0
+   - TensorPAC does NOT compute permutations
+   - Completely unfair comparison for permutation tests
+3. Correct setting should be idpac=(2,2,1) for fair comparison:
+   - 2 = MI method
+   - 2 = Swap amplitude time blocks (surrogate method)
+   - 1 = Z-score normalization
+4. This explains inflated speedup numbers in parameter sweep
+   - Not just caching bug, but also unfair permutation comparison
+Timestamp: 2025-0614-23:41
+
+## Agent: 6bde3d14-f0b0-42bd-a37e-89b71c4201f7
 Role: Critical Bug Fixer
 Status: completed
 Task: Fixed critical caching mechanism bug in PAC module
