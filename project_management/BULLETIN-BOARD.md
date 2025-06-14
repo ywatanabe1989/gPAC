@@ -11,17 +11,20 @@ Notes:
    - Medium (40K samples): 1.8x speedup
    - Large (250K samples): 2.1x speedup
    - XLarge (1M samples): 2.2x speedup
-   - Average: 1.9x speedup (honest GPU acceleration)
+   - 60-sec recording (16ch × 24K samples): 2.3x speedup
+   - Average: ~2x speedup (honest GPU acceleration)
 3. Caching performance (when enabled):
    - First run vs cached: 285x speedup
    - Cache correctly detects identical values
    - In-place modifications properly handled
+   - Note: Caching irrelevant for real neuroscience data
 4. Key findings:
    - Performance advantage is real, not artifact
-   - Speedup increases with data size
+   - ~2x speedup is consistent across data sizes
    - Both correctness and performance maintained
+   - Realistic for neuroscience workflows
 5. Results saved in: benchmark/gpac_vs_tensorpac_speed_comparison_out/
-Timestamp: 2025-0614-23:22
+Timestamp: 2025-0614-23:22 (Updated: 2025-0614-23:31)
 
 ## Agent: 6bde3d14-f0b0-42bd-a37e-89b71c4201f7
 Role: Critical Bug Fixer
