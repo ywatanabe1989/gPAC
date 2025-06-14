@@ -63,8 +63,16 @@ def _init_pac_calculator_gpac(
 
 
 def _init_pac_calculator_tensorpac(pha_bands_hz, amp_bands_hz, n_perm):
+    # Set idpac based on whether permutations are requested
+    if n_perm > 0:
+        # (2, 2, 1) = MI method, swap amplitude blocks, z-score normalization
+        idpac = (2, 2, 1)
+    else:
+        # (2, 0, 0) = MI method, no surrogates, raw values
+        idpac = (2, 0, 0)
+    
     pac_calculator = tensorpac.Pac(
-        idpac=(2, 0, 0),
+        idpac=idpac,
         f_pha=pha_bands_hz,
         f_amp=amp_bands_hz,
         dcomplex="hilbert",
