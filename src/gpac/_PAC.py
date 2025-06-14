@@ -21,6 +21,7 @@ Ultra-high-speed PAC for 80GB VRAM x4 GPU nodes:
 """
 from typing import Any, Dict, Optional, Union
 
+import hashlib
 import torch
 import torch.nn as nn
 
@@ -146,6 +147,23 @@ class PAC(nn.Module):
         """Amplitude frequency bands as tensor (n_bands, 2) with [low, high] Hz."""
         return self.bandpass.amp_bands_hz
 
+    def _create_cache_key(self, x: torch.Tensor) -> tuple:
+        """Create a cache key based on tensor values, not memory address.
+        
+        Uses a hash of the tensor values to ensure:
+        - Same values -> same cache key
+        - Different values -> different cache key
+        """
+        # Convert tensor to bytes and hash it
+        # This ensures the cache key is based on actual values
+        
+        # Create a hash of the tensor data
+        tensor_bytes = x.cpu().numpy().tobytes()
+        tensor_hash = hashlib.sha256(tensor_bytes).hexdigest()
+        
+        # Include shape, device, and dtype for completeness
+        return (x.shape, str(x.device), x.dtype, tensor_hash)
+
     def forward(self, x: torch.Tensor, compute_distributions: bool = False) -> Dict[str, torch.Tensor]:
         if x.dim() == 3:
             x = x.unsqueeze(2)
@@ -156,7 +174,8 @@ class PAC(nn.Module):
             raise ValueError(f"Input must be 3D or 4D, got {x.dim()}D")
 
         if self.enable_caching and self.result_cache is not None:
-            cache_key = (x.shape, x.device, x.dtype, x.data_ptr())
+            # Create cache key based on tensor values, not memory address
+            cache_key = self._create_cache_key(x)
             if cache_key in self.result_cache:
                 result = self.result_cache[cache_key]
                 if squeeze_segments:

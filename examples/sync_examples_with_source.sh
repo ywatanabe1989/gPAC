@@ -171,7 +171,7 @@ Source: ${src_rel_path}
 >>>>>>> 4a22432c6a307d7609df622a94c48133160cf1bf
 import numpy as np
 import torch
-import mngs
+import scitex as stx
 from gpac import ${module_name}
 <<<<<<< HEAD
 =======
@@ -181,14 +181,14 @@ from gpac import ${module_name}
 def main():
     """Main example function."""
     # Set random seed for reproducibility
-    mngs.gen.fix_seeds(42)
+    stx.gen.fix_seeds(42)
 <<<<<<< HEAD
-    # Create output directory using mngs
-    sdir = mngs.io.get_dirpath(__file__, "outputs")
+    # Create output directory using stx
+    sdir = stx.io.get_dirpath(__file__, "outputs")
 =======
     
-    # Create output directory using mngs
-    sdir = mngs.io.get_dirpath(__file__, "outputs")
+    # Create output directory using stx
+    sdir = stx.io.get_dirpath(__file__, "outputs")
     
 >>>>>>> 4a22432c6a307d7609df622a94c48133160cf1bf
     # TODO: Add example code for ${module_name}
@@ -204,7 +204,7 @@ def main():
     # 2. Create sample data
     # 3. Process data
     # 4. Visualize results
-    # 5. Save outputs using mngs
+    # 5. Save outputs using stx
 <<<<<<< HEAD
     print("\\nExample completed!")
 =======
