@@ -21,7 +21,7 @@ Dependencies:
   - scripts:
     - ./utils.py
   - packages:
-    - torch, numpy, mngs, gpac
+    - torch, numpy, scitex, gpac
 IO:
   - input-files:
     - None (generates synthetic data)
@@ -281,10 +281,10 @@ def main(args):
     fig = create_comparison_plot(results, "Multi-GPU VRAM Scaling Test")
 
     # Save results
-    import mngs
+    import scitex
 
-    mngs.io.save(results, "vram_results.yaml")
-    mngs.io.save(fig, "vram_scaling.gif")
+    scitex.io.save(results, "vram_results.yaml")
+    scitex.io.save(fig, "vram_scaling.gif")
 
     print(f"\n✅ Results saved to ./")
     return 0
@@ -292,9 +292,9 @@ def main(args):
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex
 
-    script_mode = mngs.gen.is_script()
+    script_mode = scitex.gen.is_script()
     parser = argparse.ArgumentParser(description="Multi-GPU VRAM scaling test")
     parser.add_argument(
         "--n_perm",
@@ -304,22 +304,22 @@ def parse_args() -> argparse.Namespace:
         help="Number of permutations for statistical testing (default: %(default)s)",
     )
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    scitex.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize scitex framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = scitex.gen.start(
         sys,
         plt,
         args=args,
@@ -330,7 +330,7 @@ def run_main() -> None:
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    scitex.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

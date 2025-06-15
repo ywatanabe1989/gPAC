@@ -24,12 +24,12 @@ Prerequisites:
 from pprint import pprint
 
 import gpac
-import mngs
+import scitex as stx
 
 
 def demo_batch(pac_config: dict) -> None:
     """Demonstrate PAC batch generation."""
-    mngs.str.printc("=== Demo Batch ===")
+    stx.str.printc("=== Demo Batch ===")
     batch = gpac.dataset.generate_pac_batch(pac_config=pac_config)
     signal, label, metadata = batch
     print(f"Signal shape: {signal.shape}")
@@ -40,7 +40,7 @@ def demo_batch(pac_config: dict) -> None:
     print()
 
     # Plotting
-    fig, ax = mngs.plt.subplots()
+    fig, ax = stx.plt.subplots()
     i_batch, i_ch, i_segment = 0, 0, 0
     ax.plot(signal[i_batch, i_ch, i_segment], label="")
     ax.hide_spines()
@@ -51,7 +51,7 @@ def demo_batch(pac_config: dict) -> None:
 
 def demo_dataset(pac_config: dict) -> None:
     """Demonstrate PAC dataset generation."""
-    mngs.str.printc("=== Demo Dataset ===", c="yellow")
+    stx.str.printc("=== Demo Dataset ===", c="yellow")
     dataset = gpac.dataset.generate_pac_dataset(pac_config=pac_config)
     print(f"Dataset length: {len(dataset)}")
     signal, label, metadata = dataset[0]
@@ -62,7 +62,7 @@ def demo_dataset(pac_config: dict) -> None:
 
 def demo_dataloader(pac_config: dict) -> None:
     """Demonstrate PAC dataloader generation."""
-    mngs.str.printc("=== Demo DataLoader ===", c="yellow")
+    stx.str.printc("=== Demo DataLoader ===", c="yellow")
     dataloader = gpac.dataset.generate_pac_dataloader(pac_config=pac_config)
     for batch_idx, (signal, label, metadata) in enumerate(dataloader):
         print(f"Batch {batch_idx}: signal {signal.shape}, label {label.shape}")
@@ -81,7 +81,7 @@ def main() -> int:
     ][0]
 
     fig = demo_batch(pac_config)
-    mngs.io.save(fig, "demo_batch.gif")
+    stx.io.save(fig, "demo_batch.gif")
 
     demo_dataset(pac_config)
     demo_dataloader(pac_config)

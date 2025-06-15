@@ -75,12 +75,12 @@ def generate_pac_signal(fs=1000, duration=5):
 
 def main(args):
     """Run PAC analysis demonstration."""
-    import mngs
+    import scitex as stx
     from gpac import calculate_pac
     from gpac._Profiler import create_profiler
 
-    mngs.str.printc("🚀 PAC Analysis Example", c="green")
-    mngs.str.printc("=" * 50, c="green")
+    stx.str.printc("🚀 PAC Analysis Example", c="green")
+    stx.str.printc("=" * 50, c="green")
 
     # Create profiler
     profiler = create_profiler(enable_gpu=True)
@@ -94,7 +94,7 @@ def main(args):
     duration = 5  # Signal duration (seconds)
 
     # 1. Generate synthetic signal with PAC
-    mngs.str.printc("\n📡 Generating synthetic signal with PAC...", c="cyan")
+    stx.str.printc("\n📡 Generating synthetic signal with PAC...", c="cyan")
     with profiler.profile("Signal Generation"):
         (
             signal,
@@ -109,13 +109,13 @@ def main(args):
         # Prepare signal for gPAC (4D tensor: batch, channels, segments, time)
         signal_tensor = torch.from_numpy(signal).float().reshape(1, 1, 1, -1)
 
-    mngs.str.printc(f"Signal shape: {signal_tensor.shape}", c="cyan")
-    mngs.str.printc(f"Signal duration: {duration} seconds", c="cyan")
-    mngs.str.printc(f"Sampling rate: {fs} Hz", c="cyan")
-    mngs.str.printc(f"True coupling: θ={phase_freq} Hz → γ={amp_freq} Hz", c="yellow")
+    stx.str.printc(f"Signal shape: {signal_tensor.shape}", c="cyan")
+    stx.str.printc(f"Signal duration: {duration} seconds", c="cyan")
+    stx.str.printc(f"Sampling rate: {fs} Hz", c="cyan")
+    stx.str.printc(f"True coupling: θ={phase_freq} Hz → γ={amp_freq} Hz", c="yellow")
 
     # 2. Calculate PAC without statistical testing
-    mngs.str.printc("\n🔄 Calculating PAC...", c="blue")
+    stx.str.printc("\n🔄 Calculating PAC...", c="blue")
     with profiler.profile("PAC Calculation (No Permutation)"):
         pac_values, pha_freqs, amp_freqs = calculate_pac(
             signal_tensor,
@@ -133,7 +133,7 @@ def main(args):
     pac_matrix = pac_values[0, 0].cpu().numpy()
 
     # 3. Calculate PAC with statistical testing
-    mngs.str.printc("\n🔄 Calculating PAC with permutation testing...", c="blue")
+    stx.str.printc("\n🔄 Calculating PAC with permutation testing...", c="blue")
     with profiler.profile("PAC Calculation (With Permutation)"):
         pac_zscore, _, _ = calculate_pac(
             signal_tensor,
@@ -150,7 +150,7 @@ def main(args):
     pac_z_matrix = pac_zscore[0, 0].cpu().numpy()
 
     # 4. Visualize results
-    mngs.str.printc("\n📊 Creating visualization...", c="cyan")
+    stx.str.printc("\n📊 Creating visualization...", c="cyan")
     import matplotlib.pyplot as plt
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     axes = axes.flatten()
@@ -254,31 +254,31 @@ def main(args):
 
     # Save figure
     spath = "pac_analysis_results.gif"
-    mngs.io.save(fig, spath)
+    stx.io.save(fig, spath)
 
     # 5. Report findings
-    mngs.str.printc("\n📊 PAC Analysis Results", c="yellow")
-    mngs.str.printc("=" * 50, c="yellow")
-    mngs.str.printc(f"Maximum PAC value: {pac_matrix.max():.4f}", c="cyan")
+    stx.str.printc("\n📊 PAC Analysis Results", c="yellow")
+    stx.str.printc("=" * 50, c="yellow")
+    stx.str.printc(f"Maximum PAC value: {pac_matrix.max():.4f}", c="cyan")
     max_idx = np.unravel_index(pac_matrix.argmax(), pac_matrix.shape)
-    mngs.str.printc(
+    stx.str.printc(
         f"Peak coupling at: Phase {pha_freqs[max_idx[0]]:.1f} Hz, Amplitude {amp_freqs[max_idx[1]]:.1f} Hz",
         c="cyan",
     )
-    mngs.str.printc(
+    stx.str.printc(
         f"Expected coupling: Phase {phase_freq} Hz, Amplitude {amp_freq} Hz", c="cyan"
     )
 
-    mngs.str.printc(f"\nMaximum z-score: {pac_z_matrix.max():.2f}", c="cyan")
+    stx.str.printc(f"\nMaximum z-score: {pac_z_matrix.max():.2f}", c="cyan")
     significant_pairs = np.sum(pac_z_matrix > 2)
     total_pairs = pac_z_matrix.size
-    mngs.str.printc(
+    stx.str.printc(
         f"Significant frequency pairs (z > 2): {significant_pairs}/{total_pairs} ({100*significant_pairs/total_pairs:.1f}%)",
         c="cyan",
     )
 
     # 6. Save results
-    mngs.str.printc("\n💾 Saving results...", c="blue")
+    stx.str.printc("\n💾 Saving results...", c="blue")
     results_data = {
         "pac_values": pac_matrix,
         "pac_zscores": pac_z_matrix,
@@ -287,33 +287,33 @@ def main(args):
         "signal": signal,
         "fs": fs,
     }
-    mngs.io.save(
+    stx.io.save(
         results_data, "pac_results.npz"
     )
 
     # Print profiling summary
-    mngs.str.printc("\n" + "=" * 50, c="green")
+    stx.str.printc("\n" + "=" * 50, c="green")
     profiler.print_summary()
 
-    mngs.str.printc("\n✅ PAC analysis completed successfully!", c="green")
-    mngs.str.printc(f"💾 Results saved to: {spath}", c="green")
+    stx.str.printc("\n✅ PAC analysis completed successfully!", c="green")
+    stx.str.printc(f"💾 Results saved to: {spath}", c="green")
 
     return 0
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex as stx
 
-    script_mode = mngs.gen.is_script()
+    script_mode = stx.gen.is_script()
     parser = argparse.ArgumentParser(description="PAC analysis example")
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    stx.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize stx framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
@@ -322,11 +322,11 @@ def run_main() -> None:
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex as stx
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = stx.gen.start(
         sys,
         plt,
         args=args,
@@ -338,7 +338,7 @@ def run_main() -> None:
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    stx.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

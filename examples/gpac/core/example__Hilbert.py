@@ -20,7 +20,7 @@ Functionalities:
 
 Dependencies:
   - scripts: None
-  - packages: numpy, torch, matplotlib, gpac, mngs
+  - packages: numpy, torch, matplotlib, gpac, stx
 
 IO:
   - input-files: None (generates synthetic test signals)
@@ -52,9 +52,9 @@ def unwrap_phase(phase):
 
 def demo_hilbert_analysis(args):
     """Demonstrate Hilbert transform and signal analysis."""
-    import mngs
+    import scitex as stx
 
-    mngs.str.printc("=== Demo Hilbert Transform Analysis ===", c="yellow")
+    stx.str.printc("=== Demo Hilbert Transform Analysis ===", c="yellow")
 
     # Generate test signal
     sample_rate = args.sample_rate
@@ -88,7 +88,7 @@ def demo_hilbert_analysis(args):
     )
 
     # Create visualization
-    fig, axes = mngs.plt.subplots(4, 1, figsize=(12, 10))
+    fig, axes = stx.plt.subplots(4, 1, figsize=(12, 10))
 
     axes[0].plot(t_vals.numpy(), signal.detach().numpy())
     axes[0].set_title("Original Signal")
@@ -112,7 +112,7 @@ def demo_hilbert_analysis(args):
     axes[3].grid(True, alpha=0.3)
 
     plt.tight_layout()
-    mngs.io.save(fig, "01_hilbert_analysis.gif")
+    stx.io.save(fig, "01_hilbert_analysis.gif")
     plt.close()
 
     # Print analysis results
@@ -129,9 +129,9 @@ def demo_hilbert_analysis(args):
 
 def demo_batch_processing_and_performance(args):
     """Demonstrate batch processing and performance metrics."""
-    import mngs
+    import scitex as stx
 
-    mngs.str.printc("=== Demo Batch Processing & Performance ===", c="yellow")
+    stx.str.printc("=== Demo Batch Processing & Performance ===", c="yellow")
 
     # Test batch processing
     sample_rate = args.sample_rate
@@ -168,7 +168,7 @@ def demo_batch_processing_and_performance(args):
     avg_time_ms = (end_time - start_time) / n_iterations * 1000
 
     # Visualize performance metrics
-    fig, (ax1, ax2) = mngs.plt.subplots(1, 2, figsize=(12, 5))
+    fig, (ax1, ax2) = stx.plt.subplots(1, 2, figsize=(12, 5))
 
     # Batch processing visualization
     ax1.bar(
@@ -201,7 +201,7 @@ def demo_batch_processing_and_performance(args):
     ax2.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    mngs.io.save(fig, "02_hilbert_performance.gif")
+    stx.io.save(fig, "02_hilbert_performance.gif")
     plt.close()
 
     print(f"\nPerformance Summary:")
@@ -218,7 +218,7 @@ def main(args):
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex as stx
 
     parser = argparse.ArgumentParser(
         description="Demonstrate Hilbert transform functionality"
@@ -237,22 +237,22 @@ def parse_args() -> argparse.Namespace:
     )
 
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    stx.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize stx framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex as stx
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = stx.gen.start(
         sys,
         plt,
         args=args,
@@ -263,7 +263,7 @@ def run_main() -> None:
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    stx.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

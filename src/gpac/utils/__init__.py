@@ -10,9 +10,15 @@ from ._exceptions import GPACError, MemoryError, ConfigurationError, DeviceError
 
 __all__ = [
     "compare",
-    "Profiler", "ProfileContainer", "create_profiler",
-    "config", "GPACConfig",
-    "GPACError", "MemoryError", "ConfigurationError", "DeviceError"
+    "Profiler",
+    "ProfileContainer",
+    "create_profiler",
+    "config",
+    "GPACConfig",
+    "GPACError",
+    "MemoryError",
+    "ConfigurationError",
+    "DeviceError",
 ]
 
 # EOF

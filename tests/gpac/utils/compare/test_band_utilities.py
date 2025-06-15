@@ -57,15 +57,18 @@ class TestBandUtilitiesDetailed:
 
         # Check band ordering (should be ascending)
         assert np.all(pha_bands[:, 0] <= pha_bands[:, 1])  # Low <= High
-        assert np.all(
-            pha_bands[:-1, 1] <= pha_bands[1:, 0]
-        )  # No overlaps (approximately)
+        # Check that band centers are in ascending order (bands may overlap)
+        pha_centers = np.mean(pha_bands, axis=1)
+        assert np.all(pha_centers[:-1] <= pha_centers[1:])  # Centers ascending
 
-        # Check frequency ranges
-        assert pha_bands.min() >= 0.5  # Above minimum
-        assert pha_bands.max() <= 64  # Below Nyquist (fs/2 = 64)
-        assert amp_bands.min() >= 0.5
-        assert amp_bands.max() <= 64
+        # Check frequency ranges based on the PAC object's actual parameters
+        # pac_gp_small has pha_range_hz=(1, 10) and amp_range_hz=(20, 60)
+        # Allow some tolerance for band edges
+        tolerance = 0.1
+        assert pha_bands.min() >= (1 - tolerance)  # Close to specified minimum
+        assert pha_bands.max() <= (10 + tolerance)  # Close to specified maximum
+        assert amp_bands.min() >= (20 - tolerance)
+        assert amp_bands.max() <= (60 + tolerance)
 
     def test_extract_gpac_bands_large(self, pac_gp_large):
         """Test band extraction from large gPAC object."""
@@ -74,9 +77,13 @@ class TestBandUtilitiesDetailed:
         assert pha_bands.shape == (50, 2)
         assert amp_bands.shape == (30, 2)
 
-        # Check frequency ranges for high-res
-        assert pha_bands.min() >= 0.25  # Above minimum
-        assert pha_bands.max() <= 256  # Below Nyquist (fs/2 = 256)
+        # Check frequency ranges based on the PAC object's actual parameters
+        # pac_gp_large has pha_range_hz=(0.5, 50) and amp_range_hz=(60, 200)
+        tolerance = 0.1
+        assert pha_bands.min() >= (0.5 - tolerance)  # Close to specified minimum
+        assert pha_bands.max() <= (50 + tolerance)  # Close to specified maximum
+        assert amp_bands.min() >= (60 - tolerance)
+        assert amp_bands.max() <= (200 + tolerance)
 
     def test_verify_band_ranges_phase_exact_match(self):
         """Test exact phase band range matching."""

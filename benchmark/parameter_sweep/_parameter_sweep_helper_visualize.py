@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-10 00:31:33 (ywatanabe)"
-# File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py
+# Timestamp: "2025-06-15 10:44:53 (ywatanabe)"
+# File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py
 # ----------------------------------------
 import os
 __FILE__ = (
-    "./examples/benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py"
+    "./benchmark/parameter_sweep/_parameter_sweep_helper_visualize.py"
 )
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
 import sys
 
-import mngs
 import numpy as np
 import pandas as pd
+import scitex
 
 sys.path.append(__DIR__)
 from pprint import pprint
@@ -32,18 +32,18 @@ PARAMS_GRID["device_ids"] = [str(k) for k in PARAMS_GRID["device_ids"]]
 
 
 def print_params():
-    mngs.str.printc("PARAMS_BASE:", c="yellow")
+    scitex.str.printc("PARAMS_BASE:", c="yellow")
     pprint(PARAMS_BASE)
-    mngs.str.printc("PARAMS_GRID:", c="yellow")
+    scitex.str.printc("PARAMS_GRID:", c="yellow")
     pprint(PARAMS_GRID)
-    mngs.str.printc("PARAMS_VARIATION:", c="yellow")
+    scitex.str.printc("PARAMS_VARIATION:", c="yellow")
     pprint(PARAMS_VARIATION)
 
 
 def plot_parameter_scaling_on_grids(df, sharey=False):
     import matplotlib.pyplot as plt
 
-    grids = list(mngs.utils.yield_grids(PARAMS_GRID))
+    grids = list(scitex.utils.yield_grids(PARAMS_GRID))
     n_grids = len(grids)
     n_params = len(PARAMS_VARIATION)
 
@@ -53,7 +53,7 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
     n_cols = 4
     n_rows = (n_keys + n_cols - 1) // n_cols
 
-    fig, axes = mngs.plt.subplots(
+    fig, axes = scitex.plt.subplots(
         ncols=n_cols, nrows=n_rows, sharey=sharey, sharex=False
     )
 
@@ -68,8 +68,8 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
             base_for_grid = base_for_tgt.copy()
             base_for_grid.update(grid)
 
-            indi = mngs.pd.find_indi(df_key, base_for_grid)
-            grid_str = mngs.dict.to_str(grid)
+            indi = scitex.pd.find_indi(df_key, base_for_grid)
+            grid_str = scitex.dict.to_str(grid)
             df_key.loc[indi, "grid_point"] = grid_str
             if grid_str not in unique_grids:
                 unique_grids.append(grid_str)
@@ -98,7 +98,7 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
             palette=palette,
         )
 
-        ax.set_xyt(mngs.str.format_plot_text(tgt_key), None, None)
+        ax.set_xyt(scitex.str.format_plot_text(tgt_key), None, None)
         ax.legend("separate")
 
     fig.supxyt(
@@ -110,7 +110,7 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
 
 
 # def plot_parameter_scaling_on_grids(df):
-#     grids = list(mngs.utils.yield_grids(PARAMS_GRID))
+#     grids = list(scitex.utils.yield_grids(PARAMS_GRID))
 #     n_grids = len(grids)
 #     n_params = len(PARAMS_VARIATION)
 
@@ -120,7 +120,7 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
 #     n_cols = 4
 #     n_rows = (n_keys + n_cols - 1) // n_cols
 
-#     fig, axes = mngs.plt.subplots(
+#     fig, axes = scitex.plt.subplots(
 #         ncols=n_cols, nrows=n_rows, sharey=True, sharex=False
 #     )
 
@@ -135,8 +135,8 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
 #             base_for_grid = base_for_tgt.copy()
 #             base_for_grid.update(grid)
 
-#             indi = mngs.pd.find_indi(df_key, base_for_grid)
-#             grid_str = mngs.dict.to_str(grid)
+#             indi = scitex.pd.find_indi(df_key, base_for_grid)
+#             grid_str = scitex.dict.to_str(grid)
 #             df_key.loc[indi, "grid_point"] = grid_str
 #             if grid_str not in unique_grids:
 #                 unique_grids.append(grid_str)
@@ -170,7 +170,7 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
 #     return fig
 
 # def plot_parameter_scaling_on_grids(df):
-#     grids = list(mngs.utils.yield_grids(PARAMS_GRID))
+#     grids = list(scitex.utils.yield_grids(PARAMS_GRID))
 #     n_grids = len(grids)
 #     n_params = len(PARAMS_VARIATION)
 
@@ -180,7 +180,7 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
 #     n_cols = 4
 #     n_rows = (n_keys + n_cols - 1) // n_cols
 
-#     fig, axes = mngs.plt.subplots(
+#     fig, axes = scitex.plt.subplots(
 #         ncols=n_cols, nrows=n_rows, sharey=True, sharex=False
 #     )
 
@@ -193,8 +193,8 @@ def plot_parameter_scaling_on_grids(df, sharey=False):
 #             base_for_grid = base_for_tgt.copy()
 #             base_for_grid.update(grid)
 
-#             indi = mngs.pd.find_indi(df_key, base_for_grid)
-#             df_key.loc[indi, "grid_point"] = mngs.dict.to_str(grid)
+#             indi = scitex.pd.find_indi(df_key, base_for_grid)
+#             df_key.loc[indi, "grid_point"] = scitex.dict.to_str(grid)
 
 #         # Sort by Variable
 #         df_key.sort_values(["grid_point", tgt_key])
@@ -224,10 +224,10 @@ def plot_comodulograms(df):
     params_tensorpac = params_gpac.copy()
     params_tensorpac["package"] = "tensorpac"
 
-    comodulogram_gpac = mngs.pd.slice(df, params_gpac)[
+    comodulogram_gpac = scitex.pd.slice(df, params_gpac)[
         "sample_comodulogram"
     ].iloc[0]
-    comodulogram_tensorpac = mngs.pd.slice(df, params_tensorpac)[
+    comodulogram_tensorpac = scitex.pd.slice(df, params_tensorpac)[
         "sample_comodulogram"
     ].iloc[0]
     assert comodulogram_gpac.shape == comodulogram_tensorpac.shape
@@ -245,7 +245,7 @@ def plot_comodulograms(df):
     pha_mids_hz = pha_bands_hz.mean(axis=-1)
     amp_mids_hz = amp_bands_hz.mean(axis=-1)
 
-    fig, axes = mngs.plt.subplots(ncols=2)
+    fig, axes = scitex.plt.subplots(ncols=2)
     comodulograms = [comodulogram_gpac, comodulogram_tensorpac]
     titles = ["gPAC", "Tensorpac"]
 
@@ -272,20 +272,20 @@ def plot_comodulograms(df):
 def main(args):
     print_params()
     df = pd.DataFrame(
-        mngs.io.load(
-            "./examples/benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl"
+        scitex.io.load(
+            "./benchmark/parameter_sweep/parameter_sweep_benchmark_out/benchmark_results.pkl"
         )
     )
     df["device_ids"] = df["device_ids"].astype(str)
 
     fig1 = plot_parameter_scaling_on_grids(df, sharey=True)
-    mngs.io.save(fig1, "01_parameter_scaling_on_grids_y-shared.gif")
+    scitex.io.save(fig1, "01_parameter_scaling_on_grids_y-shared.gif")
 
     fig1 = plot_parameter_scaling_on_grids(df, sharey=False)
-    mngs.io.save(fig1, "01_parameter_scaling_on_grids_y-not-shared.gif")
+    scitex.io.save(fig1, "01_parameter_scaling_on_grids_y-not-shared.gif")
 
     fig2 = plot_comodulograms(df)
-    mngs.io.save(fig2, "02_comodulograms.gif")
+    scitex.io.save(fig2, "02_comodulograms.gif")
 
     return 0
 
@@ -304,11 +304,11 @@ def run_main():
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = scitex.gen.start(
         sys,
         plt,
         args=args,
@@ -319,7 +319,7 @@ def run_main():
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    scitex.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

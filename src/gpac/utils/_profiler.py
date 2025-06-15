@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/utils/_profiler.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/utils/_profiler.py"
-)
+
+__FILE__ = "./src/gpac/utils/_profiler.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -119,9 +118,9 @@ class Profiler:
             allocated = torch.cuda.memory_allocated(device) / (1024**3)
             reserved = torch.cuda.memory_reserved(device) / (1024**3)
 
-            total_memory = torch.cuda.get_device_properties(
-                device
-            ).total_memory / (1024**3)
+            total_memory = torch.cuda.get_device_properties(device).total_memory / (
+                1024**3
+            )
             allocated_percent = (allocated / total_memory) * 100
 
             # Try to get GPU utilization and temperature from GPUtil
@@ -193,12 +192,8 @@ class Profiler:
                 gpu_memory_used_gb=final_stats["gpu_memory_used_gb"],
                 gpu_memory_percent=final_stats["gpu_memory_percent"],
                 gpu_temp=final_stats["gpu_temp"],
-                gpu_memory_allocated_gb=final_stats.get(
-                    "gpu_memory_allocated_gb"
-                ),
-                gpu_memory_reserved_gb=final_stats.get(
-                    "gpu_memory_reserved_gb"
-                ),
+                gpu_memory_allocated_gb=final_stats.get("gpu_memory_allocated_gb"),
+                gpu_memory_reserved_gb=final_stats.get("gpu_memory_reserved_gb"),
             )
 
             self.results.append(result)
@@ -248,14 +243,10 @@ class Profiler:
         }
 
         if any(r.gpu_memory_used_gb is not None for r in self.results):
-            gpu_results = [
-                r for r in self.results if r.gpu_memory_used_gb is not None
-            ]
+            gpu_results = [r for r in self.results if r.gpu_memory_used_gb is not None]
             summary.update(
                 {
-                    "peak_vram_gb": max(
-                        r.gpu_memory_used_gb for r in gpu_results
-                    ),
+                    "peak_vram_gb": max(r.gpu_memory_used_gb for r in gpu_results),
                     "peak_vram_allocated_gb": max(
                         r.gpu_memory_allocated_gb
                         for r in gpu_results
@@ -275,5 +266,6 @@ class Profiler:
 def create_profiler(enable_gpu: bool = True) -> Profiler:
     """Create a new profiler instance."""
     return Profiler(enable_gpu=enable_gpu)
+
 
 # EOF

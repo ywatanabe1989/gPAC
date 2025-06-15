@@ -4,11 +4,11 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/utils/_exceptions.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/utils/_exceptions.py"
-)
+
+__FILE__ = "./src/gpac/utils/_exceptions.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
+
 
 class GPACError(Exception):
     """Base Exception for gPAC."""
@@ -32,5 +32,6 @@ class DeviceError(GPACError):
     """Device/CUDA-related errors."""
 
     pass
+
 
 # EOF

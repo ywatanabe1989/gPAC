@@ -12,7 +12,7 @@
 
 1.  Phase-Amplitude Coupling (PAC) is a crucial measure in neuroscience but computationally intensive, especially for large datasets or high-resolution analyses.
 2.  Existing CPU-based tools like Tensorpac can be bottlenecks.
-3.  We introduce gPAC, a PAC analysis framework implemented in PyTorch using the `mngs` library, designed for significant acceleration via GPU parallelization.
+3.  We introduce gPAC, a PAC analysis framework implemented in PyTorch using the `scitex` library, designed for significant acceleration via GPU parallelization.
 4.  We systematically benchmark gPAC (GPU and CPU modes) against Tensorpac (CPU) across a wide parameter space, varying signal dimensions (batch size, channels, segments, time length, sampling rate) and PAC calculation parameters (frequency band resolution, permutations).
 5.  Performance is evaluated based on calculation time and system resource utilization (CPU, RAM, GPU, VRAM). Numerical accuracy against Tensorpac is validated.
 6.  Results demonstrate substantial speedups (mention factor range, e.g., X-Y times faster) for gPAC on GPU compared to Tensorpac, particularly for larger data sizes and higher PAC resolutions. gPAC's CPU performance is also characterized. Accuracy validation confirms gPAC produces results highly consistent with Tensorpac.
@@ -28,12 +28,12 @@
     -   Computational cost of PAC analysis, especially using methods like MI with filtering, Hilbert transform, and potentially permutation testing.
     -   Limitations of existing CPU-bound tools (e.g., `tensorpac`) for large datasets (scalp EEG, MEG, large iEEG arrays) or high-resolution parameter sweeps (many frequency bands).
 3.  **Proposed Solution: gPAC**
-    -   Introduce gPAC as a solution leveraging GPU acceleration via PyTorch and the `mngs` library.
+    -   Introduce gPAC as a solution leveraging GPU acceleration via PyTorch and the `scitex` library.
     -   Highlight key features:
-        -   PyTorch backend (`mngs.nn.PAC`, `mngs.nn.Filters`, `mngs.nn.Hilbert`, `mngs.nn.ModulationIndex`).
+        -   PyTorch backend (`scitex.nn.PAC`, `scitex.nn.Filters`, `scitex.nn.Hilbert`, `scitex.nn.ModulationIndex`).
         -   GPU/CPU execution flexibility.
         -   Optional mixed-precision (FP16) support (`fp16` parameter).
-        -   Potential for trainable components (`trainable` parameter in `mngs.nn.PAC` using `DifferentiableBandPassFilter`).
+        -   Potential for trainable components (`trainable` parameter in `scitex.nn.PAC` using `DifferentiableBandPassFilter`).
 4.  **Paper Objectives & Outline:**
     -   Quantify the performance advantage of gPAC (GPU) over `tensorpac` (CPU).
     -   Compare gPAC (CPU) performance.
@@ -43,8 +43,8 @@
 **2. Methods:**
 
 1.  **PAC Implementations:**
-    -   **gPAC (`mngs` library):**
-        -   Describe the pipeline: Bandpass filtering (`mngs.nn.BandPassFilter` or `mngs.nn.DifferentiableBandPassFilter`) -> Hilbert Transform (`mngs.nn.Hilbert`) -> Modulation Index (`mngs.nn.ModulationIndex`).
+    -   **gPAC (`scitex` library):**
+        -   Describe the pipeline: Bandpass filtering (`scitex.nn.BandPassFilter` or `scitex.nn.DifferentiableBandPassFilter`) -> Hilbert Transform (`scitex.nn.Hilbert`) -> Modulation Index (`scitex.nn.ModulationIndex`).
         -   Mention implementation details: PyTorch backend, use of `torch.fft`, convolution for filtering.
         -   Specify options tested: `device` (cpu/cuda), `fp16`, `trainable`, `n_perm`, `in_place`.
     -   **Tensorpac:**
@@ -53,17 +53,17 @@
         -   Specify options tested: `use_threads`, `n_perm`.
 2.  **Benchmarking Setup:**
     -   **Hardware:** Specify CPU model, RAM size, GPU model, VRAM size (refer perhaps to `resource_info.py` output).
-    -   **Software:** OS, Python version, `mngs` version, `tensorpac` version, PyTorch version, CUDA version (refer to `requirements.txt`).
+    -   **Software:** OS, Python version, `scitex` version, `tensorpac` version, PyTorch version, CUDA version (refer to `requirements.txt`).
     -   **Synthetic Data Generation:**
-        -   Method: Use `mngs.dsp.demo_sig` with `sig_type="tensorpac"` or `"pac"`.
+        -   Method: Use `scitex.dsp.demo_sig` with `sig_type="tensorpac"` or `"pac"`.
         -   Rationale: Provides controllable, reproducible signals with known PAC characteristics for benchmarking.
     -   **Parameter Space:**
         -   Detail the parameters varied based on `config/PARAMS.yaml` (`VARIATIONS` or `ALL` section).
         -   List baseline parameters (`BASELINE` section).
         -   Explain the experimental design (varying one parameter group at a time from baseline, or full grid search if `ALL` was used). Reference `scripts/utils/define_parameter_space.py` logic if applicable.
     -   **Performance Metrics:**
-        -   Calculation Time: How initialization time and PAC calculation time were measured (using `mngs.gen.TimeStamper` within `BaseHandler`). Mention averaging over `n_calc` runs.
-        -   Resource Usage: How CPU %, RAM (GiB), GPU %, and VRAM (GiB) were logged (using `mngs.resource.log_processor_usages` via `record_processor_usages.py`). Explain linking to calculation times (nearest timestamp matching in `plot_linked_data.py`).
+        -   Calculation Time: How initialization time and PAC calculation time were measured (using `scitex.gen.TimeStamper` within `BaseHandler`). Mention averaging over `n_calc` runs.
+        -   Resource Usage: How CPU %, RAM (GiB), GPU %, and VRAM (GiB) were logged (using `scitex.resource.log_processor_usages` via `record_processor_usages.py`). Explain linking to calculation times (nearest timestamp matching in `plot_linked_data.py`).
 3.  **Validation:**
     -   Method: Compare PAC matrices generated by gPAC (non-trainable, fp32, CPU/GPU) and Tensorpac using identical input data and frequency band definitions.
     -   Metrics: Pearson correlation, Spearman correlation, Kendall's Tau, RMS of absolute difference, RMS of relative difference (reference `validate_precisions.py`).
@@ -104,11 +104,11 @@
     -   Benchmarking on real-world electrophysiological data.
     -   Exploring the `trainable` filter capabilities in data-driven analysis.
     -   Integration into larger deep learning models for end-to-end analysis.
-    -   Extending `mngs.dsp` to include other PAC metrics accelerated on GPU.
+    -   Extending `scitex.dsp` to include other PAC metrics accelerated on GPU.
 
 **5. Conclusion:**
 
-1.  gPAC, leveraging PyTorch and the `mngs` library, provides a validated and substantially faster alternative to traditional CPU-based PAC analysis tools like Tensorpac, especially when utilizing GPUs.
+1.  gPAC, leveraging PyTorch and the `scitex` library, provides a validated and substantially faster alternative to traditional CPU-based PAC analysis tools like Tensorpac, especially when utilizing GPUs.
 2.  Its performance advantages and PyTorch integration open new avenues for large-scale PAC studies and novel deep learning applications in signal processing.
 
 **References:**
@@ -117,7 +117,7 @@
 -   Cite the Tensorpac paper/documentation.
 -   Cite PyTorch.
 -   Cite NumPy, SciPy.
--   Cite the `mngs` library (if available, otherwise point to the repository).
+-   Cite the `scitex` library (if available, otherwise point to the repository).
 
 **Supplementary Material (Optional):**
 

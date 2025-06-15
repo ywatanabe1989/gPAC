@@ -41,7 +41,7 @@
 3. **Output Generation**:
    - CSV files created successfully
    - Visualizations (GIF) generated
-   - Proper mngs framework integration
+   - Proper scitex framework integration
 
 ### Verification Summary
 

@@ -21,7 +21,7 @@ Dependencies:
   - scripts:
     - ./utils.py
   - packages:
-    - torch, numpy, matplotlib, mngs, gpac
+    - torch, numpy, matplotlib, scitex, gpac
 IO:
   - input-files:
     - None (generates synthetic data)
@@ -37,7 +37,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import mngs
+import scitex
 import numpy as np
 import torch
 from utils import (create_pac_model, create_test_config, generate_test_data,
@@ -92,7 +92,7 @@ def plot_comodulogram_comparison(pac_single, pac_multi, pha_freqs, amp_freqs):
     Returns:
         fig: Matplotlib figure
     """
-    fig, axes = mngs.plt.subplots(1, 3, figsize=(18, 5))
+    fig, axes = scitex.plt.subplots(1, 3, figsize=(18, 5))
 
     # Common colormap parameters
     vmin = min(pac_single.min(), pac_multi.min())
@@ -273,8 +273,8 @@ def main(args):
     fig, results = run_comodulogram_comparison(config)
 
     # Save results
-    mngs.io.save(fig, "comodulogram_comparison.gif")
-    mngs.io.save(results, "comodulogram_results.yaml")
+    scitex.io.save(fig, "comodulogram_comparison.gif")
+    scitex.io.save(results, "comodulogram_results.yaml")
 
     return 0
 
@@ -282,7 +282,7 @@ def main(args):
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
 
-    script_mode = mngs.gen.is_script()
+    script_mode = scitex.gen.is_script()
     parser = argparse.ArgumentParser(
         description="Compare PAC comodulogram between single and multi-GPU"
     )
@@ -313,12 +313,12 @@ def parse_args() -> argparse.Namespace:
         help="Number of permutations for statistical testing (default: %(default)s)",
     )
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    scitex.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize scitex framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
@@ -327,7 +327,7 @@ def run_main() -> None:
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = scitex.gen.start(
         sys,
         plt,
         args=args,
@@ -338,7 +338,7 @@ def run_main() -> None:
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    scitex.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

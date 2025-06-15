@@ -28,10 +28,10 @@ class TestDatasetConfigs:
 
         components = config["single_pac"]["components"]
         assert len(components) == 1
-        assert "phase_hz" in components[0]
+        assert "pha_hz" in components[0]
         assert "amp_hz" in components[0]
         assert "strength" in components[0]
-        assert components[0]["phase_hz"] == 8.0
+        assert components[0]["pha_hz"] == 8.0
         assert components[0]["amp_hz"] == 80.0
         assert components[0]["strength"] == 0.5
 
@@ -50,10 +50,10 @@ class TestDatasetConfigs:
         assert len(components) == 3
 
         for comp in components:
-            assert "phase_hz" in comp
+            assert "pha_hz" in comp
             assert "amp_hz" in comp
             assert "strength" in comp
-            assert isinstance(comp["phase_hz"], float)
+            assert isinstance(comp["pha_hz"], float)
             assert isinstance(comp["amp_hz"], float)
             assert isinstance(comp["strength"], float)
 
@@ -69,12 +69,12 @@ class TestDatasetConfigs:
 
         theta_gamma = config["theta_gamma"]
         assert len(theta_gamma["components"]) == 1
-        assert theta_gamma["components"][0]["phase_hz"] == 8.0
+        assert theta_gamma["components"][0]["pha_hz"] == 8.0
         assert theta_gamma["components"][0]["amp_hz"] == 80.0
 
         alpha_beta = config["alpha_beta"]
         assert len(alpha_beta["components"]) == 1
-        assert alpha_beta["components"][0]["phase_hz"] == 10.0
+        assert alpha_beta["components"][0]["pha_hz"] == 10.0
         assert alpha_beta["components"][0]["amp_hz"] == 20.0
 
     def test_multi_class_multi_pac_config(self):
@@ -105,7 +105,7 @@ class TestDatasetConfigs:
                 assert isinstance(class_config["noise_levels"], list)
 
                 for comp in class_config["components"]:
-                    assert "phase_hz" in comp
+                    assert "pha_hz" in comp
                     assert "amp_hz" in comp
                     assert "strength" in comp
 
@@ -138,8 +138,8 @@ class TestDatasetConfigs:
         for config in configs:
             for class_config in config.values():
                 for comp in class_config["components"]:
-                    assert 0 < comp["phase_hz"] <= 30
-                    assert comp["amp_hz"] > comp["phase_hz"]
+                    assert 0 < comp["pha_hz"] <= 30
+                    assert comp["amp_hz"] > comp["pha_hz"]
                     assert 0 < comp["strength"] <= 1
 
     def test_config_imports(self):

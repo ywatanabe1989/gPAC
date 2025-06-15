@@ -19,7 +19,7 @@ Functionalities:
 
 Dependencies:
   - scripts: None
-  - packages: numpy, torch, matplotlib, gpac, mngs
+  - packages: numpy, torch, matplotlib, gpac, stx
 
 IO:
   - input-files: None (generates synthetic PAC signals)
@@ -41,11 +41,11 @@ import torch
 """Functions & Classes"""
 def demo_bandpass_filter(trainable):
     """Demonstrate static BandPassFilter with visualization."""
-    import mngs
+    import scitex as stx
 
     trainable_str = {True: "trainable", False: "static"}[trainable]
 
-    mngs.str.printc(
+    stx.str.printc(
         f"=== Demo {trainable_str.capitalize()} BandPassFilter ===", c="yellow"
     )
 
@@ -81,7 +81,7 @@ def demo_bandpass_filter(trainable):
     print(filtered.shape)
 
     # Visualize results
-    fig, axes = mngs.plt.subplots(3, 1, figsize=(12, 10))
+    fig, axes = stx.plt.subplots(3, 1, figsize=(12, 10))
 
     i_sample, i_channel, i_segment = 0, 0, 0
 
@@ -134,7 +134,7 @@ def demo_bandpass_filter(trainable):
 
     # Save figure
     i_trainable = {True: "01", False: "02"}[trainable]
-    mngs.io.save(fig, f"{i_trainable}_{trainable_str}_bandpass_filter.gif")
+    stx.io.save(fig, f"{i_trainable}_{trainable_str}_bandpass_filter.gif")
     plt.close()
 
     print(f"Filter info: {bpf.info}")
@@ -151,28 +151,28 @@ def main(args):
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex as stx
 
     parser = argparse.ArgumentParser(
         description="Demonstrate BandPassFilter functionality"
     )
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    stx.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize stx framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex as stx
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = stx.gen.start(
         sys,
         plt,
         args=args,
@@ -183,7 +183,7 @@ def run_main() -> None:
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    stx.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

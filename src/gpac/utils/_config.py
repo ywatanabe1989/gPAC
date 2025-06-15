@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/utils/_config.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/utils/_config.py"
-)
+
+__FILE__ = "./src/gpac/utils/_config.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 

@@ -25,7 +25,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e .[dev,testing]
-        pip install -r requirements.txt
     
     - name: Lint with black
       run: |
@@ -46,23 +45,9 @@ jobs:
         file: ./coverage.xml
         fail_ci_if_error: true
 
-  docker-test:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Build Docker image
-      run: |
-        docker build -t gpac-test .
-    
-    - name: Run tests in Docker
-      run: |
-        docker run --rm gpac-test python -m pytest tests/ -v
-
   build:
     runs-on: ubuntu-latest
-    needs: [test, docker-test]
+    needs: [test]
     
     steps:
     - uses: actions/checkout@v4

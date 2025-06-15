@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-10 14:48:42 (ywatanabe)"
-# File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/benchmark/parameter_sweep/parameter_sweep_benchmark.py
+# Timestamp: "2025-06-14 23:51:46 (ywatanabe)"
+# File: /ssh:sp:/home/ywatanabe/proj/gPAC/benchmark/parameter_sweep/parameter_sweep_benchmark.py
 # ----------------------------------------
 import os
 __FILE__ = (
@@ -28,7 +28,7 @@ Functionalities:
     - Results aggregation and periodic saving
 
 Dependencies:
-    - packages: gpac, tensorpac, torch, numpy, matplotlib, mngs, yaml
+    - packages: gpac, tensorpac, torch, numpy, matplotlib, scitex, yaml
     - helper modules: _parameter_sweep_helper_init_pac_calculator, _parameter_sweep_helper_setup_parameters
 
 Input/Output:
@@ -48,7 +48,7 @@ sys.path.append("../../../src")
 sys.path.append(__DIR__)
 
 import gpac
-import mngs
+import scitex
 from _parameter_sweep_helper_init_pac_calculator import init_pac_calculator
 from _parameter_sweep_helper_resource_monitor import \
     monitor_resources_during_computation
@@ -117,23 +117,38 @@ def benchmark_one_condition(
         trainable=trainable,
     )
 
-    # Main
-    calculation_time, sample_comodulogram, resource_usage = compute(
-        package=package,
-        pac_calculator=pac_calculator,
-        dataloader=dataloader,
-        n_batches=n_batches,
-        n_perm=n_perm,
-        device=device,
-        n_cpus=n_cpus,
-    )
+    try:
+        # Main
+        calculation_time, sample_comodulogram, resource_usage = compute(
+            package=package,
+            pac_calculator=pac_calculator,
+            dataloader=dataloader,
+            n_batches=n_batches,
+            n_perm=n_perm,
+            device=device,
+            n_cpus=n_cpus,
+        )
 
-    assert sample_comodulogram.shape == (
-        pha_n_bands,
-        amp_n_bands,
-    )
+        assert sample_comodulogram.shape == (
+            pha_n_bands,
+            amp_n_bands,
+        )
 
-    return calculation_time, sample_comodulogram, resource_usage
+        return calculation_time, sample_comodulogram, resource_usage
+
+    except torch.cuda.OutOfMemoryError:
+        torch.cuda.empty_cache()
+        params = dict(
+            package=package,
+            pac_calculator=pac_calculator,
+            dataloader=dataloader,
+            n_batches=n_batches,
+            n_perm=n_perm,
+            device=device,
+            n_cpus=n_cpus,
+        )
+        print(f"CUDA OOM for params: {params}")
+        return float("inf"), None, {}
 
 
 def compute(
@@ -147,25 +162,36 @@ def compute(
 ) -> tuple:
 
     def _compute_gpac(dataloader, device, pac_calculator_gpac):
-        with torch.no_grad():
-            batch = next(iter(dataloader))
-            signal, labels, metadata = batch
-            _ = pac_calculator_gpac(signal.to(device))
-
-        comp_start_time = time.time()
-        with torch.no_grad():
-            for i_batch, batch in enumerate(dataloader):
+        try:
+            with torch.no_grad():
+                batch = next(iter(dataloader))
                 signal, labels, metadata = batch
-                last_output_gp = pac_calculator_gpac(signal.to(device))
-                if i_batch == (n_batches - 1):
-                    break
-        comp_time = time.time() - comp_start_time
+                _ = pac_calculator_gpac(signal.to(device))
+                torch.cuda.empty_cache()
 
-        last_output_np = last_output_gp["pac"].detach().cpu().numpy()
-        i_batch, i_channel, i_segment = 0, 0, 0
-        first_comodulogram = last_output_np[i_batch, i_channel, i_segment]
+            comp_start_time = time.time()
+            with torch.no_grad():
+                for i_batch, batch in enumerate(dataloader):
+                    signal, labels, metadata = batch
+                    last_output_gp = pac_calculator_gpac(signal.to(device))
+                    torch.cuda.empty_cache()
+                    if i_batch == (n_batches - 1):
+                        break
+            comp_time = time.time() - comp_start_time
 
-        return comp_time, first_comodulogram
+            last_output_np = last_output_gp["pac"].detach().cpu().numpy()
+            del last_output_gp
+            torch.cuda.empty_cache()
+
+            i_batch, i_channel, i_segment = 0, 0, 0
+            first_comodulogram = last_output_np[i_batch, i_channel, i_segment]
+
+            return comp_time, first_comodulogram
+
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            print(f"CUDA OOM - skipping this parameter combination")
+            return float("inf"), None
 
     def _pre_reshape_signal_for_tensorpac(signal):
         batch_size, n_channels, n_segments, seq_len = signal.shape
@@ -256,10 +282,10 @@ def main(args):
     params_spaces = setup_parameters_grid(
         quick=args.quick, shuffle=args.shuffle
     )
-    agg = mngs.dict.listed_dict()
+    agg = scitex.dict.listed_dict()
     save_counter = 0
     for params_space in tqdm(params_spaces, total=len(params_spaces)):
-        mngs.str.printc(
+        scitex.str.printc(
             (f"Parameters:\n{params_space}"),
             c="yellow",
         )
@@ -271,7 +297,7 @@ def main(args):
             )
             comp_time_per_batch = comp_time / params_space["n_batches"]
 
-        mngs.str.printc(
+        scitex.str.printc(
             f"Comodulogram Shape: {sample_comodulogram.shape}\n"
             f"Computation Time [sec]: {comp_time:.3f} = ({comp_time_per_batch:.3f} [sec/batch])",
             c="green",
@@ -287,16 +313,16 @@ def main(args):
             agg[k].append(v)
 
         if (save_counter + 1) % 10 == 0:
-            mngs.io.save(agg, "benchmark_results.pkl")
+            scitex.io.save(agg, "benchmark_results.pkl")
         save_counter += 1
 
-    mngs.io.save(agg, "benchmark_results.pkl")
+    scitex.io.save(agg, "benchmark_results.pkl")
     return 0
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex
 
     parser = argparse.ArgumentParser(
         description="Parameter sweep benchmark for gPAC"
@@ -312,24 +338,24 @@ def parse_args() -> argparse.Namespace:
         help="Quick test with fewer parameter values",
     )
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    scitex.str.printc(args, c="yellow")
     args.quick = not args.no_quick
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize scitex framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex
 
     args = parse_args()
 
-    # Start mngs framework
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    # Start scitex framework
+    CONFIG, sys.stdout, sys.stderr, plt, CC = scitex.gen.start(
         sys,
         plt,
         args=args,
@@ -341,8 +367,8 @@ def run_main() -> None:
     # Main
     exit_status = main(args)
 
-    # Close the mngs framework
-    mngs.gen.close(
+    # Close the scitex framework
+    scitex.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

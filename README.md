@@ -1,5 +1,5 @@
 <!-- ---
-!-- Timestamp: 2025-06-10 17:13:21
+!-- Timestamp: 2025-06-14 06:03:55
 !-- Author: ywatanabe
 !-- File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/README.md
 !-- --- -->
@@ -23,76 +23,80 @@
 ## 🎯 Example Applications
 
 <div align="center">
-  <img src="./examples/gpac/example__PAC_out/01_static_pac_analysis.gif" alt="Static PAC Analysis" width="100%">
-  
-  **Static PAC analysis with comodulogram visualization**
-</div>
-
-<div align="center">
-  <img src="./examples/gpac/example__PAC_out/02_trainable_pac_classification.gif" alt="Trainable PAC Classification" width="100%">
-  
-  **Trainable PAC features for neural network classification**
-</div>
-
-## 🔬 Comparison with TensorPAC
-
-<div align="center">
-  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_03.gif" alt="gPAC vs TensorPAC Detailed Comparison" width="100%">
-  
-  **Example comparison: Phase 10Hz, Amplitude 60Hz (PAC Correlation: 0.847)**
-  
-  Shows side-by-side PAC comodulograms with ground truth markers (cyan crosses) and difference plots
-</div>
-
-<div align="center">
-  <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/correlation_summary_visualization.gif" alt="gPAC vs TensorPAC Correlation Summary" width="80%">
-  
-  **High correlation between gPAC and TensorPAC across 16 diverse PAC configurations**
-  
-  Mean correlation: 0.8113 ± 0.0419 (range: 0.7365 - 0.8585)
-</div>
-
-### Sample Comparison Results
-
-<div align="center">
   <table>
     <tr>
-      <td><img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_01.gif" alt="Comparison Pair 1" width="100%"></td>
-      <td><img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_04.gif" alt="Comparison Pair 4" width="100%"></td>
+      <td align="center">
+        <img src="./examples/gpac/example__PAC_out/01_static_pac_analysis.gif" alt="Static PAC Analysis" width="350">
+        <br><b>Static PAC Analysis</b>
+        <br>Comodulogram visualization
+      </td>
+      <td align="center">
+        <img src="./examples/gpac/example__PAC_out/02_trainable_pac_classification.gif" alt="Trainable PAC Classification" width="350">
+        <br><b>Trainable PAC Classification</b>
+        <br>Deep learning integration
+      </td>
     </tr>
     <tr>
-      <td align="center"><b>Example 1:</b> Phase: 4Hz, Amp: 40Hz<br>PAC Correlation: 0.826</td>
-      <td align="center"><b>Example 2:</b> Phase: 12Hz, Amp: 100Hz<br>PAC Correlation: 0.730</td>
+      <td align="center">
+        <img src="./examples/gpac/example__PAC_out/03_pac_comparison.gif" alt="PAC Comparison" width="350">
+        <br><b>Static vs Trainable Comparison</b>
+        <br>Performance & accuracy analysis
+      </td>
+      <td align="center">
+        <img src="./examples/gpac/example__PAC_out/04_pac_distributions_analysis.gif" alt="Amplitude Distributions" width="350">
+        <br><b>Amplitude Distributions</b>
+        <br>Phase preference for clinical analysis
+      </td>
     </tr>
   </table>
 </div>
 
-The comparison uses identical frequency bands (25 log-spaced phase bands × 35 log-spaced amplitude bands) for both methods, ensuring a fair comparison. Ground truth PAC locations are marked with crosses.
+## 🔬 PAC Values Comparison with TensorPAC
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_01.gif" alt="Comparison Pair 1" width="250">
+        <br><b>Phase: 4Hz, Amp: 40Hz</b>
+        <br>Correlation: 0.826
+      </td>
+      <td align="center">
+        <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/comparison_pair_04.gif" alt="Comparison Pair 4" width="250">
+        <br><b>Phase: 12Hz, Amp: 100Hz</b>
+        <br>Correlation: 0.730
+      </td>
+      <td align="center">
+        <img src="./benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/correlation_summary_visualization.gif" alt="Correlation Summary" width="250">
+        <br><b>Overall Correlation</b>
+        <br>0.811 ± 0.042 (n=16)
+      </td>
+    </tr>
+  </table>
+  
+  <i>Click images to view full size. Ground truth PAC locations marked with crosses.</i>
+</div>
+
 
 ## 📊 Performance Benchmarks
 
 <div align="center">
-  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_y-not-shared.gif" alt="Parameter Scaling" width="100%">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_y-not-shared.gif" alt="Parameter Scaling" width="350">
+        <br><b>Parameter Scaling Comparison</b>
+        <br>gPAC (blue) vs TensorPAC (red)
+      </td>
+      <td align="center">
+        <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_analyze_out/gpac_performance_analysis.gif" alt="Performance Analysis" width="350">
+        <br><b>Performance Analysis</b>
+        <br>Speed & memory efficiency
+      </td>
+    </tr>
+  </table>
   
-  **Parameter scaling comparison between gPAC (blue) and Tensorpac (red)**
-</div>
-
-<div align="center">
-  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/01_parameter_scaling_on_grids_y-not-shared_ax_00_legend.gif" alt="Legend" width="30%">
-</div>
-
-<div align="center">
-  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_analyze_out/gpac_performance_analysis.gif" alt="Parameter Performance Analysis" width="100%">
-  
-  **Parameter Performance Analysis**
-</div>
-
-
-
-<div align="center">
-  <img src="./benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/02_comodulograms.gif" alt="Comodulograms" width="100%">
-  
-  **PAC comodulogram comparison showing consistent results**
+  <i>Click images to view detailed performance metrics</i>
 </div>
 
 
@@ -101,11 +105,6 @@ The comparison uses identical frequency bands (25 log-spaced phase bands × 35 l
 ```bash
 # Installation
 pip install gpu-pac
-
-# Or install from source
-git clone https://github.com/ywatanabe1989/gPAC.git
-cd gPAC
-pip install -e .
 ```
 
 ### Quick Start
@@ -157,10 +156,52 @@ for signals, labels, metadata in dataloader:
     # Access frequency band definitions
     print(f"Phase bands: {pac_model.pha_bands_hz}")  # Tensor of shape (n_pha, 2) with [low, high] Hz
     print(f"Amplitude bands: {pac_model.amp_bands_hz}")  # Tensor of shape (n_amp, 2) with [low, high] Hz
+    
+    # Advanced: Get amplitude distributions for phase preference analysis
+    results_with_dist = pac_model(signals, compute_distributions=True)
+    amp_distributions = results_with_dist['amplitude_distributions']
+    print(f"Amplitude distributions shape: {amp_distributions.shape}")
+    # Shape: (batch, channels, pha_bands, amp_bands, n_phase_bins=18)
+    
     break  # Just show first batch
 ```
 
 For more examples, see the [examples directory](./examples/).
+
+### 📊 Amplitude Distributions for Clinical Analysis
+
+The `compute_distributions=True` option provides detailed phase preference analysis, particularly useful for seizure detection and neurophysiological research:
+
+```python
+# Compute PAC with amplitude distributions
+results = pac_model(signals, compute_distributions=True)
+
+# Access distributions
+pac_values = results['pac']
+amp_distributions = results['amplitude_distributions']
+phase_bin_centers = results['phase_bin_centers']  # Phase bins in radians
+
+# Analyze phase preference for strongest coupling
+batch_idx, ch_idx = 0, 0
+max_idx = pac_values[batch_idx, ch_idx].argmax()
+pha_idx, amp_idx = np.unravel_index(max_idx, pac_values[batch_idx, ch_idx].shape)
+
+# Get the amplitude distribution across phase bins
+phase_dist = amp_distributions[batch_idx, ch_idx, pha_idx, amp_idx]
+
+# Calculate phase preference metrics
+preferred_phase = phase_bin_centers[phase_dist.argmax()]
+distribution_entropy = -torch.sum(phase_dist * torch.log(phase_dist + 1e-10))
+
+print(f"Preferred phase: {preferred_phase * 180/np.pi:.1f}°")
+print(f"Distribution entropy: {distribution_entropy:.3f}")
+```
+
+**Clinical Applications:**
+- **Seizure onset detection**: Phase preference changes may precede visible PAC strength changes
+- **Distribution shape analysis**: Bimodal distributions indicate competing neural dynamics
+- **Temporal tracking**: Monitor distribution evolution for state transitions
+- **Network synchronization**: Compare distributions across frequency pairs
 
 ## 🔧 Core Features
 
@@ -182,6 +223,7 @@ For more examples, see the [examples directory](./examples/).
 - **Z-score normalization**: Automatic statistical significance testing
 - **Modulation Index**: Standard MI calculation with 18 phase bins
 - **Full differentiability**: Gradient support for deep learning applications
+- **Amplitude distributions**: Optional phase preference analysis for clinical applications
 
 ## 🤝 Contributing
 

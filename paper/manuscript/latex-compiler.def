@@ -1,0 +1,93 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%post
+    # Update and install basic tools
+    apt-get update && apt-get install -y \
+        wget \
+        curl \
+        git \
+        make \
+        build-essential \
+        locales \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Set locale
+    locale-gen en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export LANGUAGE=en_US:en
+    export LC_ALL=en_US.UTF-8
+
+    # Install TeX Live (full installation for all packages)
+    apt-get update && apt-get install -y \
+        texlive-full \
+        texlive-xetex \
+        texlive-luatex \
+        latexmk \
+        latexdiff \
+        biber \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Python and required packages
+    apt-get update && apt-get install -y \
+        python3 \
+        python3-pip \
+        python3-venv \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Python packages for image processing
+    pip3 install --no-cache-dir \
+        Pillow \
+        numpy
+
+    # Install additional tools for figure processing
+    apt-get update && apt-get install -y \
+        imagemagick \
+        ghostscript \
+        poppler-utils \
+        parallel \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Fix ImageMagick policy for PDF conversion
+    sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml || true
+
+    # Install pandoc for document conversion
+    apt-get update && apt-get install -y \
+        pandoc \
+        && rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=en_US.UTF-8
+    export LANGUAGE=en_US:en
+    export LC_ALL=en_US.UTF-8
+    export PATH=/usr/local/texlive/2023/bin/x86_64-linux:$PATH
+
+%runscript
+    echo "LaTeX compilation container for gPAC manuscript"
+    echo "Usage: apptainer exec latex-compiler.sif <command>"
+    echo "Example: apptainer exec latex-compiler.sif pdflatex main.tex"
+
+%labels
+    Author ywatanabe
+    Version 1.0
+    Description LaTeX compilation environment for gPAC manuscript with all dependencies
+
+%help
+    This container provides a complete LaTeX compilation environment including:
+    - Full TeX Live installation
+    - Python 3 with packages for image processing (crop_tif.py)
+    - Image processing tools (ImageMagick, Ghostscript)
+    - Parallel processing support
+    - Pandoc for document conversion
+
+    To build the container:
+    $ apptainer build latex-compiler.sif latex-compiler.def
+
+    To compile the manuscript:
+    $ cd paper/manuscript
+    $ apptainer exec ../../latex-compiler.sif ./compile -f
+
+    To run specific commands:
+    $ apptainer exec latex-compiler.sif pdflatex main.tex
+    $ apptainer exec latex-compiler.sif bibtex main
+    $ apptainer exec latex-compiler.sif python3 scripts/py/crop_tif.py

@@ -52,7 +52,7 @@ Deep learning integration examples:
 
 ## 🚀 Running Examples
 
-All examples follow the MNGS framework and can be run directly:
+All examples follow the STX framework and can be run directly:
 
 ```bash
 # Run a single example
@@ -66,7 +66,7 @@ This directory contains example scripts demonstrating various features of the gP
 
 ## Overview
 
-All examples follow the mngs framework conventions for consistent output handling and visualization.
+All examples follow the stx framework conventions for consistent output handling and visualization.
 >>>>>>> 4a22432c6a307d7609df622a94c48133160cf1bf
 
 ## Main Examples
@@ -107,7 +107,7 @@ python example_profiler.py
 <<<<<<< HEAD
 ## 📊 Output Structure
 
-Each example creates an output directory following MNGS conventions:
+Each example creates an output directory following STX conventions:
 ```
 example_name_out/
 ├── RUNNING/          # Active runs
@@ -126,7 +126,7 @@ example_name_out/
 =======
 ## Output Structure
 
-All examples save their outputs using mngs conventions:
+All examples save their outputs using stx conventions:
 ```
 examples/
 └── outputs/
@@ -158,7 +158,7 @@ Detailed comparisons between gPAC and TensorPAC implementations.
 ## Requirements
 
 - PyTorch with CUDA support (for GPU acceleration)
-- mngs >= 1.0.0
+- stx >= 1.0.0
 - numpy, scipy, matplotlib
 - Optional: tensorpac (for comparison examples)
 
@@ -168,14 +168,14 @@ Detailed comparisons between gPAC and TensorPAC implementations.
 - Set `matplotlib.use('Agg')` for headless environments (already configured)
 - Use `--device cpu` flag if CUDA is unavailable
 - Check `*_out/` directories for results and logs
-- Review MNGS logs for debugging information
+- Review STX logs for debugging information
 =======
 ## Tips
 
 1. **GPU Usage**: Examples automatically detect and use GPU if available
 2. **Batch Processing**: Adjust batch sizes based on your GPU memory
 3. **Visualization**: All plots are saved to `outputs/` directory
-4. **Caching**: Some examples use `@mngs.io.decorator.cache` for faster reruns
+4. **Caching**: Some examples use `@stx.io.decorator.cache` for faster reruns
 >>>>>>> 4a22432c6a307d7609df622a94c48133160cf1bf
 
 ## Common Issues
@@ -187,7 +187,7 @@ Detailed comparisons between gPAC and TensorPAC implementations.
 <<<<<<< HEAD
 ## 📝 Creating New Examples
 
-Follow the MNGS template:
+Follow the STX template:
 
 ```python
 #!/usr/bin/env python3
@@ -203,20 +203,20 @@ import argparse
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import mngs
+import scitex as stx
 
 def parse_args():
     parser = argparse.ArgumentParser()
     # Add arguments
     return parser.parse_args()
 
-@mngs.gen.decorators.flow
+@stx.gen.decorators.flow
 def run_main(args):
-    CONFIG, CC, sdir = mngs.gen.start(__file__, args=args, pyplot_backend="Agg")
+    CONFIG, CC, sdir = stx.gen.start(__file__, args=args, pyplot_backend="Agg")
     
     # Your code here
     
-    mngs.gen.close()
+    stx.gen.close()
 
 if __name__ == "__main__":
     args = parse_args()
@@ -228,7 +228,7 @@ if __name__ == "__main__":
 ## Contributing
 
 When adding new examples:
-1. Follow mngs conventions for output handling
+1. Follow stx conventions for output handling
 2. Use descriptive filenames starting with `example_`
 3. Include docstrings explaining the example's purpose
 4. Save all outputs to `outputs/<script_name>/`

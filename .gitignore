@@ -60,6 +60,16 @@ coverage.xml
 **/output/
 **/outputs/
 
+# Exceptions for README images
+!examples/gpac/example__PAC_out/
+!examples/gpac/example__PAC_out/*.gif
+!benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/
+!benchmark/pac_values_comparison_with_tensorpac/generate_16_comparison_pairs_out/*.gif
+!benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/
+!benchmark/parameter_sweep/_parameter_sweep_helper_visualize_out/*.gif
+!benchmark/parameter_sweep/_parameter_sweep_helper_analyze_out/
+!benchmark/parameter_sweep/_parameter_sweep_helper_analyze_out/*.gif
+
 # Playground and temporary directories
 .playground/
 .old/
