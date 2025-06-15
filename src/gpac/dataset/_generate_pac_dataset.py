@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-09 16:03:56 (ywatanabe)"
+# Timestamp: "2025-06-15 17:55:04 (ywatanabe)"
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/dataset/_generate_pac_dataset.py
 # ----------------------------------------
 import os
@@ -67,7 +67,7 @@ def generate_pac_dataset(
         {
             'class_name': {
                 'components': [
-                    {'phase_hz': float, 'amp_hz': float, 'strength': float}
+                    {'pha_hz': float, 'amp_hz': float, 'strength': float}
                 ],
                 'noise_levels': [float, ...]
             }
@@ -138,10 +138,10 @@ def generate_pac_dataset(
                         pac_info = []
 
                         for component in config["components"]:
-                            phase_hz_options = (
-                                component["phase_hz"]
-                                if isinstance(component["phase_hz"], list)
-                                else [component["phase_hz"]]
+                            pha_hz_options = (
+                                component["pha_hz"]
+                                if isinstance(component["pha_hz"], list)
+                                else [component["pha_hz"]]
                             )
                             amp_hz_options = (
                                 component["amp_hz"]
@@ -154,18 +154,18 @@ def generate_pac_dataset(
                                 else [component["strength"]]
                             )
 
-                            phase_hz = np.random.choice(phase_hz_options)
+                            pha_hz = np.random.choice(pha_hz_options)
                             amp_hz = np.random.choice(amp_hz_options)
                             strength = np.random.choice(strength_options)
 
                             pac_component = gen.pac(
-                                phase_hz, amp_hz, strength, 0
+                                pha_hz, amp_hz, strength, 0
                             )
                             signal += pac_component
 
                             pac_info.append(
                                 {
-                                    "phase_hz": phase_hz,
+                                    "pha_hz": pha_hz,
                                     "amp_hz": amp_hz,
                                     "strength": strength,
                                 }
@@ -349,7 +349,7 @@ def generate_pac_batch(
                 for comp in dataset.metadata[key][ii]:
                     sample_components.append(
                         {
-                            "phase_hz": float(comp["phase_hz"]),
+                            "pha_hz": float(comp["pha_hz"]),
                             "amp_hz": float(comp["amp_hz"]),
                             "strength": float(comp["strength"]),
                         }

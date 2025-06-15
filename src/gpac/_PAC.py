@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-12 03:31:04 (ywatanabe)"
+# Timestamp: "2025-06-15 17:50:08 (ywatanabe)"
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py
 # ----------------------------------------
 import os
@@ -21,7 +21,6 @@ Ultra-high-speed PAC for 80GB VRAM x4 GPU nodes:
 """
 from typing import Any, Dict, Optional, Union
 
-import hashlib
 import torch
 import torch.nn as nn
 
@@ -47,11 +46,10 @@ class PAC(nn.Module):
         surrogate_chunk_size: int = 20,
         fp16: bool = False,
         device_ids: Union[list, str] = "all",
-        enable_caching: bool = True,
         compile_mode: bool = True,
-        max_memory_usage: float = 0.95,
-        enable_memory_profiling: bool = False,
-        vram_gb: Union[str, float] = 80.0,
+        # max_memory_usage: float = 0.95,
+        # enable_memory_profiling: bool = False,
+        # vram_gb: Union[str, float] = 80.0,
         trainable: bool = False,
         pha_n_pool_ratio: Optional[float] = None,
         amp_n_pool_ratio: Optional[float] = None,
@@ -74,7 +72,6 @@ class PAC(nn.Module):
         self.fs = fs
         self.n_perm = n_perm
         self.fp16 = fp16
-        self.enable_caching = enable_caching
         self.surrogate_chunk_size = surrogate_chunk_size
         self.trainable = trainable
 
@@ -132,10 +129,7 @@ class PAC(nn.Module):
                 print(f"Compilation failed: {e}")
 
         if len(self.device_ids) > 1:
-            self.result_cache = {} if enable_caching else None
             self = nn.DataParallel(self, device_ids=self.device_ids)
-        else:
-            self.result_cache = {} if enable_caching else None
 
     @property
     def pha_bands_hz(self):
@@ -147,24 +141,9 @@ class PAC(nn.Module):
         """Amplitude frequency bands as tensor (n_bands, 2) with [low, high] Hz."""
         return self.bandpass.amp_bands_hz
 
-    def _create_cache_key(self, x: torch.Tensor) -> tuple:
-        """Create a cache key based on tensor values, not memory address.
-        
-        Uses a hash of the tensor values to ensure:
-        - Same values -> same cache key
-        - Different values -> different cache key
-        """
-        # Convert tensor to bytes and hash it
-        # This ensures the cache key is based on actual values
-        
-        # Create a hash of the tensor data
-        tensor_bytes = x.cpu().numpy().tobytes()
-        tensor_hash = hashlib.sha256(tensor_bytes).hexdigest()
-        
-        # Include shape, device, and dtype for completeness
-        return (x.shape, str(x.device), x.dtype, tensor_hash)
-
-    def forward(self, x: torch.Tensor, compute_distributions: bool = False) -> Dict[str, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor, compute_distributions: bool = False
+    ) -> Dict[str, torch.Tensor]:
         if x.dim() == 3:
             x = x.unsqueeze(2)
             squeeze_segments = True
@@ -173,15 +152,6 @@ class PAC(nn.Module):
         else:
             raise ValueError(f"Input must be 3D or 4D, got {x.dim()}D")
 
-        if self.enable_caching and self.result_cache is not None:
-            # Create cache key based on tensor values, not memory address
-            cache_key = self._create_cache_key(x)
-            if cache_key in self.result_cache:
-                result = self.result_cache[cache_key]
-                if squeeze_segments:
-                    result = self._squeeze_segment_dim(result)
-                return result
-
         if x.device != self.device:
             x = x.to(self.device)
         if self.fp16:
@@ -189,15 +159,14 @@ class PAC(nn.Module):
 
         results = self._forward_vectorized(x, compute_distributions)
 
-        if self.enable_caching and self.result_cache is not None:
-            self.result_cache[cache_key] = results
-
         if squeeze_segments:
             results = self._squeeze_segment_dim(results)
 
         return results
 
-    def _forward_vectorized(self, x: torch.Tensor, compute_distributions: bool = False) -> Dict[str, torch.Tensor]:
+    def _forward_vectorized(
+        self, x: torch.Tensor, compute_distributions: bool = False
+    ) -> Dict[str, torch.Tensor]:
         batch_size, n_channels, segments, seq_len = x.shape
         x_flat = x.reshape(-1, seq_len)
 
@@ -229,7 +198,9 @@ class PAC(nn.Module):
             batch_size, n_channels, segments, n_amp, seq_len
         )
 
-        pac_values, amplitude_distributions = self._compute_mi_vectorized(phase, amplitude, compute_distributions)
+        pac_values, amplitude_distributions = self._compute_mi_vectorized(
+            phase, amplitude, compute_distributions
+        )
 
         # Skip surrogates during training to preserve gradients
         # if self.n_perm is not None and not self.training:
@@ -259,7 +230,9 @@ class PAC(nn.Module):
                 surrogate_std.float() if surrogate_std is not None else None
             )
             amplitude_distributions = (
-                amplitude_distributions.float() if amplitude_distributions is not None else None
+                amplitude_distributions.float()
+                if amplitude_distributions is not None
+                else None
             )
 
         return {
@@ -267,11 +240,19 @@ class PAC(nn.Module):
             "phase_bands_hz": self.pha_bands_hz,
             "amplitude_bands_hz": self.amp_bands_hz,
             "pac_z": pac_z,
-            "amplitude_distributions": amplitude_distributions if compute_distributions else None,
-            "phase_bin_centers": self.mi_calculator.phase_bin_centers if compute_distributions else None,
+            "amplitude_distributions": (
+                amplitude_distributions if compute_distributions else None
+            ),
+            "phase_bin_centers": (
+                self.mi_calculator.phase_bin_centers
+                if compute_distributions
+                else None
+            ),
         }
 
-    def _compute_mi_vectorized(self, phase, amplitude, compute_distributions=False):
+    def _compute_mi_vectorized(
+        self, phase, amplitude, compute_distributions=False
+    ):
         """Compute MI using the extracted ModulationIndex class."""
         batch, channels, segments, n_pha, time = phase.shape
         _, _, _, n_amp, _ = amplitude.shape
@@ -311,10 +292,16 @@ class PAC(nn.Module):
         squeezed = {}
         for key, value in results.items():
             if isinstance(value, torch.Tensor) and value.dim() > 2:
-                if (
-                    key in ["pac", "pac_z", "surrogate_mean", "surrogate_std", "amplitude_distributions"]
-                    and value.dim() in [5, 6]  # amplitude_distributions has 6 dims
-                ):
+                if key in [
+                    "pac",
+                    "pac_z",
+                    "surrogate_mean",
+                    "surrogate_std",
+                    "amplitude_distributions",
+                ] and value.dim() in [
+                    5,
+                    6,
+                ]:  # amplitude_distributions has 6 dims
                     # Remove segment dimension if it's 1
                     squeezed[key] = (
                         value.squeeze(2) if value.shape[2] == 1 else value
@@ -390,14 +377,5 @@ class PAC(nn.Module):
                 "ultra_aggressive" if total_vram >= 60 else "aggressive"
             ),
         }
-
-    def clear_cache(self):
-        if hasattr(self.bandpass, "clear_cache"):
-            self.bandpass.clear_cache()
-        if self.result_cache is not None:
-            self.result_cache.clear()
-        for device_id in self.device_ids:
-            with torch.cuda.device(device_id):
-                torch.cuda.empty_cache()
 
 # EOF

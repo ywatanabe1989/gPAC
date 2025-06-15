@@ -19,7 +19,7 @@ Functionalities:
 
 Dependencies:
   - packages:
-    - torch, numpy, matplotlib, mngs, gpac
+    - torch, numpy, matplotlib, scitex, gpac
 """
 
 """Imports"""
@@ -33,7 +33,7 @@ import pandas as pd
 import torch
 
 sys.path.append("../../../src")
-import mngs
+import scitex
 from gpac import PAC
 
 """GPU Memory Utilities"""
@@ -202,7 +202,7 @@ def create_comparison_plot(
 ):
     """Create comparison visualization plot."""
 
-    fig, (ax1, ax2) = mngs.plt.subplots(1, 2, figsize=(12, 5))
+    fig, (ax1, ax2) = scitex.plt.subplots(1, 2, figsize=(12, 5))
 
     # Speedup/Efficiency plot
     valid_indices = [
@@ -329,7 +329,7 @@ def create_speed_comparison_plot(results: Dict[str, List], title: str):
         return None
 
     # Create the plot
-    fig, ax = mngs.plt.subplots(1, 1, figsize=(10, 6))
+    fig, ax = scitex.plt.subplots(1, 1, figsize=(10, 6))
 
     # Create scatter plot with different colors for each device configuration
     colors = {
@@ -425,7 +425,7 @@ def create_throughput_comparison_plot(results: Dict[str, List], title: str):
         return None
 
     # Create the plot
-    fig, ax = mngs.plt.subplots(1, 1, figsize=(10, 6))
+    fig, ax = scitex.plt.subplots(1, 1, figsize=(10, 6))
 
     # Create line plot with different colors for each device configuration
     colors = {

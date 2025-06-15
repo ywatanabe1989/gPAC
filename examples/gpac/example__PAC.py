@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-14 00:41:42 (ywatanabe)"
+# Timestamp: "2025-06-15 17:55:31 (ywatanabe)"
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/examples/gpac/example__PAC.py
 # ----------------------------------------
 import os
@@ -121,7 +121,7 @@ def demo_static_pac(args):
         pha_freqs = pac_static.pha_bands_hz.mean(dim=1).cpu().numpy()
         amp_freqs = pac_static.amp_bands_hz.mean(dim=1).cpu().numpy()
         for coupling in metadata["pac_components"][sample_idx]:
-            pha_hz = coupling["phase_hz"]
+            pha_hz = coupling["pha_hz"]
             amp_hz = coupling["amp_hz"]
             pha_idx = np.argmin(np.abs(pha_freqs - pha_hz))
             amp_idx = np.argmin(np.abs(amp_freqs - amp_hz))
@@ -166,7 +166,7 @@ def demo_static_pac(args):
             and len(metadata["pac_components"][sample_idx]) > 0
         ):
             for coupling in metadata["pac_components"][sample_idx]:
-                pha_hz = coupling["phase_hz"]
+                pha_hz = coupling["pha_hz"]
                 amp_hz = coupling["amp_hz"]
                 pha_idx = np.argmin(np.abs(pha_freqs - pha_hz))
                 amp_idx = np.argmin(np.abs(amp_freqs - amp_hz))
@@ -188,7 +188,7 @@ def demo_static_pac(args):
         and len(metadata["pac_components"][sample_idx]) > 0
     ):
         gt_pha_freqs = [
-            c["phase_hz"] for c in metadata["pac_components"][sample_idx]
+            c["pha_hz"] for c in metadata["pac_components"][sample_idx]
         ]
         for freq in gt_pha_freqs:
             ax_pha.axvline(
@@ -259,7 +259,7 @@ def demo_static_pac(args):
         print(f"Ground truth couplings for sample {sample_idx}:")
         for coupling in metadata["pac_components"][sample_idx]:
             print(
-                f"  {coupling['phase_hz']:.1f} Hz -> {coupling['amp_hz']:.1f} Hz (strength: {coupling.get('strength', 1.0):.3f})"
+                f"  {coupling['pha_hz']:.1f} Hz -> {coupling['amp_hz']:.1f} Hz (strength: {coupling.get('strength', 1.0):.3f})"
             )
 
 
@@ -548,12 +548,12 @@ def demo_pac_distributions(args):
         "seizure_like": {
             "components": [
                 {
-                    "phase_hz": 4.0,
+                    "pha_hz": 4.0,
                     "amp_hz": 80.0,
                     "strength": 0.7,
                 },  # Strong theta-gamma
                 {
-                    "phase_hz": 8.0,
+                    "pha_hz": 8.0,
                     "amp_hz": 120.0,
                     "strength": 0.5,
                 },  # Alpha-high gamma
@@ -783,8 +783,8 @@ def demo_pac_comparison(args):
     consistent_config = {
         "consistent_pac": {
             "components": [
-                {"phase_hz": 8.0, "amp_hz": 80.0, "strength": 0.5},
-                {"phase_hz": 12.0, "amp_hz": 120.0, "strength": 0.4},
+                {"pha_hz": 8.0, "amp_hz": 80.0, "strength": 0.5},
+                {"pha_hz": 12.0, "amp_hz": 120.0, "strength": 0.4},
             ],
             "noise_levels": [0.1],
         }
@@ -864,13 +864,13 @@ def demo_pac_comparison(args):
 
     # Add consistent ground truth markers to static PAC
     expected_couplings = [
-        {"phase_hz": 8.0, "amp_hz": 80.0},
-        {"phase_hz": 12.0, "amp_hz": 120.0},
+        {"pha_hz": 8.0, "amp_hz": 80.0},
+        {"pha_hz": 12.0, "amp_hz": 120.0},
     ]
     pha_freqs = static_pac.pha_bands_hz.mean(dim=1).cpu().numpy()
     amp_freqs = static_pac.amp_bands_hz.mean(dim=1).cpu().numpy()
     for coupling in expected_couplings:
-        pha_hz = coupling["phase_hz"]
+        pha_hz = coupling["pha_hz"]
         amp_hz = coupling["amp_hz"]
         pha_idx = np.argmin(np.abs(pha_freqs - pha_hz))
         amp_idx = np.argmin(np.abs(amp_freqs - amp_hz))
@@ -916,7 +916,7 @@ def demo_pac_comparison(args):
     pha_freqs_trainable = trainable_pac.pha_bands_hz.mean(dim=1).cpu().numpy()
     amp_freqs_trainable = trainable_pac.amp_bands_hz.mean(dim=1).cpu().numpy()
     for coupling in expected_couplings:
-        pha_hz = coupling["phase_hz"]
+        pha_hz = coupling["pha_hz"]
         amp_hz = coupling["amp_hz"]
         pha_idx = np.argmin(np.abs(pha_freqs_trainable - pha_hz))
         amp_idx = np.argmin(np.abs(amp_freqs_trainable - amp_hz))

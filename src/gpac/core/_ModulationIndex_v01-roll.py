@@ -347,11 +347,7 @@ class ModulationIndex(nn.Module):
         return_surrogates: bool = False,
     ) -> Dict[str, torch.Tensor]:
         """
-        Compute surrogate statistics for significance testing using block-swapping.
-        
-        This method swaps time blocks of the amplitude signal to break the
-        phase-amplitude coupling while preserving the temporal structure.
-        
+        Compute surrogate statistics for significance testing.
         Parameters
         ----------
         phase : torch.Tensor
@@ -408,23 +404,19 @@ class ModulationIndex(nn.Module):
             end_idx = min(start_idx + chunk_size, n_perm)
             current_chunk = end_idx - start_idx
 
-            # Generate random cut points for block swapping
-            # Cut point should be between 1 and time-1 to ensure both blocks have data
-            cut_points = torch.randint(
+            # Use full range of shifts (1 to time-1) for unbiased surrogate generation
+            # Avoid shift=0 (no change) and shift=time (same as no change due to circular shift)
+            shifts = torch.randint(
                 1, time, (current_chunk,), device=phase.device
             )
 
-            for perm_idx, cut_point in enumerate(cut_points):
-                # Swap amplitude time blocks: [0:cut_point] and [cut_point:time]
-                amplitude_swapped = torch.cat([
-                    amplitude[..., cut_point:],  # Second block first
-                    amplitude[..., :cut_point]   # First block second
-                ], dim=-1)
-                
-                # Compute MI with original phase and swapped amplitude
+            for perm_idx, shift in enumerate(shifts):
+                phase_shifted = torch.roll(
+                    phase, shifts=shift.item(), dims=-1
+                )
                 mi_result = self.forward(
-                    phase,
-                    amplitude_swapped,
+                    phase_shifted,
+                    amplitude,
                     compute_distributions=False,
                 )
                 surrogate_mi = mi_result["mi"]

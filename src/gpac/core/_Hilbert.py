@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-08 13:54:54 (ywatanabe)"
+# Timestamp: "2025-06-15 17:50:19 (ywatanabe)"
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_Hilbert.py
 # ----------------------------------------
 import os
@@ -19,9 +19,6 @@ MAJOR IMPROVEMENT: This implementation provides perfect numerical agreement with
 """
 import torch
 import torch.nn as nn
-
-# Disable torch.compile for complex number operations
-# torch._dynamo.config.suppress_errors = True
 
 
 class Hilbert(nn.Module):

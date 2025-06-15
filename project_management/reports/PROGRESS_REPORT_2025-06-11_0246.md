@@ -6,7 +6,7 @@ Successfully completed three major sections of the gPAC manuscript (Methods, Res
 ## Major Accomplishments
 
 ### 1. Methods Section ✓
-- Replaced all placeholder content (mngs package → gPAC)
+- Replaced all placeholder content (scitex package → gPAC)
 - Added complete mathematical formulations
 - Included actual API usage examples
 - Detailed validation and benchmarking methodology

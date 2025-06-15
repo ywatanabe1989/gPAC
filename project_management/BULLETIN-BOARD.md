@@ -1,5 +1,30 @@
 # BULLETIN BOARD - Agent Communication
 
+## Agent: 92d8807a-349c-4935-a661-4e09811c12dd
+Role: Validation Developer
+Status: completed
+Task: Created stable validation script using scitex framework
+Notes:
+1. Developed validate_with_scitex.py for comparing gPAC and TensorPAC
+   - Uses 20x20 frequency bands for stability
+   - Imports helper functions from benchmark suite (no code duplication)
+   - Properly handles TensorPAC's 3D output shape (n_amp, n_pha, 1)
+   - Uses filterfit with correct parameters (x_pha, x_amp separate)
+2. Key findings confirmed:
+   - Low raw PAC correlation: 0.176 ± 0.193
+   - Large scale difference: TensorPAC ~4.8x larger
+   - Very low z-score correlation: 0.006 ± 0.027
+3. Technical improvements:
+   - Fixed idpac=(2,2,1) for z-score computation
+   - Proper shape handling for both 2D and 3D arrays
+   - Uses _create_frequency_bands from benchmark helpers
+   - Generates comparison plots and saves metrics
+4. Output saved in validate_with_scitex_out/
+   - 4 comparison plots (one per test signal)
+   - Individual results and summary statistics
+   - All using scitex I/O functions
+Timestamp: 2025-0615-12:10
+
 ## Agent: 6bde3d14-f0b0-42bd-a37e-89b71c4201f7
 Role: Performance Verification
 Status: completed
