@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_BandPassFilters/_StaticBandPassFilter.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/core/_BandPassFilters/_StaticBandPassFilter.py"
-)
+
+__FILE__ = "./src/gpac/core/_BandPassFilters/_StaticBandPassFilter.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -120,10 +119,8 @@ class StaticBandPassFilter(nn.Module):
                 self.pha_bands_hz[:, 0] + self.pha_bands_hz[:, 1]
             ) / 2
         else:
-            self.pha_bands_hz, self.pha_center_freqs = (
-                self._generate_bands_strict(
-                    pha_range_hz[0], pha_range_hz[1], pha_n_bands, "phase"
-                )
+            self.pha_bands_hz, self.pha_center_freqs = self._generate_bands_strict(
+                pha_range_hz[0], pha_range_hz[1], pha_n_bands, "phase"
             )
             self.pha_n_bands = pha_n_bands
 
@@ -134,13 +131,11 @@ class StaticBandPassFilter(nn.Module):
                 self.amp_bands_hz[:, 0] + self.amp_bands_hz[:, 1]
             ) / 2
         else:
-            self.amp_bands_hz, self.amp_center_freqs = (
-                self._generate_bands_strict(
-                    amp_range_hz[0],
-                    amp_range_hz[1],
-                    amp_n_bands,
-                    "amplitude",
-                )
+            self.amp_bands_hz, self.amp_center_freqs = self._generate_bands_strict(
+                amp_range_hz[0],
+                amp_range_hz[1],
+                amp_n_bands,
+                "amplitude",
             )
             self.amp_n_bands = amp_n_bands
 
@@ -215,9 +210,7 @@ class StaticBandPassFilter(nn.Module):
             Center frequencies of each band
         """
         if self.spacing == "log":
-            center_freqs = np.logspace(
-                np.log10(f_min), np.log10(f_max), n_filters
-            )
+            center_freqs = np.logspace(np.log10(f_min), np.log10(f_max), n_filters)
         else:
             center_freqs = np.linspace(f_min, f_max, n_filters)
 
@@ -459,5 +452,6 @@ class StaticBandPassFilter(nn.Module):
             "filter_length": self.filter_kernels.shape[-1],
             "spacing": self.spacing,
         }
+
 
 # EOF

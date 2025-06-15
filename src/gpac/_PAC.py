@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/_PAC.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/_PAC.py"
-)
+
+__FILE__ = "./src/gpac/_PAC.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -119,9 +118,7 @@ class PAC(nn.Module):
             try:
                 torch_version = torch.__version__.split(".")
                 if int(torch_version[0]) >= 2:
-                    self.bandpass = torch.compile(
-                        self.bandpass, mode="default"
-                    )
+                    self.bandpass = torch.compile(self.bandpass, mode="default")
                     self.hilbert = torch.compile(self.hilbert, mode="default")
                     self.compiled = True
                     # print("PAC compiled with default mode")
@@ -182,9 +179,7 @@ class PAC(nn.Module):
             n_pha = filter_info["pha_n_bands"]
             n_amp = filter_info["amp_n_bands"]
 
-        x_filtered = x_filtered.reshape(
-            batch_size, n_channels, segments, -1, seq_len
-        )
+        x_filtered = x_filtered.reshape(batch_size, n_channels, segments, -1, seq_len)
         pha_filtered = x_filtered[:, :, :, :n_pha, :]
         amp_filtered = x_filtered[:, :, :, n_pha:, :]
 
@@ -226,9 +221,7 @@ class PAC(nn.Module):
             surrogate_mean = (
                 surrogate_mean.float() if surrogate_mean is not None else None
             )
-            surrogate_std = (
-                surrogate_std.float() if surrogate_std is not None else None
-            )
+            surrogate_std = surrogate_std.float() if surrogate_std is not None else None
             amplitude_distributions = (
                 amplitude_distributions.float()
                 if amplitude_distributions is not None
@@ -244,15 +237,11 @@ class PAC(nn.Module):
                 amplitude_distributions if compute_distributions else None
             ),
             "phase_bin_centers": (
-                self.mi_calculator.phase_bin_centers
-                if compute_distributions
-                else None
+                self.mi_calculator.phase_bin_centers if compute_distributions else None
             ),
         }
 
-    def _compute_mi_vectorized(
-        self, phase, amplitude, compute_distributions=False
-    ):
+    def _compute_mi_vectorized(self, phase, amplitude, compute_distributions=False):
         """Compute MI using the extracted ModulationIndex class."""
         batch, channels, segments, n_pha, time = phase.shape
         _, _, _, n_amp, _ = amplitude.shape
@@ -303,13 +292,9 @@ class PAC(nn.Module):
                     6,
                 ]:  # amplitude_distributions has 6 dims
                     # Remove segment dimension if it's 1
-                    squeezed[key] = (
-                        value.squeeze(2) if value.shape[2] == 1 else value
-                    )
+                    squeezed[key] = value.squeeze(2) if value.shape[2] == 1 else value
                 elif value.dim() >= 3:
-                    squeezed[key] = (
-                        value.squeeze(2) if value.shape[2] == 1 else value
-                    )
+                    squeezed[key] = value.squeeze(2) if value.shape[2] == 1 else value
                 else:
                     squeezed[key] = value
             else:
@@ -318,9 +303,7 @@ class PAC(nn.Module):
 
     def get_selected_frequencies(self):
         """Get currently selected frequencies for trainable filters."""
-        if self.trainable and hasattr(
-            self.bandpass.filter, "get_selected_frequencies"
-        ):
+        if self.trainable and hasattr(self.bandpass.filter, "get_selected_frequencies"):
             return self.bandpass.filter.get_selected_frequencies()
         else:
             return None, None
@@ -359,8 +342,7 @@ class PAC(nn.Module):
                 device_id: {
                     "name": props.name,
                     "total_gb": total_vram,
-                    "allocated_gb": torch.cuda.memory_allocated(device_id)
-                    / (1024**3),
+                    "allocated_gb": torch.cuda.memory_allocated(device_id) / (1024**3),
                     "free_gb": total_vram
                     - torch.cuda.memory_allocated(device_id) / (1024**3),
                 }
@@ -373,9 +355,8 @@ class PAC(nn.Module):
             "fp16_enabled": self.fp16,
             "compiled": self.compiled,
             "trainable": self.trainable,
-            "strategy": (
-                "ultra_aggressive" if total_vram >= 60 else "aggressive"
-            ),
+            "strategy": ("ultra_aggressive" if total_vram >= 60 else "aggressive"),
         }
+
 
 # EOF

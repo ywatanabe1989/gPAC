@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_Hilbert.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/core/_Hilbert.py"
-)
+
+__FILE__ = "./src/gpac/core/_Hilbert.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -46,9 +45,7 @@ class Hilbert(nn.Module):
         Not used in new implementation (for compatibility)
     """
 
-    def __init__(
-        self, seq_len, dim=-1, fp16=False, in_place=False, steepness=50
-    ):
+    def __init__(self, seq_len, dim=-1, fp16=False, in_place=False, steepness=50):
         super().__init__()
         self.seq_len = seq_len
         self.dim = dim
@@ -114,9 +111,7 @@ class Hilbert(nn.Module):
         h = torch.ones(n_freq, dtype=torch.float32, device=x.device)
         if N % 2 == 0:
             # Even length: [DC, pos_freqs, Nyquist]
-            h[1:-1] = (
-                2.0  # Double positive frequencies, keep DC and Nyquist as 1
-            )
+            h[1:-1] = 2.0  # Double positive frequencies, keep DC and Nyquist as 1
         else:
             # Odd length: [DC, pos_freqs] (no Nyquist)
             h[1:] = 2.0  # Double all positive frequencies
@@ -180,5 +175,6 @@ class Hilbert(nn.Module):
         phase = torch.angle(analytic)
         amplitude = torch.abs(analytic)
         return phase, amplitude
+
 
 # EOF

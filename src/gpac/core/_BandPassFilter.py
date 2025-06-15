@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_BandPassFilter.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/core/_BandPassFilter.py"
-)
+
+__FILE__ = "./src/gpac/core/_BandPassFilter.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -95,9 +94,7 @@ class BandPassFilter(nn.Module):
         super().__init__()
         # Validate sampling frequency
         if fs <= 0:
-            raise ValueError(
-                f"Sampling frequency must be positive, got fs={fs}"
-            )
+            raise ValueError(f"Sampling frequency must be positive, got fs={fs}")
         self.fs = fs
         self.trainable = trainable
         self.spacing = spacing
@@ -126,12 +123,8 @@ class BandPassFilter(nn.Module):
         # Store parameters for compatibility
         self.pha_range_hz = pha_range_hz
         self.amp_range_hz = amp_range_hz
-        self.pha_n_bands = (
-            pha_n_bands if pha_bands_hz is None else len(pha_bands_hz)
-        )
-        self.amp_n_bands = (
-            amp_n_bands if amp_bands_hz is None else len(amp_bands_hz)
-        )
+        self.pha_n_bands = pha_n_bands if pha_bands_hz is None else len(pha_bands_hz)
+        self.amp_n_bands = amp_n_bands if amp_bands_hz is None else len(amp_bands_hz)
         self.pha_n_pool_ratio = pha_n_pool_ratio
         self.amp_n_pool_ratio = amp_n_pool_ratio
 
@@ -267,5 +260,6 @@ class BandPassFilter(nn.Module):
     def amp_bands_hz(self):
         """Amplitude frequency bands."""
         return self.filter.amp_bands_hz
+
 
 # EOF

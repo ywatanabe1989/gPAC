@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_ModulationIndex.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/core/_ModulationIndex.py"
-)
+
+__FILE__ = "./src/gpac/core/_ModulationIndex.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -45,9 +44,7 @@ class ModulationIndex(nn.Module):
         if n_bins <= 0:
             raise ValueError(f"n_bins must be positive, got {n_bins}")
         if temperature <= 0:
-            raise ValueError(
-                f"temperature must be positive, got {temperature}"
-            )
+            raise ValueError(f"temperature must be positive, got {temperature}")
 
         self.n_bins = n_bins
         self.epsilon = 1e-5 if fp16 else 1e-10
@@ -144,12 +141,10 @@ class ModulationIndex(nn.Module):
             batch * channels, freqs_amplitude, segments, time
         )
 
-        mi_per_seg_vectorized, amp_dist_vectorized = (
-            self._compute_mi_vectorized(
-                weights_vectorized,
-                amp_vectorized,
-                compute_distributions,
-            )
+        mi_per_seg_vectorized, amp_dist_vectorized = self._compute_mi_vectorized(
+            weights_vectorized,
+            amp_vectorized,
+            compute_distributions,
         )
 
         mi_per_segment_tensor = mi_per_seg_vectorized.view(
@@ -173,9 +168,7 @@ class ModulationIndex(nn.Module):
             "phase_bin_centers": self.phase_bin_centers.to(
                 mi_per_segment_tensor.device
             ),
-            "phase_bin_edges": self.phase_bins.to(
-                mi_per_segment_tensor.device
-            ),
+            "phase_bin_edges": self.phase_bins.to(mi_per_segment_tensor.device),
         }
 
     def _validate_shapes(self, phase_shape, amplitude_shape):
@@ -311,22 +304,16 @@ class ModulationIndex(nn.Module):
                     )
 
             amp_sum_per_seg = amp_dist_per_seg.sum(dim=-1, keepdim=True)
-            amp_dist_per_seg_norm = amp_dist_per_seg / (
-                amp_sum_per_seg + self.epsilon
-            )
-            amp_dist_per_seg_norm = torch.clamp(
-                amp_dist_per_seg_norm, min=self.epsilon
-            )
+            amp_dist_per_seg_norm = amp_dist_per_seg / (amp_sum_per_seg + self.epsilon)
+            amp_dist_per_seg_norm = torch.clamp(amp_dist_per_seg_norm, min=self.epsilon)
 
             log_p_per_seg = torch.log(amp_dist_per_seg_norm)
-            neg_entropy_per_seg = (amp_dist_per_seg_norm * log_p_per_seg).sum(
-                dim=-1
-            )
+            neg_entropy_per_seg = (amp_dist_per_seg_norm * log_p_per_seg).sum(dim=-1)
             mi_per_seg_vals = 1 + neg_entropy_per_seg / self.uniform_entropy
 
             # Correct assignment: [batch_channels, segments, freqs_phase, freqs_amplitude]
-            mi_per_segment[:, :, :, amp_start:amp_end] = (
-                mi_per_seg_vals.permute(0, 3, 1, 2)
+            mi_per_segment[:, :, :, amp_start:amp_end] = mi_per_seg_vals.permute(
+                0, 3, 1, 2
             )
 
             if compute_distributions:
@@ -348,10 +335,10 @@ class ModulationIndex(nn.Module):
     ) -> Dict[str, torch.Tensor]:
         """
         Compute surrogate statistics for significance testing using block-swapping.
-        
+
         This method swaps time blocks of the amplitude signal to break the
         phase-amplitude coupling while preserving the temporal structure.
-        
+
         Parameters
         ----------
         phase : torch.Tensor
@@ -410,17 +397,18 @@ class ModulationIndex(nn.Module):
 
             # Generate random cut points for block swapping
             # Cut point should be between 1 and time-1 to ensure both blocks have data
-            cut_points = torch.randint(
-                1, time, (current_chunk,), device=phase.device
-            )
+            cut_points = torch.randint(1, time, (current_chunk,), device=phase.device)
 
             for perm_idx, cut_point in enumerate(cut_points):
                 # Swap amplitude time blocks: [0:cut_point] and [cut_point:time]
-                amplitude_swapped = torch.cat([
-                    amplitude[..., cut_point:],  # Second block first
-                    amplitude[..., :cut_point]   # First block second
-                ], dim=-1)
-                
+                amplitude_swapped = torch.cat(
+                    [
+                        amplitude[..., cut_point:],  # Second block first
+                        amplitude[..., :cut_point],  # First block second
+                    ],
+                    dim=-1,
+                )
+
                 # Compute MI with original phase and swapped amplitude
                 mi_result = self.forward(
                     phase,
@@ -457,5 +445,6 @@ class ModulationIndex(nn.Module):
             "pac_z": pac_z,
             "surrogates": surrogates,
         }
+
 
 # EOF

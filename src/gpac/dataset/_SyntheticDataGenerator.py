@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/dataset/_SyntheticDataGenerator.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/dataset/_SyntheticDataGenerator.py"
-)
+
+__FILE__ = "./src/gpac/dataset/_SyntheticDataGenerator.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -543,9 +542,7 @@ class SyntheticDataGenerator:
 
         for phase_freq, amp_freq, coupling in pac_pairs:
             phase_signal = np.sin(2 * np.pi * phase_freq * t)
-            modulation = 0.5 + 0.5 * coupling * np.sin(
-                2 * np.pi * phase_freq * t
-            )
+            modulation = 0.5 + 0.5 * coupling * np.sin(2 * np.pi * phase_freq * t)
             amp_signal = modulation * np.sin(2 * np.pi * amp_freq * t)
             signal += phase_signal + amp_signal
 
@@ -660,15 +657,11 @@ class SyntheticDataGenerator:
             metadata_tensors = {}
             for key, value in metadata.items():
                 if isinstance(value[0], (int, float, np.number)):
-                    metadata_tensors[key] = torch.tensor(
-                        value, dtype=torch.float32
-                    )
+                    metadata_tensors[key] = torch.tensor(value, dtype=torch.float32)
                 else:
                     metadata_tensors[key] = value
 
-        return SyntheticPACDataset(
-            signals_tensor, labels_tensor, metadata_tensors
-        )
+        return SyntheticPACDataset(signals_tensor, labels_tensor, metadata_tensors)
 
     @property
     def info(self) -> Dict:
@@ -691,5 +684,6 @@ class SyntheticDataGenerator:
                 "noise": [0.05, 0.2],
             },
         }
+
 
 # EOF

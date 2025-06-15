@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/dataset/_generate_pac_dataset.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/dataset/_generate_pac_dataset.py"
-)
+
+__FILE__ = "./src/gpac/dataset/_generate_pac_dataset.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -115,9 +114,7 @@ def generate_pac_dataset(
         for ii in range(remainder):
             class_counts[ii] += 1
     else:
-        class_counts = np.random.multinomial(
-            n_samples, [1 / n_classes] * n_classes
-        )
+        class_counts = np.random.multinomial(n_samples, [1 / n_classes] * n_classes)
 
     for class_idx, class_name in enumerate(class_names):
         config = pac_config[class_name]
@@ -158,9 +155,7 @@ def generate_pac_dataset(
                             amp_hz = np.random.choice(amp_hz_options)
                             strength = np.random.choice(strength_options)
 
-                            pac_component = gen.pac(
-                                pha_hz, amp_hz, strength, 0
-                            )
+                            pac_component = gen.pac(pha_hz, amp_hz, strength, 0)
                             signal += pac_component
 
                             pac_info.append(
@@ -172,9 +167,7 @@ def generate_pac_dataset(
                             )
 
                         if noise_level > 0:
-                            noise = np.random.normal(
-                                0, noise_level, gen.n_samples
-                            )
+                            noise = np.random.normal(0, noise_level, gen.n_samples)
                             signal += noise
 
                     channel_signals.append(signal)
@@ -362,5 +355,6 @@ def generate_pac_batch(
             )
 
     return signals, labels, metadata_batch
+
 
 # EOF
