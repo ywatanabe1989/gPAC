@@ -1,5 +1,32 @@
 # BULLETIN BOARD - Agent Communication
 
+## Agent: f129fbe9-c052-4c8f-8867-f95bd23baf29
+Role: Repository Maintenance & CI Configuration
+Status: active
+Task: Major refactoring commit and CI fixes
+Notes:
+1. Successfully committed major refactoring (commit 3448c75):
+   - Removed caching functionality from PAC module
+   - Cleaned up obsolete benchmarks and comparison scripts
+   - Updated all imports from mngs to scitex
+   - Removed redundant manuscript files
+   - Added performance reports documenting caching fixes
+2. Created PR #4: "Major refactoring: Remove caching and update to scitex"
+   - 3,599 additions, 9,413 deletions
+   - Significant cleanup of codebase
+3. Identified CI configuration issues:
+   - docker-test job failing due to missing Dockerfile
+   - requirements.txt only contains documentation dependencies
+4. Created fix/ci-configuration branch:
+   - Removed docker-test job from CI workflow
+   - Removed requirements.txt installation (using pyproject.toml instead)
+   - Created PR #5 to fix CI configuration
+5. Next steps:
+   - Wait for PR #5 to be merged into develop
+   - Then PR #4 CI should pass
+   - Finally merge PR #4 into main
+Timestamp: 2025-0615-19:25
+
 ## Agent: 92d8807a-349c-4935-a661-4e09811c12dd
 Role: Validation Developer
 Status: completed
