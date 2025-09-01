@@ -332,6 +332,7 @@ class ModulationIndex(nn.Module):
         chunk_size: int = 20,
         pac_values: torch.Tensor = None,
         return_surrogates: bool = False,
+        generator: torch.Generator = None,
     ) -> Dict[str, torch.Tensor]:
         """
         Compute surrogate statistics for significance testing using block-swapping.
@@ -353,6 +354,8 @@ class ModulationIndex(nn.Module):
             Original PAC values for z-score computation
         return_surrogates : bool
             If True, return all surrogate values (memory intensive)
+        generator : torch.Generator, optional
+            Random number generator for reproducible permutations
         Returns
         -------
         dict
@@ -397,7 +400,10 @@ class ModulationIndex(nn.Module):
 
             # Generate random cut points for block swapping
             # Cut point should be between 1 and time-1 to ensure both blocks have data
-            cut_points = torch.randint(1, time, (current_chunk,), device=phase.device)
+            if generator is not None:
+                cut_points = torch.randint(1, time, (current_chunk,), device=phase.device, generator=generator)
+            else:
+                cut_points = torch.randint(1, time, (current_chunk,), device=phase.device)
 
             for perm_idx, cut_point in enumerate(cut_points):
                 # Swap amplitude time blocks: [0:cut_point] and [cut_point:time]

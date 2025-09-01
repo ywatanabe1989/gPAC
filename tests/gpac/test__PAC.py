@@ -15,6 +15,7 @@ import time
 
 import pytest
 import torch
+import numpy as np
 from gpac import PAC
 
 
@@ -816,6 +817,326 @@ def run_speed_benchmark():
     print(f"Coupling strength: {coupling_strength:.3f}")
 
     return results, compute_time
+
+
+# Random Seed Functionality Tests
+@torch.no_grad()
+def test_random_seed_reproducibility():
+    """Test that same random seed produces identical results."""
+    fs = 1000.0
+    seq_len = 1000
+    batch_size = 2
+    n_channels = 4
+    n_perm = 50
+    
+    # Create test data
+    torch.manual_seed(123)
+    x = torch.randn(batch_size, n_channels, seq_len)
+    
+    # Create two PAC instances with same random seed
+    pac1 = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=n_perm,
+        random_seed=42,
+    )
+    
+    pac2 = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=n_perm,
+        random_seed=42,
+    )
+    
+    if torch.cuda.is_available():
+        x = x.cuda()
+        pac1 = pac1.cuda()
+        pac2 = pac2.cuda()
+    
+    # Compute PAC values
+    results1 = pac1(x)
+    results2 = pac2(x)
+    
+    # Results should be identical
+    assert torch.allclose(results1["pac"], results2["pac"], atol=1e-6)
+    assert torch.allclose(results1["pac_z"], results2["pac_z"], atol=1e-6)
+    
+    print("✅ Same random seed produces identical results")
+
+
+@torch.no_grad()
+def test_random_seed_different_results():
+    """Test that different random seeds produce different results."""
+    fs = 1000.0
+    seq_len = 1000
+    batch_size = 2
+    n_channels = 4
+    n_perm = 50
+    
+    # Create test data
+    torch.manual_seed(123)
+    x = torch.randn(batch_size, n_channels, seq_len)
+    
+    # Create two PAC instances with different random seeds
+    pac1 = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=n_perm,
+        random_seed=42,
+    )
+    
+    pac2 = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=n_perm,
+        random_seed=999,
+    )
+    
+    if torch.cuda.is_available():
+        x = x.cuda()
+        pac1 = pac1.cuda()
+        pac2 = pac2.cuda()
+    
+    # Compute PAC values
+    results1 = pac1(x)
+    results2 = pac2(x)
+    
+    # Raw PAC values should be identical (no randomness in MI calculation)
+    assert torch.allclose(results1["pac"], results2["pac"], atol=1e-6)
+    
+    # Z-scores should be different (randomness in surrogate generation)
+    assert not torch.allclose(results1["pac_z"], results2["pac_z"], atol=1e-3)
+    
+    print("✅ Different random seeds produce different z-scores")
+
+
+@torch.no_grad()
+def test_random_seed_default_value():
+    """Test that default random seed is 42."""
+    fs = 1000.0
+    seq_len = 1000
+    
+    pac = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=10,
+    )
+    
+    assert pac.random_seed == 42
+    assert pac.generator is not None
+    
+    print("✅ Default random seed is 42")
+
+
+@torch.no_grad()
+def test_random_seed_none_non_deterministic():
+    """Test that random_seed=None enables non-deterministic behavior."""
+    fs = 1000.0
+    seq_len = 1000
+    batch_size = 2
+    n_channels = 4
+    n_perm = 50
+    
+    # Create test data
+    torch.manual_seed(123)
+    x = torch.randn(batch_size, n_channels, seq_len)
+    
+    # Create two PAC instances with random_seed=None
+    pac1 = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=n_perm,
+        random_seed=None,
+    )
+    
+    pac2 = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=3,
+        amp_n_bands=3,
+        n_perm=n_perm,
+        random_seed=None,
+    )
+    
+    if torch.cuda.is_available():
+        x = x.cuda()
+        pac1 = pac1.cuda()
+        pac2 = pac2.cuda()
+    
+    # Check that generator is None
+    assert pac1.random_seed is None
+    assert pac1.generator is None
+    assert pac2.random_seed is None
+    assert pac2.generator is None
+    
+    # Compute PAC values multiple times
+    results1a = pac1(x)
+    results1b = pac1(x)
+    
+    # Raw PAC should be identical
+    assert torch.allclose(results1a["pac"], results1b["pac"], atol=1e-6)
+    
+    # Z-scores should be different (non-deterministic surrogates)
+    assert not torch.allclose(results1a["pac_z"], results1b["pac_z"], atol=1e-3)
+    
+    print("✅ random_seed=None enables non-deterministic behavior")
+
+
+@torch.no_grad()
+def test_random_seed_parameter_validation():
+    """Test random_seed parameter validation."""
+    fs = 1000.0
+    seq_len = 1000
+    
+    # Valid integer seed should work
+    pac_valid = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        random_seed=123,
+    )
+    assert pac_valid.random_seed == 123
+    
+    # None should work
+    pac_none = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        random_seed=None,
+    )
+    assert pac_none.random_seed is None
+    
+    # Invalid type should raise error
+    with pytest.raises(ValueError, match="random_seed must be an integer or None"):
+        PAC(
+            seq_len=seq_len,
+            fs=fs,
+            random_seed="invalid",
+        )
+    
+    with pytest.raises(ValueError, match="random_seed must be an integer or None"):
+        PAC(
+            seq_len=seq_len,
+            fs=fs,
+            random_seed=42.5,
+        )
+    
+    print("✅ Random seed parameter validation works correctly")
+
+
+@torch.no_grad()
+def test_backward_compatibility_z_scores():
+    """Test backward compatibility by comparing seeded vs unseeded z-scores."""
+    fs = 1000.0
+    seq_len = 2000  # Realistic signal length
+    batch_size = 4
+    n_channels = 8
+    n_perm = 200  # Production setting
+    
+    # Create test signal with realistic PAC
+    torch.manual_seed(456)
+    x = torch.randn(batch_size, n_channels, seq_len)
+    
+    # Add realistic phase-amplitude coupling with multiple strengths
+    time_vec = torch.linspace(0, seq_len / fs, seq_len)
+    coupling_strengths = [0.3, 0.5, 0.7, 0.9]
+    
+    for ch_idx in range(n_channels):
+        coupling_strength = coupling_strengths[ch_idx % len(coupling_strengths)]
+        
+        # Theta-gamma coupling
+        theta_phase = 2 * torch.pi * 8 * time_vec
+        gamma_freq = 80
+        gamma_amp = 1 + coupling_strength * torch.cos(theta_phase)
+        gamma_signal = gamma_amp * torch.sin(2 * torch.pi * gamma_freq * time_vec)
+        
+        x[:, ch_idx] += 0.3 * torch.sin(theta_phase) + 0.2 * gamma_signal
+    
+    # Create seeded PAC instance
+    pac_seeded = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=5,
+        amp_n_bands=5,
+        n_perm=n_perm,
+        random_seed=42,
+        surrogate_chunk_size=20,
+        fp16=True,
+        compile_mode=False,
+    )
+    
+    # Create unseeded PAC instance
+    pac_unseeded = PAC(
+        seq_len=seq_len,
+        fs=fs,
+        pha_range_hz=(4, 12),
+        amp_range_hz=(60, 100),
+        pha_n_bands=5,
+        amp_n_bands=5,
+        n_perm=n_perm,
+        random_seed=None,
+        surrogate_chunk_size=20,
+        fp16=True,
+        compile_mode=False,
+    )
+    
+    if torch.cuda.is_available():
+        x = x.cuda()
+        pac_seeded = pac_seeded.cuda()
+        pac_unseeded = pac_unseeded.cuda()
+    
+    # Compute results
+    results_seeded = pac_seeded(x)
+    results_unseeded = pac_unseeded(x)
+    
+    # Extract z-scores
+    z_seeded = results_seeded["pac_z"].cpu().numpy().flatten()
+    z_unseeded = results_unseeded["pac_z"].cpu().numpy().flatten()
+    
+    # Compute correlation
+    correlation = np.corrcoef(z_seeded, z_unseeded)[0, 1]
+    
+    # Compute mean difference
+    mean_diff = np.mean(np.abs(z_seeded - z_unseeded))
+    
+    print(f"\nBackward Compatibility Assessment:")
+    print(f"Z-score correlation: {correlation:.4f}")
+    print(f"Mean absolute z-score difference: {mean_diff:.4f}")
+    
+    # Validation criteria from the document
+    assert correlation > 0.8, f"Z-score correlation {correlation:.4f} below acceptable threshold 0.8"
+    assert mean_diff < 0.5, f"Mean z-score difference {mean_diff:.4f} above acceptable threshold 0.5"
+    
+    # Raw PAC values should be identical
+    assert torch.allclose(results_seeded["pac"], results_unseeded["pac"], atol=1e-6)
+    
+    print(f"✅ Excellent backward compatibility (r={correlation:.4f}, mean_diff={mean_diff:.4f})")
 
 
 if __name__ == "__main__":

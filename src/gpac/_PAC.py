@@ -54,12 +54,15 @@ class PAC(nn.Module):
         amp_n_pool_ratio: Optional[float] = None,
         temperature: float = 1.0,
         hard_selection: bool = False,
+        random_seed: Optional[int] = 42,
     ):
         # Parameter Validation
         if seq_len <= 0:
             raise ValueError(f"seq_len must be positive, got {seq_len}")
         if fs <= 0:
             raise ValueError(f"fs must be positive, got {fs}")
+        if random_seed is not None and not isinstance(random_seed, int):
+            raise ValueError(f"random_seed must be an integer or None, got {type(random_seed)}")
         # if pha_start_hz >= pha_end_hz:
         #     raise ValueError(f"pha_start_hz must be < pha_end_hz")
 
@@ -73,6 +76,14 @@ class PAC(nn.Module):
         self.fp16 = fp16
         self.surrogate_chunk_size = surrogate_chunk_size
         self.trainable = trainable
+        self.random_seed = random_seed
+        
+        # Initialize random generator for reproducible permutations
+        if self.random_seed is not None:
+            self.generator = torch.Generator()
+            self.generator.manual_seed(self.random_seed)
+        else:
+            self.generator = None
 
         # Devices
         if device_ids == "all" and torch.cuda.is_available():
@@ -266,6 +277,12 @@ class PAC(nn.Module):
         phase_reshaped = phase.permute(0, 1, 3, 2, 4)
         amplitude_reshaped = amplitude.permute(0, 1, 3, 2, 4)
 
+        # Move generator to correct device if needed
+        generator_to_use = self.generator
+        if generator_to_use is not None and phase_reshaped.device.type == 'cuda':
+            generator_to_use = torch.Generator(device=phase_reshaped.device)
+            generator_to_use.manual_seed(self.random_seed)
+        
         surrogate_result = self.mi_calculator.compute_surrogates(
             phase_reshaped,
             amplitude_reshaped,
@@ -273,6 +290,7 @@ class PAC(nn.Module):
             chunk_size=self.surrogate_chunk_size,
             pac_values=pac_values,
             return_surrogates=False,
+            generator=generator_to_use,
         )
 
         return surrogate_result
