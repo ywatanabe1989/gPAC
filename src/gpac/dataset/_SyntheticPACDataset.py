@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/dataset/_SyntheticPACDataset.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/dataset/_SyntheticPACDataset.py"
-)
+
+__FILE__ = "./src/gpac/dataset/_SyntheticPACDataset.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -36,5 +35,6 @@ class SyntheticPACDataset(Dataset):
             meta = {k: v[idx] for k, v in self.metadata.items()}
             return signal, label, meta
         return signal, label
+
 
 # EOF

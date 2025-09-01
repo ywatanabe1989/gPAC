@@ -19,7 +19,7 @@ Dependencies:
     - torch
     - numpy
     - matplotlib
-    - mngs
+    - stx
     
 IO:
   - input-files:
@@ -80,19 +80,19 @@ def analyze_pac_with_gpac(signal, fs, device='cpu'):
 
 def main(args):
     """Run SyntheticDataGenerator demonstration."""
-    import mngs
+    import scitex as stx
     from gpac import generate_pac_signal, SyntheticDataGenerator
     
-    mngs.str.printc("🚀 SyntheticDataGenerator Demonstration", c="green")
-    mngs.str.printc("=" * 60, c="green")
+    stx.str.printc("🚀 SyntheticDataGenerator Demonstration", c="green")
+    stx.str.printc("=" * 60, c="green")
     
     # Device setup
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    mngs.str.printc(f"Using device: {device}", c="cyan")
+    stx.str.printc(f"Using device: {device}", c="cyan")
     
     # Part 1: Simple signal generation with generate_pac_signal
-    mngs.str.printc("\n🎯 Part 1: Simple PAC signal generation", c="yellow")
-    mngs.str.printc("=" * 60, c="yellow")
+    stx.str.printc("\n🎯 Part 1: Simple PAC signal generation", c="yellow")
+    stx.str.printc("=" * 60, c="yellow")
     
     # Generate a simple PAC signal
     fs = 256
@@ -100,7 +100,7 @@ def main(args):
     phase_freq = 6  # Theta
     amp_freq = 80  # Gamma
     
-    mngs.str.printc(f"\nGenerating signal: θ={phase_freq} Hz → γ={amp_freq} Hz", c="cyan")
+    stx.str.printc(f"\nGenerating signal: θ={phase_freq} Hz → γ={amp_freq} Hz", c="cyan")
     signal = generate_pac_signal(
         duration=duration,
         fs=fs,
@@ -110,11 +110,11 @@ def main(args):
         noise_level=0.1,
     )
     
-    mngs.str.printc(f"Signal shape: {signal.shape}", c="cyan")
-    mngs.str.printc(f"Signal stats: mean={signal.mean():.4f}, std={signal.std():.4f}", c="cyan")
+    stx.str.printc(f"Signal shape: {signal.shape}", c="cyan")
+    stx.str.printc(f"Signal stats: mean={signal.mean():.4f}, std={signal.std():.4f}", c="cyan")
     
     # Analyze PAC in generated signal
-    mngs.str.printc("\n🔍 Analyzing PAC in generated signal...", c="blue")
+    stx.str.printc("\n🔍 Analyzing PAC in generated signal...", c="blue")
     pac_results = analyze_pac_with_gpac(signal, fs, device)
     
     pac_matrix = pac_results['pac'][0, 0].cpu().numpy()
@@ -122,12 +122,12 @@ def main(args):
     pha_freqs = pac_results['phase_frequencies'].numpy()
     amp_freqs = pac_results['amplitude_frequencies'].numpy()
     
-    mngs.str.printc(f"Peak PAC at: θ={pha_freqs[max_idx[0]]:.1f} Hz, γ={amp_freqs[max_idx[1]]:.1f} Hz", c="cyan")
-    mngs.str.printc(f"Expected at: θ={phase_freq} Hz, γ={amp_freq} Hz", c="yellow")
+    stx.str.printc(f"Peak PAC at: θ={pha_freqs[max_idx[0]]:.1f} Hz, γ={amp_freqs[max_idx[1]]:.1f} Hz", c="cyan")
+    stx.str.printc(f"Expected at: θ={phase_freq} Hz, γ={amp_freq} Hz", c="yellow")
     
     # Part 2: Full SyntheticDataGenerator for ML datasets
-    mngs.str.printc("\n🎯 Part 2: SyntheticDataGenerator for ML", c="yellow")
-    mngs.str.printc("=" * 60, c="yellow")
+    stx.str.printc("\n🎯 Part 2: SyntheticDataGenerator for ML", c="yellow")
+    stx.str.printc("=" * 60, c="yellow")
     
     # Initialize generator
     generator = SyntheticDataGenerator(
@@ -137,9 +137,9 @@ def main(args):
     )
     
     # Show class definitions
-    mngs.str.printc("\n📋 PAC Class Definitions:", c="cyan")
+    stx.str.printc("\n📋 PAC Class Definitions:", c="cyan")
     for class_id, class_info in generator.class_definitions.items():
-        mngs.str.printc(
+        stx.str.printc(
             f"  Class {class_id} ({class_info['name']}): "
             f"θ={class_info['pha_range']} Hz, γ={class_info['amp_range']} Hz, "
             f"strength={class_info['coupling_strength']:.2f}",
@@ -147,13 +147,13 @@ def main(args):
         )
     
     # Generate and split dataset
-    mngs.str.printc("\n🔄 Generating datasets...", c="blue")
+    stx.str.printc("\n🔄 Generating datasets...", c="blue")
     datasets = generator.generate_and_split(train_ratio=0.7, val_ratio=0.2)
     
-    mngs.str.printc(f"\n📊 Dataset sizes:", c="green")
-    mngs.str.printc(f"  Train: {len(datasets['train'])} samples", c="cyan")
-    mngs.str.printc(f"  Val: {len(datasets['val'])} samples", c="cyan") 
-    mngs.str.printc(f"  Test: {len(datasets['test'])} samples", c="cyan")
+    stx.str.printc(f"\n📊 Dataset sizes:", c="green")
+    stx.str.printc(f"  Train: {len(datasets['train'])} samples", c="cyan")
+    stx.str.printc(f"  Val: {len(datasets['val'])} samples", c="cyan") 
+    stx.str.printc(f"  Test: {len(datasets['test'])} samples", c="cyan")
     
     # Create DataLoader example
     train_loader = DataLoader(
@@ -165,12 +165,12 @@ def main(args):
     
     # Get a batch
     batch_signals, batch_labels, batch_metadata = next(iter(train_loader))
-    mngs.str.printc(f"\n📦 Batch shapes:", c="green")
-    mngs.str.printc(f"  Signals: {batch_signals.shape}", c="cyan")
-    mngs.str.printc(f"  Labels: {batch_labels.shape}", c="cyan")
+    stx.str.printc(f"\n📦 Batch shapes:", c="green")
+    stx.str.printc(f"  Signals: {batch_signals.shape}", c="cyan")
+    stx.str.printc(f"  Labels: {batch_labels.shape}", c="cyan")
     
     # Create visualization
-    mngs.str.printc("\n📊 Creating visualization...", c="cyan")
+    stx.str.printc("\n📊 Creating visualization...", c="cyan")
     import matplotlib.pyplot as plt
     fig, axes = plt.subplots(3, 3, figsize=(15, 12))
     
@@ -279,7 +279,7 @@ def main(args):
     
     # Save figure
     spath = "synthetic_pac_demo.gif"
-    mngs.io.save(fig, spath, symlink_from_cwd=True)
+    stx.io.save(fig, spath, symlink_from_cwd=True)
     
     # Save dataset statistics
     stats = {
@@ -293,7 +293,7 @@ def main(args):
         'n_segments': generator.params['n_segments'],
         'class_definitions': generator.class_definitions
     }
-    mngs.io.save(
+    stx.io.save(
         stats, 
         "dataset_statistics.csv",
         symlink_from_cwd=True
@@ -304,38 +304,38 @@ def main(args):
         datasets,
         "synthetic_datasets.pt"
     )
-    mngs.str.printc(f"\n💾 Saved datasets to synthetic_datasets.pt", c="green")
+    stx.str.printc(f"\n💾 Saved datasets to synthetic_datasets.pt", c="green")
     
-    mngs.str.printc("\n✅ SyntheticDataGenerator demo completed!", c="green")
-    mngs.str.printc(f"💾 Results saved to: {spath}", c="green")
+    stx.str.printc("\n✅ SyntheticDataGenerator demo completed!", c="green")
+    stx.str.printc(f"💾 Results saved to: {spath}", c="green")
     
     return 0
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex as stx
     
-    script_mode = mngs.gen.is_script()
+    script_mode = stx.gen.is_script()
     parser = argparse.ArgumentParser(description="SyntheticDataGenerator demonstration")
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    stx.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize stx framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
     
     import sys
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex as stx
     
     args = parse_args()
     
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = stx.gen.start(
         sys,
         plt,
         args=args,
@@ -347,7 +347,7 @@ def run_main() -> None:
     
     exit_status = main(args)
     
-    mngs.gen.close(
+    stx.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

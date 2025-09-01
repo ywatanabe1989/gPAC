@@ -19,7 +19,7 @@ Dependencies:
     - torch
     - numpy
     - matplotlib
-    - mngs
+    - stx
     
 IO:
   - input-files:
@@ -82,21 +82,21 @@ def generate_test_signals(batch_size, n_channels, n_segments, seq_len, device):
 
 def main(args):
     """Demonstrate profiler usage with PAC computation."""
-    import mngs
+    import scitex as stx
     from gpac import PAC, generate_pac_signal
     from gpac._Profiler import create_profiler
     
-    mngs.str.printc("🚀 gPAC Profiler Demonstration", c="green")
-    mngs.str.printc("="*60, c="green")
+    stx.str.printc("🚀 gPAC Profiler Demonstration", c="green")
+    stx.str.printc("="*60, c="green")
     
     # Create profiler
     profiler = create_profiler(enable_gpu=True)
     
     # Check device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    mngs.str.printc(f"📍 Using device: {device}", c="cyan")
+    stx.str.printc(f"📍 Using device: {device}", c="cyan")
     if device == 'cuda':
-        mngs.str.printc(f"GPU: {torch.cuda.get_device_name()}", c="cyan")
+        stx.str.printc(f"GPU: {torch.cuda.get_device_name()}", c="cyan")
     
     # Parameters
     batch_size = 10
@@ -106,16 +106,16 @@ def main(args):
     fs = 512.0
     
     # Profile data generation
-    mngs.str.printc("\n📡 Profiling data generation...", c="blue")
+    stx.str.printc("\n📡 Profiling data generation...", c="blue")
     with profiler.profile("Data Generation"):
         signals, fs = generate_test_signals(
             batch_size, n_channels, n_segments, seq_len, device
         )
     
-    mngs.str.printc(f"Generated signals shape: {signals.shape}", c="cyan")
+    stx.str.printc(f"Generated signals shape: {signals.shape}", c="cyan")
     
     # Profile model initialization
-    mngs.str.printc("\n🔧 Profiling model initialization...", c="blue")
+    stx.str.printc("\n🔧 Profiling model initialization...", c="blue")
     with profiler.profile("Model Initialization"):
         pac = PAC(
             seq_len=seq_len,
@@ -131,12 +131,12 @@ def main(args):
         ).to(device)
     
     # Warmup (not profiled)
-    mngs.str.printc("\n🔥 Warming up...", c="yellow")
+    stx.str.printc("\n🔥 Warming up...", c="yellow")
     with torch.no_grad():
         _ = pac(signals[:1])
     
     # Profile single forward pass
-    mngs.str.printc("\n⏱️  Profiling single forward pass...", c="blue")
+    stx.str.printc("\n⏱️  Profiling single forward pass...", c="blue")
     with profiler.profile("Single Forward Pass"):
         torch.cuda.synchronize() if device == 'cuda' else None
         with torch.no_grad():
@@ -144,7 +144,7 @@ def main(args):
         torch.cuda.synchronize() if device == 'cuda' else None
     
     # Profile batch forward pass
-    mngs.str.printc("⏱️  Profiling batch forward pass...", c="blue")
+    stx.str.printc("⏱️  Profiling batch forward pass...", c="blue")
     with profiler.profile(f"Batch Forward Pass ({batch_size} samples)"):
         torch.cuda.synchronize() if device == 'cuda' else None
         with torch.no_grad():
@@ -152,7 +152,7 @@ def main(args):
         torch.cuda.synchronize() if device == 'cuda' else None
     
     # Profile with permutation testing
-    mngs.str.printc("\n⏱️  Profiling with permutation testing...", c="blue")
+    stx.str.printc("\n⏱️  Profiling with permutation testing...", c="blue")
     pac_perm = PAC(
         seq_len=seq_len,
         fs=fs,
@@ -174,7 +174,7 @@ def main(args):
     
     # Profile backward pass (if trainable)
     if device == 'cuda':
-        mngs.str.printc("\n⏱️  Profiling backward pass...", c="blue")
+        stx.str.printc("\n⏱️  Profiling backward pass...", c="blue")
         pac_trainable = PAC(
             seq_len=seq_len,
             fs=fs,
@@ -198,9 +198,9 @@ def main(args):
             torch.cuda.synchronize()
     
     # Profile visualization
-    mngs.str.printc("\n📊 Profiling visualization...", c="blue")
+    stx.str.printc("\n📊 Profiling visualization...", c="blue")
     with profiler.profile("Visualization"):
-        fig, axes = mngs.plt.subplots(2, 2, figsize=(12, 10))
+        fig, axes = stx.plt.subplots(2, 2, figsize=(12, 10))
         
         # Plot signal snippet
         ax = axes[0, 0]
@@ -244,47 +244,47 @@ def main(args):
         
         plt.tight_layout()
         spath = './scripts/example_profiler/profiler_demo.gif'
-        mngs.io.save(fig, spath)
+        stx.io.save(fig, spath)
     
     # Print profiling summary
-    mngs.str.printc("\n" + "="*60, c="green")
+    stx.str.printc("\n" + "="*60, c="green")
     profiler.print_summary()
     
     # Save timing results
     timing_results = profiler.get_summary_dict()
-    mngs.io.save(
+    stx.io.save(
         timing_results,
         './scripts/example_profiler/profiling_results.csv'
     )
     
     # Additional performance metrics
-    mngs.str.printc("\n📊 Performance Metrics", c="yellow")
-    mngs.str.printc("="*60, c="yellow")
+    stx.str.printc("\n📊 Performance Metrics", c="yellow")
+    stx.str.printc("="*60, c="yellow")
     
     single_time = timing_results.get('Single Forward Pass', 0)
     batch_time = timing_results.get(f'Batch Forward Pass ({batch_size} samples)', 0)
     
     if single_time > 0:
-        mngs.str.printc(f"Single sample processing: {single_time*1000:.2f} ms", c="cyan")
-        mngs.str.printc(f"Throughput: {1/single_time:.1f} samples/second", c="cyan")
+        stx.str.printc(f"Single sample processing: {single_time*1000:.2f} ms", c="cyan")
+        stx.str.printc(f"Throughput: {1/single_time:.1f} samples/second", c="cyan")
     
     if batch_time > 0:
-        mngs.str.printc(f"\nBatch processing ({batch_size} samples): {batch_time*1000:.2f} ms", c="cyan")
-        mngs.str.printc(f"Per-sample time in batch: {batch_time/batch_size*1000:.2f} ms", c="cyan")
-        mngs.str.printc(f"Batch efficiency: {single_time*batch_size/batch_time:.1f}x", c="cyan")
-        mngs.str.printc(f"Batch throughput: {batch_size/batch_time:.1f} samples/second", c="cyan")
+        stx.str.printc(f"\nBatch processing ({batch_size} samples): {batch_time*1000:.2f} ms", c="cyan")
+        stx.str.printc(f"Per-sample time in batch: {batch_time/batch_size*1000:.2f} ms", c="cyan")
+        stx.str.printc(f"Batch efficiency: {single_time*batch_size/batch_time:.1f}x", c="cyan")
+        stx.str.printc(f"Batch throughput: {batch_size/batch_time:.1f} samples/second", c="cyan")
     
     # Memory usage (if GPU)
     if device == 'cuda':
-        mngs.str.printc("\n💾 GPU Memory Usage", c="yellow")
-        mngs.str.printc("="*60, c="yellow")
+        stx.str.printc("\n💾 GPU Memory Usage", c="yellow")
+        stx.str.printc("="*60, c="yellow")
         allocated = torch.cuda.memory_allocated() / 1024**2
         reserved = torch.cuda.memory_reserved() / 1024**2
-        mngs.str.printc(f"Allocated: {allocated:.1f} MB", c="cyan")
-        mngs.str.printc(f"Reserved: {reserved:.1f} MB", c="cyan")
+        stx.str.printc(f"Allocated: {allocated:.1f} MB", c="cyan")
+        stx.str.printc(f"Reserved: {reserved:.1f} MB", c="cyan")
     
     # Create detailed timing breakdown figure
-    fig, ax = mngs.plt.subplots(1, 1, figsize=(10, 6))
+    fig, ax = stx.plt.subplots(1, 1, figsize=(10, 6))
     
     # Sort operations by time
     sorted_ops = sorted([(op, t) for op, t in timing_results.items() if op != 'total_time'], 
@@ -307,38 +307,38 @@ def main(args):
                    f'{time:.3f}s', va='center')
     
     spath = './scripts/example_profiler/timing_breakdown.gif'
-    mngs.io.save(fig, spath)
+    stx.io.save(fig, spath)
     
-    mngs.str.printc("\n✅ Profiler demonstration complete!", c="green")
-    mngs.str.printc(f"💾 Results saved to: ./scripts/example_profiler/", c="green")
+    stx.str.printc("\n✅ Profiler demonstration complete!", c="green")
+    stx.str.printc(f"💾 Results saved to: ./scripts/example_profiler/", c="green")
     
     return 0
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex as stx
     
-    script_mode = mngs.gen.is_script()
+    script_mode = stx.gen.is_script()
     parser = argparse.ArgumentParser(description="Profiler demonstration")
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    stx.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize stx framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
     
     import sys
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex as stx
     
     args = parse_args()
     
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = stx.gen.start(
         sys,
         plt,
         args=args,
@@ -350,7 +350,7 @@ def run_main() -> None:
     
     exit_status = main(args)
     
-    mngs.gen.close(
+    stx.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

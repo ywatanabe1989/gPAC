@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/utils/compare.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/utils/compare.py"
-)
+
+__FILE__ = "./src/gpac/utils/compare.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -116,9 +115,7 @@ def verify_output_shapes_match(
         return True, pac_tp
 
     if verbose:
-        print(
-            f"⚠️  Shape mismatch: gPAC {pac_gp.shape} vs TensorPAC {pac_tp.shape}"
-        )
+        print(f"⚠️  Shape mismatch: gPAC {pac_gp.shape} vs TensorPAC {pac_tp.shape}")
 
     # Try transposing TensorPAC output
     if pac_gp.shape == pac_tp.T.shape:
@@ -304,9 +301,7 @@ def prepare_signal_tensorpac(signal: np.ndarray) -> np.ndarray:
     elif signal.ndim == 2:
         signal_2d = signal
     else:
-        raise ValueError(
-            f"TensorPAC expects 1D or 2D signal, got {signal.ndim}D"
-        )
+        raise ValueError(f"TensorPAC expects 1D or 2D signal, got {signal.ndim}D")
 
     # Verify shape
     verify_input_shape_tensorpac(signal_2d)
@@ -317,9 +312,7 @@ def prepare_signal_tensorpac(signal: np.ndarray) -> np.ndarray:
 """Metric Computation Utilities"""
 
 
-def compute_correlation_metrics(
-    pac1: np.ndarray, pac2: np.ndarray
-) -> Dict[str, float]:
+def compute_correlation_metrics(pac1: np.ndarray, pac2: np.ndarray) -> Dict[str, float]:
     """
     Compute various correlation metrics between PAC matrices.
 
@@ -361,9 +354,7 @@ def compute_correlation_metrics(
         if pac1.shape == pac2.T.shape:
             pac2 = pac2.T
         else:
-            raise ValueError(
-                f"Cannot reconcile shapes: {pac1.shape} vs {pac2.shape}"
-            )
+            raise ValueError(f"Cannot reconcile shapes: {pac1.shape} vs {pac2.shape}")
 
     # Flatten arrays
     pac1_flat = pac1.flatten()
@@ -387,9 +378,7 @@ def compute_correlation_metrics(
     }
 
 
-def compute_error_metrics(
-    pac1: np.ndarray, pac2: np.ndarray
-) -> Dict[str, float]:
+def compute_error_metrics(pac1: np.ndarray, pac2: np.ndarray) -> Dict[str, float]:
     """
     Compute error metrics between PAC matrices.
 
@@ -429,9 +418,7 @@ def compute_error_metrics(
         if pac1.shape == pac2.T.shape:
             pac2 = pac2.T
         else:
-            raise ValueError(
-                f"Cannot reconcile shapes: {pac1.shape} vs {pac2.shape}"
-            )
+            raise ValueError(f"Cannot reconcile shapes: {pac1.shape} vs {pac2.shape}")
 
     # Scale factor
     scale_factor = pac2.max() / pac1.max() if pac1.max() > 0 else np.inf
@@ -489,9 +476,7 @@ def print_shape_report(
     f.write(f"\nOutput shapes:\n")
     f.write(f"  gPAC: {pac_gp.shape} (batch, channels, n_pha, n_amp)\n")
     f.write(f"  TensorPAC: {pac_tp.shape}\n")
-    f.write(
-        f"  Match: {'✅ YES' if pac_gp.shape[-2:] == pac_tp.shape else '❌ NO'}\n"
-    )
+    f.write(f"  Match: {'✅ YES' if pac_gp.shape[-2:] == pac_tp.shape else '❌ NO'}\n")
 
 
 def print_band_report(pha_bands: np.ndarray, amp_bands: np.ndarray, file=None):

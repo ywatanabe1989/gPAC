@@ -20,7 +20,7 @@ Functionalities:
 
 Dependencies:
   - scripts: None
-  - packages: numpy, torch, matplotlib, gpac, mngs
+  - packages: numpy, torch, matplotlib, gpac, stx
 
 IO:
   - input-files: None (generates synthetic PAC signals)
@@ -37,14 +37,14 @@ import matplotlib
 matplotlib.use("Agg")
 import gpac
 import matplotlib.pyplot as plt
-import mngs
+import scitex as stx
 import torch
 
 """Functions & Classes"""
 def demo_modulation_index_basic(args):
     """Demonstrate basic ModulationIndex functionality."""
 
-    mngs.str.printc("=== Demo ModulationIndex Basic ===", c="yellow")
+    stx.str.printc("=== Demo ModulationIndex Basic ===", c="yellow")
 
     # Generate synthetic PAC data
     pac_config = gpac.dataset.multi_class_multi_pac_config
@@ -131,7 +131,7 @@ def demo_modulation_index_basic(args):
     loss.backward()
 
     # Create visualization
-    fig, axes = mngs.plt.subplots(2, 2, figsize=(12, 10))
+    fig, axes = stx.plt.subplots(2, 2, figsize=(12, 10))
 
     # MI heatmap
     ax_mi = axes[0, 0]
@@ -169,7 +169,7 @@ def demo_modulation_index_basic(args):
     ax_hist.grid(True, alpha=0.3)
 
     # fig.tight_layout()
-    mngs.io.save(fig, "01_modulation_index_basic.gif")
+    stx.io.save(fig, "01_modulation_index_basic.gif")
     plt.close()
 
     # Print results
@@ -185,9 +185,9 @@ def demo_modulation_index_basic(args):
 
 def demo_modulation_index_surrogates(args):
     """Demonstrate surrogate statistics for significance testing."""
-    import mngs
+    import scitex as stx
 
-    mngs.str.printc("=== Demo ModulationIndex Surrogates ===", c="yellow")
+    stx.str.printc("=== Demo ModulationIndex Surrogates ===", c="yellow")
 
     # Generate smaller data for surrogate testing
     pac_config = gpac.dataset.multi_class_multi_pac_config
@@ -270,7 +270,7 @@ def demo_modulation_index_surrogates(args):
     pac_z = surrogate_result["pac_z"]
 
     # Create visualization
-    fig, axes = mngs.plt.subplots(2, 2, figsize=(12, 10))
+    fig, axes = stx.plt.subplots(2, 2, figsize=(12, 10))
 
     # Original MI vs surrogate mean
     ax_orig = axes[0, 0]
@@ -308,7 +308,7 @@ def demo_modulation_index_surrogates(args):
     ax_comp.grid(True, alpha=0.3)
 
     # fig.tight_layout()
-    mngs.io.save(fig, "02_modulation_index_surrogates.gif")
+    stx.io.save(fig, "02_modulation_index_surrogates.gif")
     plt.close()
 
     # Print statistics
@@ -336,7 +336,7 @@ def main(args):
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    import mngs
+    import scitex as stx
 
     parser = argparse.ArgumentParser(
         description="Demonstrate ModulationIndex functionality"
@@ -355,22 +355,22 @@ def parse_args() -> argparse.Namespace:
     )
 
     args = parser.parse_args()
-    mngs.str.printc(args, c="yellow")
+    stx.str.printc(args, c="yellow")
     return args
 
 
 def run_main() -> None:
-    """Initialize mngs framework, run main function, and cleanup."""
+    """Initialize stx framework, run main function, and cleanup."""
     global CONFIG, CC, sys, plt
 
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex as stx
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = stx.gen.start(
         sys,
         plt,
         args=args,
@@ -381,7 +381,7 @@ def run_main() -> None:
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    stx.gen.close(
         CONFIG,
         verbose=False,
         notify=False,

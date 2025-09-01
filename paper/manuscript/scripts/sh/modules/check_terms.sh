@@ -4,7 +4,7 @@ echo -e "$0 ...\n"
 
 function check_terms() {
   echo -e "\nChecking terms in ${1}"
-  ./.env/bin/python ./scripts/py/check_terms_by_GPT.py -l "${1}" | tee ./.logs/term_check_results.txt
+  echo "GPT term checking disabled - check_terms_by_GPT.py has been removed" | tee ./.logs/term_check_results.txt
   echo "Results logged in ./.logs/term_check_results.txt"
 }
 

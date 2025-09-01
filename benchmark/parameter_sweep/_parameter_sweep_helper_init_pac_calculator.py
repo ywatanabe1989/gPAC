@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-06-09 23:25:09 (ywatanabe)"
-# File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/examples/benchmark/parameter_sweep/_parameter_sweep_helper_init_pac_calculator.py
+# Timestamp: "2025-06-15 18:22:40 (ywatanabe)"
+# File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/benchmark/parameter_sweep/_parameter_sweep_helper_init_pac_calculator.py
 # ----------------------------------------
 import os
 __FILE__ = (
-    "./examples/benchmark/parameter_sweep/_parameter_sweep_helper_init_pac_calculator.py"
+    "./benchmark/parameter_sweep/_parameter_sweep_helper_init_pac_calculator.py"
 )
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
@@ -13,7 +13,6 @@ __DIR__ = os.path.dirname(__FILE__)
 import sys
 
 import matplotlib
-import numpy as np
 import torch
 
 matplotlib.use("Agg")
@@ -22,15 +21,54 @@ sys.path.append("../../../src")
 import gpac
 import tensorpac
 
+# pha_range_hz = (2, 20)
+# pha_n_bands = 30
+# amp_range_hz = (60, 180)
+# amp_n_bands = 30
+# seq_sec = 10
+# fs = 512
+# seq_len = int(seq_sec * fs)
+# gpac_calculator = gpac.PAC(
+#     seq_len,
+#     fs,
+#     pha_range_hz=pha_range_hz,
+#     pha_n_bands=pha_n_bands,
+#     amp_range_hz=amp_range_hz,
+#     amp_n_bands=amp_n_bands,
+# )
+# gpac_calculator.pha_bands_hz
+# gpac_calculator.amp_bands_hz
+
+
+# _create_frequency_bands((2,20), 30, (60, 180), 30)
+
 
 def _create_frequency_bands(
     pha_range_hz, pha_n_bands, amp_range_hz, amp_n_bands
 ):
-    pha_edges = np.linspace(*pha_range_hz, pha_n_bands + 1)
-    amp_edges = np.linspace(*amp_range_hz, amp_n_bands + 1)
-    pha_bands_hz = np.c_[pha_edges[:-1], pha_edges[1:]]
-    amp_bands_hz = np.c_[amp_edges[:-1], amp_edges[1:]]
+    """Create frequency bands using gpac package"""
+
+    fs = 512
+    seq_sec = 10
+    seq_len = int(seq_sec * fs)
+    gpac_calculator = gpac.PAC(
+        seq_len,
+        fs,
+        pha_range_hz=pha_range_hz,
+        pha_n_bands=pha_n_bands,
+        amp_range_hz=amp_range_hz,
+        amp_n_bands=amp_n_bands,
+    )
+    pha_bands_hz = gpac_calculator.pha_bands_hz.cpu().numpy()
+    amp_bands_hz = gpac_calculator.amp_bands_hz.cpu().numpy()
+
     return pha_bands_hz, amp_bands_hz
+
+    # pha_edges = np.linspace(*pha_range_hz, pha_n_bands + 1)
+    # amp_edges = np.linspace(*amp_range_hz, amp_n_bands + 1)
+    # pha_bands_hz = np.c_[pha_edges[:-1], pha_edges[1:]]
+    # amp_bands_hz = np.c_[amp_edges[:-1], amp_edges[1:]]
+    # return pha_bands_hz, amp_bands_hz
 
 
 def _init_pac_calculator_gpac(
@@ -63,8 +101,16 @@ def _init_pac_calculator_gpac(
 
 
 def _init_pac_calculator_tensorpac(pha_bands_hz, amp_bands_hz, n_perm):
+    # Set idpac based on whether permutations are requested
+    if n_perm > 0:
+        # (2, 2, 1) = MI method, swap amplitude blocks, z-score normalization
+        idpac = (2, 2, 1)
+    else:
+        # (2, 0, 0) = MI method, no surrogates, raw values
+        idpac = (2, 0, 0)
+
     pac_calculator = tensorpac.Pac(
-        idpac=(2, 0, 0),
+        idpac=idpac,
         f_pha=pha_bands_hz,
         f_amp=amp_bands_hz,
         dcomplex="hilbert",

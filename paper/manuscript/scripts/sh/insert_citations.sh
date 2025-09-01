@@ -7,7 +7,7 @@ function insert_citations() {
   read -p "Is it okay to proceed? (y/n) " -n 1 -r
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo $files_to_insert_citations | xargs -n 1 -P 5 ./.env/bin/python ./scripts/py/insert_citations.py -lb "./bibliography.bib" -lt
+    echo "GPT citation insertion disabled - insert_citations.py has been removed"
   fi
 }
 

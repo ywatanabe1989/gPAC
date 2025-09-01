@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_BandPassFilters/_StaticBandPassFilter.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/core/_BandPassFilters/_StaticBandPassFilter.py"
-)
+
+__FILE__ = "./src/gpac/core/_BandPassFilters/_StaticBandPassFilter.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -44,14 +43,14 @@ class StaticBandPassFilter(nn.Module):
     def __init__(
         self,
         fs: float,
-        pha_range_hz: Optional[Tuple[float, float]] = (4, 30),
-        amp_range_hz: Optional[Tuple[float, float]] = (60, 150),
+        pha_range_hz: Optional[Tuple[float, float]] = (2, 20),
+        amp_range_hz: Optional[Tuple[float, float]] = (60, 160),
         pha_n_bands: Optional[int] = 10,
         amp_n_bands: Optional[int] = 10,
         pha_bands_hz: Optional[List[List[float]]] = None,
         amp_bands_hz: Optional[List[List[float]]] = None,
         n_cycles: int = 4,
-        spacing: str = "log",
+        spacing: str = "linear",
         fp16: bool = False,
     ):
         """
@@ -62,13 +61,13 @@ class StaticBandPassFilter(nn.Module):
         fs : float
             Sampling frequency in Hz
         pha_range_hz : tuple, optional
-            Phase frequency range (min, max) in Hz. Ignored if pha_bands_hz provided.
+            Phase frequency range (min, max) in Hz. Default: (2, 20). Ignored if pha_bands_hz provided.
         amp_range_hz : tuple, optional
-            Amplitude frequency range (min, max) in Hz. Ignored if amp_bands_hz provided.
+            Amplitude frequency range (min, max) in Hz. Default: (60, 160). Ignored if amp_bands_hz provided.
         pha_n_bands : int, optional
-            Number of phase filters. Ignored if pha_bands_hz provided.
+            Number of phase filters. Default: 10. Ignored if pha_bands_hz provided.
         amp_n_bands : int, optional
-            Number of amplitude filters. Ignored if amp_bands_hz provided.
+            Number of amplitude filters. Default: 10. Ignored if amp_bands_hz provided.
         pha_bands_hz : list of lists, optional
             Manual phase bands [[low1, high1], [low2, high2], ...].
             Takes precedence over pha_range_hz and pha_n_bands.
@@ -76,11 +75,11 @@ class StaticBandPassFilter(nn.Module):
             Manual amplitude bands [[low1, high1], [low2, high2], ...].
             Takes precedence over amp_range_hz and amp_n_bands.
         n_cycles : int
-            Filter order (number of cycles for bandwidth calculation)
+            Filter order (number of cycles for bandwidth calculation). Default: 4.
         spacing : str
-            'log' for logarithmic spacing, 'linear' for linear spacing
+            'log' for logarithmic spacing, 'linear' for linear spacing. Default: 'linear'.
         fp16 : bool
-            Use half precision for memory efficiency
+            Use half precision for memory efficiency. Default: False.
 
         Raises
         ------
@@ -120,10 +119,8 @@ class StaticBandPassFilter(nn.Module):
                 self.pha_bands_hz[:, 0] + self.pha_bands_hz[:, 1]
             ) / 2
         else:
-            self.pha_bands_hz, self.pha_center_freqs = (
-                self._generate_bands_strict(
-                    pha_range_hz[0], pha_range_hz[1], pha_n_bands, "phase"
-                )
+            self.pha_bands_hz, self.pha_center_freqs = self._generate_bands_strict(
+                pha_range_hz[0], pha_range_hz[1], pha_n_bands, "phase"
             )
             self.pha_n_bands = pha_n_bands
 
@@ -134,13 +131,11 @@ class StaticBandPassFilter(nn.Module):
                 self.amp_bands_hz[:, 0] + self.amp_bands_hz[:, 1]
             ) / 2
         else:
-            self.amp_bands_hz, self.amp_center_freqs = (
-                self._generate_bands_strict(
-                    amp_range_hz[0],
-                    amp_range_hz[1],
-                    amp_n_bands,
-                    "amplitude",
-                )
+            self.amp_bands_hz, self.amp_center_freqs = self._generate_bands_strict(
+                amp_range_hz[0],
+                amp_range_hz[1],
+                amp_n_bands,
+                "amplitude",
             )
             self.amp_n_bands = amp_n_bands
 
@@ -215,9 +210,7 @@ class StaticBandPassFilter(nn.Module):
             Center frequencies of each band
         """
         if self.spacing == "log":
-            center_freqs = np.logspace(
-                np.log10(f_min), np.log10(f_max), n_filters
-            )
+            center_freqs = np.logspace(np.log10(f_min), np.log10(f_max), n_filters)
         else:
             center_freqs = np.linspace(f_min, f_max, n_filters)
 
@@ -459,5 +452,6 @@ class StaticBandPassFilter(nn.Module):
             "filter_length": self.filter_kernels.shape[-1],
             "spacing": self.spacing,
         }
+
 
 # EOF

@@ -36,7 +36,7 @@ python examples/gpac/example__Hilbert.py
 
 ## Output Structure
 
-All examples follow the mngs framework and create output directories automatically:
+All examples follow the stx framework and create output directories automatically:
 - `example__BandPassFilter_out/`: Contains bandpass filter visualizations
 - `example__Hilbert_out/`: Contains Hilbert transform analysis results
 
@@ -44,11 +44,11 @@ All examples follow the mngs framework and create output directories automatical
 
 - PyTorch with CUDA support (optional but recommended)
 - NumPy, Matplotlib
-- mngs framework
+- stx framework
 - gpac package
 
 ## Notes
 
 - Examples use synthetic data generation from `gpac.dataset`
 - All visualizations are saved as static GIF files (not animations)
-- The mngs framework handles logging and output directory management automatically
+- The stx framework handles logging and output directory management automatically

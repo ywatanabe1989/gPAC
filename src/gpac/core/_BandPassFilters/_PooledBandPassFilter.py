@@ -4,9 +4,8 @@
 # File: /ssh:ywatanabe@sp:/home/ywatanabe/proj/gPAC/src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py
 # ----------------------------------------
 import os
-__FILE__ = (
-    "./src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py"
-)
+
+__FILE__ = "./src/gpac/core/_BandPassFilters/_PooledBandPassFilter.py"
 __DIR__ = os.path.dirname(__FILE__)
 # ----------------------------------------
 
@@ -46,8 +45,8 @@ class PooledBandPassFilter(nn.Module):
     def __init__(
         self,
         fs: float,
-        pha_range_hz: Optional[Tuple[float, float]] = (4, 30),
-        amp_range_hz: Optional[Tuple[float, float]] = (60, 150),
+        pha_range_hz: Optional[Tuple[float, float]] = (2, 20),
+        amp_range_hz: Optional[Tuple[float, float]] = (60, 160),
         pha_n_bands: Optional[int] = 10,
         amp_n_bands: Optional[int] = 10,
         pha_bands_hz: Optional[List[List[float]]] = None,
@@ -57,7 +56,7 @@ class PooledBandPassFilter(nn.Module):
         n_cycles: int = 4,
         temperature: float = 1.0,
         hard_selection: bool = False,
-        spacing: str = "log",
+        spacing: str = "linear",
         fp16: bool = False,
     ):
         """
@@ -141,9 +140,7 @@ class PooledBandPassFilter(nn.Module):
             self.pha_n_bands = len(pha_bands_hz)  # Always override
             self.pha_n_pool = int(len(pha_bands_hz) * self.pha_n_pool_ratio)
             self.pha_bands_hz, self.pha_center_freqs, self.pha_bandwidths = (
-                self._create_hybrid_pool(
-                    self.pha_bands_hz, self.pha_n_pool, 0.5
-                )
+                self._create_hybrid_pool(self.pha_bands_hz, self.pha_n_pool, 0.5)
             )
         else:
             self.pha_n_pool = int(pha_n_bands * self.pha_n_pool_ratio)
@@ -160,9 +157,7 @@ class PooledBandPassFilter(nn.Module):
             self.amp_n_bands = len(amp_bands_hz)  # Always override
             self.amp_n_pool = int(len(amp_bands_hz) * self.amp_n_pool_ratio)
             self.amp_bands_hz, self.amp_center_freqs, self.amp_bandwidths = (
-                self._create_hybrid_pool(
-                    self.amp_bands_hz, self.amp_n_pool, 0.25
-                )
+                self._create_hybrid_pool(self.amp_bands_hz, self.amp_n_pool, 0.25)
             )
         else:
             self.amp_n_pool = int(amp_n_bands * self.amp_n_pool_ratio)
@@ -228,9 +223,7 @@ class PooledBandPassFilter(nn.Module):
                 dtype=torch.float32,
             )
         else:
-            log_freqs = torch.linspace(
-                f_min, f_max, n_filters, dtype=torch.float32
-            )
+            log_freqs = torch.linspace(f_min, f_max, n_filters, dtype=torch.float32)
         return log_freqs
 
     def _create_bands_from_centers(self, center_freqs, bandwidths):
@@ -264,18 +257,14 @@ class PooledBandPassFilter(nn.Module):
         # Phase filters
         pha_filters = []
         for cf, bw in zip(self.pha_center_freqs, self.pha_bandwidths):
-            filt = self._design_bandpass_filter(
-                cf.item(), bw.item(), max_filter_len
-            )
+            filt = self._design_bandpass_filter(cf.item(), bw.item(), max_filter_len)
             pha_filters.append(filt)
         self.register_buffer("pha_filter_bank", torch.stack(pha_filters))
 
         # Amplitude filters
         amp_filters = []
         for cf, bw in zip(self.amp_center_freqs, self.amp_bandwidths):
-            filt = self._design_bandpass_filter(
-                cf.item(), bw.item(), max_filter_len
-            )
+            filt = self._design_bandpass_filter(cf.item(), bw.item(), max_filter_len)
             amp_filters.append(filt)
         self.register_buffer("amp_filter_bank", torch.stack(amp_filters))
         self.max_filter_len = max_filter_len
@@ -393,18 +382,12 @@ class PooledBandPassFilter(nn.Module):
             pha_selected_idx = torch.where(pha_selection > 0)[0]
             amp_selected_idx = torch.where(amp_selection > 0)[0]
 
-            pha_freqs = [
-                self.pha_center_freqs[idx].item() for idx in pha_selected_idx
-            ]
-            amp_freqs = [
-                self.amp_center_freqs[idx].item() for idx in amp_selected_idx
-            ]
+            pha_freqs = [self.pha_center_freqs[idx].item() for idx in pha_selected_idx]
+            amp_freqs = [self.amp_center_freqs[idx].item() for idx in amp_selected_idx]
 
             return pha_freqs, amp_freqs
 
-    def _get_selection(
-        self, logits: torch.Tensor, n_bands: int
-    ) -> torch.Tensor:
+    def _get_selection(self, logits: torch.Tensor, n_bands: int) -> torch.Tensor:
         """Get filter selection weights with caching in eval mode."""
         cache_attr = (
             "_cached_pha_selection"
@@ -415,9 +398,7 @@ class PooledBandPassFilter(nn.Module):
         if not self.training and getattr(self, cache_attr) is not None:
             return getattr(self, cache_attr)
 
-        selection = self._gumbel_softmax_topk(
-            logits, n_bands, not self.training
-        )
+        selection = self._gumbel_softmax_topk(logits, n_bands, not self.training)
 
         if not self.training:
             setattr(self, cache_attr, selection)
@@ -497,9 +478,7 @@ class PooledBandPassFilter(nn.Module):
         # Create bands from final centers
         final_bandwidths = systematic_centers * bandwidth_ratio
         return (
-            self._create_bands_from_centers(
-                systematic_centers, final_bandwidths
-            ),
+            self._create_bands_from_centers(systematic_centers, final_bandwidths),
             systematic_centers,
             final_bandwidths,
         )
@@ -568,12 +547,8 @@ class PooledBandPassFilter(nn.Module):
             pha_selected_idx = torch.where(pha_weights > 0)[0]
             amp_selected_idx = torch.where(amp_weights > 0)[0]
 
-            pha_freqs = [
-                self.pha_center_freqs[idx].item() for idx in pha_selected_idx
-            ]
-            amp_freqs = [
-                self.amp_center_freqs[idx].item() for idx in amp_selected_idx
-            ]
+            pha_freqs = [self.pha_center_freqs[idx].item() for idx in pha_selected_idx]
+            amp_freqs = [self.amp_center_freqs[idx].item() for idx in amp_selected_idx]
 
         return {
             "pha_bands_hz": self.pha_bands_hz,
@@ -621,5 +596,6 @@ class PooledBandPassFilter(nn.Module):
     #         "amp_n_pool": self.amp_n_pool,
     #         "spacing": self.spacing,
     #     }
+
 
 # EOF

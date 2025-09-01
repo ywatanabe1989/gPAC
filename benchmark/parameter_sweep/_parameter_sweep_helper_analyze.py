@@ -40,7 +40,7 @@ def load_benchmark_data(file_path):
 
         return df
     except Exception as e:
-        mngs.str.printc(
+        scitex.str.printc(
             f"Error loading data from {file_path}: {e}", c=CC["red"]
         )
         return None
@@ -49,7 +49,7 @@ def load_benchmark_data(file_path):
 def analyze_speedup(df):
     """Analyze speedup between gPAC and TensorPAC."""
 
-    mngs.str.printc("📊 gPAC vs TensorPAC Performance Analysis", c=CC["blue"])
+    scitex.str.printc("📊 gPAC vs TensorPAC Performance Analysis", c=CC["blue"])
     print("=" * 60)
 
     # Separate data by package
@@ -58,14 +58,14 @@ def analyze_speedup(df):
         df[df["package"] == "tensorpac"].copy().reset_index(drop=True)
     )
 
-    mngs.str.printc("📈 Dataset Overview:", c=CC["yellow"])
+    scitex.str.printc("📈 Dataset Overview:", c=CC["yellow"])
     print(f"   • Total configurations: {len(df)}")
     print(f"   • gPAC configurations: {len(gpac_data)}")
     print(f"   • TensorPAC configurations: {len(tensorpac_data)}")
 
     # Basic performance statistics
-    mngs.str.printc("\n⏱️ Performance Statistics:", c=CC["yellow"])
-    mngs.str.printc("   gPAC:", c=CC["blue"])
+    scitex.str.printc("\n⏱️ Performance Statistics:", c=CC["yellow"])
+    scitex.str.printc("   gPAC:", c=CC["blue"])
     print(
         f"     - Mean time: {gpac_data['computation_time_for_all_runs'].mean():.4f}s"
     )
@@ -79,7 +79,7 @@ def analyze_speedup(df):
         f"     - Max time: {gpac_data['computation_time_for_all_runs'].max():.4f}s"
     )
 
-    mngs.str.printc("   TensorPAC:", c=CC["orange"])
+    scitex.str.printc("   TensorPAC:", c=CC["orange"])
     print(
         f"     - Mean time: {tensorpac_data['computation_time_for_all_runs'].mean():.4f}s"
     )
@@ -104,7 +104,7 @@ def analyze_speedup(df):
         "n_perm",
     ]
 
-    mngs.str.printc("\n🔍 Finding matching configurations...", c=CC["yellow"])
+    scitex.str.printc("\n🔍 Finding matching configurations...", c=CC["yellow"])
 
     matched_count = 0
     for gpac_idx, gpac_row in gpac_data.iterrows():
@@ -144,7 +144,7 @@ def analyze_speedup(df):
     if speedups:
         speedup_values = [s["speedup"] for s in speedups]
 
-        mngs.str.printc("\n🚀 Speedup Analysis:", c=CC["green"])
+        scitex.str.printc("\n🚀 Speedup Analysis:", c=CC["green"])
         print(f"   • Mean speedup: {np.mean(speedup_values):.1f}x")
         print(f"   • Median speedup: {np.median(speedup_values):.1f}x")
         print(f"   • Min speedup: {np.min(speedup_values):.1f}x")
@@ -155,7 +155,7 @@ def analyze_speedup(df):
         best_speedup = max(speedups, key=lambda x: x["speedup"])
         worst_speedup = min(speedups, key=lambda x: x["speedup"])
 
-        mngs.str.printc(
+        scitex.str.printc(
             f"\n🏆 Best Speedup: {best_speedup['speedup']:.1f}x", c=CC["green"]
         )
         print(
@@ -166,7 +166,7 @@ def analyze_speedup(df):
             f"   Times: gPAC={best_speedup['gpac_time']:.4f}s, TensorPAC={best_speedup['tensorpac_time']:.4f}s"
         )
 
-        mngs.str.printc(
+        scitex.str.printc(
             f"\n⚠️ Worst Speedup: {worst_speedup['speedup']:.1f}x",
             c=CC["yellow"],
         )
@@ -180,7 +180,7 @@ def analyze_speedup(df):
 
     else:
         # If no exact matches, calculate overall ratios
-        mngs.str.printc(
+        scitex.str.printc(
             "\n⚠️ No exact matching configurations found.", c=CC["yellow"]
         )
         print("Calculating overall performance ratios...")
@@ -215,11 +215,11 @@ def analyze_speedup(df):
 def create_performance_plots(df, speedups=None):
     """Create performance comparison plots."""
 
-    mngs.str.printc(
+    scitex.str.printc(
         "\n🎨 Creating performance visualizations...", c=CC["blue"]
     )
 
-    fig, axes = mngs.plt.subplots(2, 2, figsize=(15, 12))
+    fig, axes = scitex.plt.subplots(2, 2, figsize=(15, 12))
 
     # 1. Overall performance comparison
     ax1 = axes[0, 0]
@@ -369,9 +369,9 @@ def create_performance_plots(df, speedups=None):
     plt.tight_layout()
     plt.suptitle("gPAC vs TensorPAC Performance Analysis", fontsize=16, y=1.02)
 
-    # Save the plot using mngs
-    mngs.io.save(fig, "gpac_performance_analysis.gif")
-    mngs.str.printc(
+    # Save the plot using scitex
+    scitex.io.save(fig, "gpac_performance_analysis.gif")
+    scitex.str.printc(
         "   • Saved plot as: gpac_performance_analysis.gif", c=CC["green"]
     )
 
@@ -388,14 +388,14 @@ def analyze_resource_usage(df):
     ]
 
     if not resource_cols:
-        mngs.str.printc("No resource usage data found", c=CC["yellow"])
+        scitex.str.printc("No resource usage data found", c=CC["yellow"])
         return
 
-    mngs.str.printc("💻 Resource Usage Analysis:", c=CC["blue"])
+    scitex.str.printc("💻 Resource Usage Analysis:", c=CC["blue"])
 
     for package in df["package"].unique():
         pkg_data = df[df["package"] == package]
-        mngs.str.printc(f"   {package}:", c=CC["yellow"])
+        scitex.str.printc(f"   {package}:", c=CC["yellow"])
 
         for col in resource_cols:
             if col in pkg_data.columns:
@@ -416,7 +416,7 @@ def create_resource_plots(df):
     if not resource_cols:
         return None
 
-    fig, axes = mngs.plt.subplots(2, 2, figsize=(15, 10))
+    fig, axes = scitex.plt.subplots(2, 2, figsize=(15, 10))
 
     # CPU usage
     if any("cpu" in col for col in resource_cols):
@@ -473,21 +473,21 @@ def main(args):
         file_path = default_path
 
     if not os.path.exists(file_path):
-        mngs.str.printc(f"❌ File not found: {file_path}", c=CC["red"])
-        mngs.str.printc(
+        scitex.str.printc(f"❌ File not found: {file_path}", c=CC["red"])
+        scitex.str.printc(
             "Please provide the correct path to your benchmark results file.",
             c=CC["yellow"],
         )
         return 1
 
-    mngs.str.printc(f"📂 Loading data from: {file_path}", c=CC["blue"])
+    scitex.str.printc(f"📂 Loading data from: {file_path}", c=CC["blue"])
 
     # Load data
     df = load_benchmark_data(file_path)
     if df is None:
         return 1
 
-    mngs.str.printc(
+    scitex.str.printc(
         f"✅ Successfully loaded {len(df)} configurations", c=CC["green"]
     )
 
@@ -501,7 +501,7 @@ def main(args):
     # Resources
     analyze_resource_usage(df)
 
-    mngs.str.printc("\n✅ Analysis complete!", c=CC["green"])
+    scitex.str.printc("\n✅ Analysis complete!", c=CC["green"])
     print("=" * 60)
 
     return 0
@@ -521,16 +521,16 @@ def parse_args():
 
 
 def run_main():
-    global CONFIG, CC, sys, plt, mngs
+    global CONFIG, CC, sys, plt, scitex
 
     import sys
 
     import matplotlib.pyplot as plt
-    import mngs
+    import scitex
 
     args = parse_args()
 
-    CONFIG, sys.stdout, sys.stderr, plt, CC = mngs.gen.start(
+    CONFIG, sys.stdout, sys.stderr, plt, CC = scitex.gen.start(
         sys,
         plt,
         args=args,
@@ -541,7 +541,7 @@ def run_main():
 
     exit_status = main(args)
 
-    mngs.gen.close(
+    scitex.gen.close(
         CONFIG,
         verbose=False,
         notify=False,
