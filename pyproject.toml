@@ -63,3 +63,13 @@ exclude = ["*.old*", "*.__pycache__*", "*.egg-info*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "gpac.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "unit: fast unit tests covering a single module",
+    "integration: end-to-end tests across modules / against synthetic signals",
+    "requires_data: tests that need an optional dependency or fixture data (e.g. tensorpac)",
+    "slow: tests that take >10s on CI",
+    "gpu: tests that require an NVIDIA GPU + CUDA-enabled PyTorch",
+]
