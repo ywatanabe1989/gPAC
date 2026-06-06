@@ -203,11 +203,29 @@ def test_compute_surrogates_with_seed_42_is_reproducible(
     assert torch.allclose(out_a["surrogate_mean"], out_b["surrogate_mean"], atol=1e-6)
 
 
-# NOTE: test_compute_surrogates_different_seeds_diverge was removed temporarily.
-# ModulationIndex.compute_surrogates does not yet honour the per-call
-# `generator=` argument (different seeds collapse to identical surrogate_mean
-# values), so the previous version asserted false. The test will be reinstated
-# once generator wiring lands — tracked in a separate issue, not this PR.
+def test_compute_surrogates_different_seeds_diverge_per_perm(
+    mi_calc, coupled_phase_amplitude
+):
+    # Arrange — averaging across surrogates can collapse the per-cut variation
+    # on a periodic signal, so we compare the *individual* per-perm surrogates
+    # (each one is the MI under a different random cut) rather than the mean.
+    phase, amplitude = coupled_phase_amplitude
+    gen_a = torch.Generator().manual_seed(42)
+    gen_b = torch.Generator().manual_seed(7)
+    # Act
+    with torch.no_grad():
+        out_a = mi_calc.compute_surrogates(
+            phase, amplitude, n_perm=16, chunk_size=4,
+            return_surrogates=True, generator=gen_a,
+        )
+        out_b = mi_calc.compute_surrogates(
+            phase, amplitude, n_perm=16, chunk_size=4,
+            return_surrogates=True, generator=gen_b,
+        )
+    # Assert
+    assert not torch.allclose(
+        out_a["surrogates"], out_b["surrogates"], atol=1e-6
+    )
 
 
 # EOF
