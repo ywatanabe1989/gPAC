@@ -128,39 +128,16 @@ class ModulationIndex(nn.Module):
 
         self._validate_shapes(phase.shape, amplitude.shape)
 
-        phase_flat = phase.reshape(-1)
-        weights = self._phase_binning(phase_flat)
-        weights_shaped = weights.reshape(
-            batch, channels, freqs_phase, segments, time, self.n_bins
-        )
+        # Phase binning depends ONLY on phase. It is computed here and (for
+        # surrogates) can be reused across permutations -- see
+        # `_compute_weights` / `_mi_from_weights`.
+        weights_vectorized = self._compute_weights(phase)
 
-        weights_vectorized = weights_shaped.view(
-            batch * channels, freqs_phase, segments, time, self.n_bins
-        )
-        amp_vectorized = amplitude.view(
-            batch * channels, freqs_amplitude, segments, time
-        )
-
-        mi_per_seg_vectorized, amp_dist_vectorized = self._compute_mi_vectorized(
+        mi_per_segment_tensor, amp_dists_tensor = self._mi_from_weights(
             weights_vectorized,
-            amp_vectorized,
+            amplitude,
             compute_distributions,
         )
-
-        mi_per_segment_tensor = mi_per_seg_vectorized.view(
-            batch, channels, segments, freqs_phase, freqs_amplitude
-        )
-
-        amp_dists_tensor = None
-        if compute_distributions and amp_dist_vectorized is not None:
-            amp_dists_tensor = amp_dist_vectorized.view(
-                batch,
-                channels,
-                segments,
-                freqs_phase,
-                freqs_amplitude,
-                self.n_bins,
-            )
 
         return {
             "mi": mi_per_segment_tensor,
@@ -213,6 +190,56 @@ class ModulationIndex(nn.Module):
         weights = F.softmax(similarity, dim=-1)
 
         return weights
+
+    def _compute_weights(self, phase: torch.Tensor) -> torch.Tensor:
+        """Phase-bin weights (softmax) for a phase tensor, computed once.
+
+        Weights depend ONLY on phase, so they are invariant across surrogate
+        permutations (which swap amplitude blocks, never the phase).
+        `compute_surrogates` reuses these across all permutations instead of
+        rerunning the softmax per permutation.
+
+        phase: (batch, channels, freqs_phase, segments, time)
+        returns: (batch*channels, freqs_phase, segments, time, n_bins)
+        """
+        batch, channels, freqs_phase, segments, time = phase.shape
+        weights = self._phase_binning(phase.reshape(-1))
+        return weights.view(batch * channels, freqs_phase, segments, time, self.n_bins)
+
+    def _mi_from_weights(
+        self,
+        weights_vectorized: torch.Tensor,
+        amplitude: torch.Tensor,
+        compute_distributions: bool = False,
+    ) -> tuple:
+        """MI from precomputed weights + amplitude (the post-binning half of
+        `forward`). Shared by `forward` and `compute_surrogates`.
+
+        weights_vectorized: (batch*channels, freqs_phase, segments, time, n_bins)
+        amplitude: (batch, channels, freqs_amplitude, segments, time)
+        returns reshaped (mi_per_segment_tensor, amp_dists_tensor).
+        """
+        batch, channels, freqs_amplitude, segments, time = amplitude.shape
+        freqs_phase = weights_vectorized.shape[1]
+
+        amp_vectorized = amplitude.reshape(
+            batch * channels, freqs_amplitude, segments, time
+        )
+        mi_vec, amp_dist_vec = self._compute_mi_vectorized(
+            weights_vectorized, amp_vectorized, compute_distributions
+        )
+        mi_tensor = mi_vec.view(batch, channels, segments, freqs_phase, freqs_amplitude)
+        amp_dists_tensor = None
+        if compute_distributions and amp_dist_vec is not None:
+            amp_dists_tensor = amp_dist_vec.view(
+                batch,
+                channels,
+                segments,
+                freqs_phase,
+                freqs_amplitude,
+                self.n_bins,
+            )
+        return mi_tensor, amp_dists_tensor
 
     def _compute_mi_vectorized(
         self,
@@ -393,6 +420,15 @@ class ModulationIndex(nn.Module):
         else:
             surrogates = None
 
+        # OPTIMIZATION: phase-bin weights depend ONLY on phase, which is
+        # identical across all permutations (surrogates swap amplitude blocks,
+        # never phase). Compute the softmax weights ONCE here and reuse them in
+        # every permutation via `_mi_from_weights`, instead of rerunning the
+        # full forward() (which re-did the ~O(B*C*Fp*T*n_bins) softmax) per
+        # permutation. This is VRAM-neutral and numerically identical: the
+        # cut-point RNG below is unchanged, so pac_z is bit-for-bit equal.
+        weights_vectorized = self._compute_weights(phase)
+
         # Fix surrogate assignment to match new shape
         for start_idx in range(0, n_perm, chunk_size):
             end_idx = min(start_idx + chunk_size, n_perm)
@@ -401,9 +437,13 @@ class ModulationIndex(nn.Module):
             # Generate random cut points for block swapping
             # Cut point should be between 1 and time-1 to ensure both blocks have data
             if generator is not None:
-                cut_points = torch.randint(1, time, (current_chunk,), device=phase.device, generator=generator)
+                cut_points = torch.randint(
+                    1, time, (current_chunk,), device=phase.device, generator=generator
+                )
             else:
-                cut_points = torch.randint(1, time, (current_chunk,), device=phase.device)
+                cut_points = torch.randint(
+                    1, time, (current_chunk,), device=phase.device
+                )
 
             for perm_idx, cut_point in enumerate(cut_points):
                 # Swap amplitude time blocks: [0:cut_point] and [cut_point:time]
@@ -415,13 +455,13 @@ class ModulationIndex(nn.Module):
                     dim=-1,
                 )
 
-                # Compute MI with original phase and swapped amplitude
-                mi_result = self.forward(
-                    phase,
+                # Compute MI reusing the precomputed phase weights; only the
+                # swapped amplitude changes per permutation.
+                surrogate_mi, _ = self._mi_from_weights(
+                    weights_vectorized,
                     amplitude_swapped,
                     compute_distributions=False,
                 )
-                surrogate_mi = mi_result["mi"]
 
                 surrogate_sum += surrogate_mi
                 surrogate_sum_sq += surrogate_mi**2
