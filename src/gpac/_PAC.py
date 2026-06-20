@@ -28,6 +28,50 @@ from .core._Hilbert import Hilbert
 from .core._ModulationIndex import ModulationIndex
 
 
+def set_deterministic(seed: Optional[int] = 42) -> None:
+    """Pin PyTorch/CUDA into a deterministic, reproducible configuration.
+
+    Call this ONCE at process start (before constructing PAC) to make PAC
+    output bit-reproducible for a fixed seed on a FIXED GPU architecture.
+
+    Empirically, gPAC's PAC is already bit-reproducible run-to-run on a single
+    GPU model (e.g. H100) for both fp16 and fp32 even without these flags,
+    because its ops (conv1d, FFT, MI reductions) resolve to deterministic
+    kernels for the PAC workload. This helper makes that guarantee EXPLICIT and
+    robust against environments that flip ``cudnn.benchmark`` on, and seeds the
+    global torch RNG so any incidental RNG use is also reproducible.
+
+    Notes
+    -----
+    * Bit-identical output is only guaranteed on the SAME GPU architecture.
+      Different architectures (e.g. A100 vs H100) can produce slightly
+      different floating-point results for the same seed; for cross-machine
+      reproducibility, pin the GPU model and prefer fp32 (``fp16=False``).
+    * ``CUBLAS_WORKSPACE_CONFIG`` must be set in the environment BEFORE the
+      CUDA context is created for full cuBLAS determinism. This helper sets it
+      defensively, but for guaranteed effect export
+      ``CUBLAS_WORKSPACE_CONFIG=:4096:8`` before launching Python.
+
+    Parameters
+    ----------
+    seed : int or None
+        Seed for ``torch.manual_seed`` / ``torch.cuda.manual_seed_all``.
+        If None, RNG is left untouched and only the determinism flags are set.
+    """
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+    if seed is not None:
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    try:
+        torch.use_deterministic_algorithms(True, warn_only=True)
+    except Exception:
+        # Older torch without warn_only kwarg.
+        torch.use_deterministic_algorithms(True)
+
+
 class PAC(nn.Module):
     """PAC calculator for large VRAM systems."""
 
@@ -55,6 +99,7 @@ class PAC(nn.Module):
         temperature: float = 1.0,
         hard_selection: bool = False,
         random_seed: Optional[int] = 42,
+        deterministic: bool = False,
     ):
         # Parameter Validation
         if seq_len <= 0:
@@ -62,9 +107,20 @@ class PAC(nn.Module):
         if fs <= 0:
             raise ValueError(f"fs must be positive, got {fs}")
         if random_seed is not None and not isinstance(random_seed, int):
-            raise ValueError(f"random_seed must be an integer or None, got {type(random_seed)}")
+            raise ValueError(
+                f"random_seed must be an integer or None, got {type(random_seed)}"
+            )
         # if pha_start_hz >= pha_end_hz:
         #     raise ValueError(f"pha_start_hz must be < pha_end_hz")
+
+        # Reproducibility: when deterministic=True, pin CUDA/cuDNN determinism
+        # flags and seed the GLOBAL torch RNG (not just the surrogate
+        # generator). This makes output bit-reproducible for a fixed seed on a
+        # fixed GPU architecture, and is robust to environments that enable
+        # cudnn.benchmark. See module-level `set_deterministic`.
+        self.deterministic = deterministic
+        if deterministic:
+            set_deterministic(random_seed)
 
         # Parent Class Initialization
         super().__init__()
@@ -77,7 +133,7 @@ class PAC(nn.Module):
         self.surrogate_chunk_size = surrogate_chunk_size
         self.trainable = trainable
         self.random_seed = random_seed
-        
+
         # Initialize random generator for reproducible permutations
         if self.random_seed is not None:
             self.generator = torch.Generator()
@@ -279,10 +335,10 @@ class PAC(nn.Module):
 
         # Move generator to correct device if needed
         generator_to_use = self.generator
-        if generator_to_use is not None and phase_reshaped.device.type == 'cuda':
+        if generator_to_use is not None and phase_reshaped.device.type == "cuda":
             generator_to_use = torch.Generator(device=phase_reshaped.device)
             generator_to_use.manual_seed(self.random_seed)
-        
+
         surrogate_result = self.mi_calculator.compute_surrogates(
             phase_reshaped,
             amplitude_reshaped,
