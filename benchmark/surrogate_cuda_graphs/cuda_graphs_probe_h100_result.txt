@@ -1,0 +1,31 @@
+=== NODE: spartan-gpgpu176.hpc.unimelb.edu.au  CUDA_VISIBLE_DEVICES=0 ===
+index, memory.used [MiB], memory.total [MiB], utilization.gpu [%]
+0, 0 MiB, 81559 MiB, 0 %
+pid, used_gpu_memory [MiB]
+/home/ywatanabe/proj/gPAC/.worktrees/h100-prof/src/gpac/__init__.py
+device: NVIDIA H100 80GB HBM3  torch 2.2.2+cu121
+====================================================================================================
+PER-PERM OVERHEAD-vs-COMPUTE SPLIT (clean dedicated H100)
+====================================================================================================
+ seq_len  fp16  wall/perm   gpu_busy   overhead    ovh%  launchCPU   surr200    VRAM
+----------------------------------------------------------------------------------------------------
+    2048  True     2.0105     2.0212    -0.0107  -0.53%     2.0211     402.1   1.44
+    2048 False     2.0547     2.0607    -0.0060  -0.29%     2.0108     410.9   1.44
+   24000  True    19.3775    19.3768    +0.0007   0.00%    19.9387    3875.5  16.84
+   24000 False    19.3750    19.3795    -0.0044  -0.02%    19.9766    3875.0  16.84
+----------------------------------------------------------------------------------------------------
+  top CUDA ops [seq=2048 fp16=True]: aten::mul=1.283ms  void at::native::elementwise_kernel<128,=1.282ms  aten::sum=0.599ms  void at::native::reduce_kernel<256, 2, a=0.593ms
+  top CUDA ops [seq=2048 fp16=False]: aten::mul=1.283ms  void at::native::elementwise_kernel<128,=1.282ms  aten::sum=0.599ms  void at::native::reduce_kernel<256, 2, a=0.593ms
+  top CUDA ops [seq=24000 fp16=True]: aten::mul=13.085ms  void at::native::elementwise_kernel<128,=13.084ms  aten::sum=6.466ms  void at::native::reduce_kernel<256, 2, a=6.458ms
+  top CUDA ops [seq=24000 fp16=False]: aten::mul=13.083ms  void at::native::elementwise_kernel<128,=13.082ms  aten::sum=6.477ms  void at::native::reduce_kernel<256, 2, a=6.469ms
+====================================================================================================
+max |overhead fraction| over ALL conditions: 0.53%  ->  COMPUTE-BOUND
+====================================================================================================
+
+CUDA-GRAPHS FEASIBILITY PROBE (capture per-perm agg, replay 200x):
+----------------------------------------------------------------------------------------------------
+  seq=2048 fp16=True: eager_agg=2.0191 ms  graph_replay=1.8787 ms  speedup=1.075x  max|Δ|=0.000e+00  ok=True 
+  seq=24000 fp16=False: eager_agg=19.3264 ms  graph_replay=18.9759 ms  speedup=1.018x  max|Δ|=0.000e+00  ok=True 
+====================================================================================================
+RESULT_JSON={"device": "NVIDIA H100 80GB HBM3", "torch": "2.2.2+cu121", "split": [{"seq_len": 2048, "fp16": true, "time_dim": 2048, "wall_per_perm_ms": 2.010512229753658, "gpu_busy_per_perm_ms": 2.021217759847641, "overhead_per_perm_ms": -0.010705530093982674, "overhead_frac": -0.005324777405255768, "cudaLaunchKernel_cpu_per_perm_ms": 2.0211, "surrogates_200_ms_est": 402.10244595073164, "peak_vram_gb": 1.4372000694274902, "top_ops_cuda_ms": [["aten::mul", 1.2833], ["void at::native::elementwise_kernel<128,", 1.2822666666666669], ["aten::sum", 0.599], ["void at::native::reduce_kernel<256, 2, a", 0.5928666666666668]]}, {"seq_len": 2048, "fp16": false, "time_dim": 2048, "wall_per_perm_ms": 2.0547337958123535, "gpu_busy_per_perm_ms": 2.060722085237503, "overhead_per_perm_ms": -0.005988289425149507, "overhead_frac": -0.002914386981590476, "cudaLaunchKernel_cpu_per_perm_ms": 2.0108333333333333, "surrogates_200_ms_est": 410.9467591624707, "peak_vram_gb": 1.4373116493225098, "top_ops_cuda_ms": [["aten::mul", 1.2832333333333332], ["void at::native::elementwise_kernel<128,", 1.2822333333333333], ["aten::sum", 0.5991666666666667], ["void at::native::reduce_kernel<256, 2, a", 0.5928666666666668]]}, {"seq_len": 24000, "fp16": true, "time_dim": 24000, "wall_per_perm_ms": 19.377495540538803, "gpu_busy_per_perm_ms": 19.37679946899414, "overhead_per_perm_ms": 0.0006960715446631127, "overhead_frac": 3.5921646489707204e-05, "cudaLaunchKernel_cpu_per_perm_ms": 19.938733333333335, "surrogates_200_ms_est": 3875.4991081077605, "peak_vram_gb": 16.84311580657959, "top_ops_cuda_ms": [["aten::mul", 13.084900000000001], ["void at::native::elementwise_kernel<128,", 13.083833333333333], ["aten::sum", 6.4657], ["void at::native::reduce_kernel<256, 2, a", 6.457566666666667]]}, {"seq_len": 24000, "fp16": false, "time_dim": 24000, "wall_per_perm_ms": 19.375016414560378, "gpu_busy_per_perm_ms": 19.37945466995239, "overhead_per_perm_ms": -0.004438255392013701, "overhead_frac": -0.00022907105196970777, "cudaLaunchKernel_cpu_per_perm_ms": 19.976566666666667, "surrogates_200_ms_est": 3875.0032829120755, "peak_vram_gb": 16.843562602996826, "top_ops_cuda_ms": [["aten::mul", 13.082866666666666], ["void at::native::elementwise_kernel<128,", 13.081866666666667], ["aten::sum", 6.477033333333334], ["void at::native::reduce_kernel<256, 2, a", 6.468533333333334]]}], "graphs": [{"seq_len": 2048, "fp16": true, "eager_agg_per_perm_ms": 2.0190757350064814, "graph_replay_per_perm_ms": 1.878682600799948, "graph_speedup_x": 1.0747295653596587, "graph_vs_eager_max_abs_diff": 0.0, "graph_capture_ok": true, "graph_error": "", "peak_vram_gb": 16.843562602996826}, {"seq_len": 24000, "fp16": false, "eager_agg_per_perm_ms": 19.32637394987978, "graph_replay_per_perm_ms": 18.97591996472329, "graph_speedup_x": 1.0184683528286373, "graph_vs_eager_max_abs_diff": 0.0, "graph_capture_ok": true, "graph_error": "", "peak_vram_gb": 24.000720977783203}], "max_overhead_frac": 0.005324777405255768, "verdict": "COMPUTE-BOUND"}
+DONE
