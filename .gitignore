@@ -89,11 +89,15 @@ temp/
 *.bak
 *.backup
 
-# Temporary test files
-test_*.py
-_test_*.py
+# Temporary scratch / debug files (NOT pytest test files)
+# Pytest convention requires test_*.py for discovered tests, so the
+# previous test_*.py rule wrongly hid every real test file from git.
+# Scoped now to truly disposable file patterns that won't collide
+# with the pytest collector.
 scratch*.py
 debug*.py
+*_temp.py
+*_tmp.py
 
 # Logs
 *.log

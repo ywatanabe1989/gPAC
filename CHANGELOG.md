@@ -5,6 +5,40 @@ All notable changes to gpu-pac will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added — scitex-grade tests
+
+- Unit tests under `tests/gpac/test__PAC_scitex.py`,
+  `tests/gpac/core/test__Hilbert_scitex.py`,
+  `tests/gpac/core/test__BandPassFilter_scitex.py`, and
+  `tests/gpac/core/test__ModulationIndex_scitex.py` covering
+  filter-bank construction, the Hilbert wrapper, modulation-index
+  computation, and seeded surrogate generation. Each test follows the
+  scitex Arrange / Act / Assert convention with a single assertion
+  per test (STX-TQ001-007).
+- Integration tests under `tests/integration/`:
+  `test_synthetic_pac_detection.py` (peak MI lands on the known
+  6 Hz / 80 Hz pair), `test_reproducibility.py` (same inputs +
+  `random_seed=42` → identical outputs across invocations),
+  `test_gpac_vs_tensorpac_within_5pct.py` (raw PAC agrees with
+  TensorPAC within the 5 % tolerance from neurovista PR #52).
+- Pytest markers `unit`, `integration`, `requires_data`, `slow`, and
+  `gpu` registered in `pyproject.toml`.
+
+### Changed — CI
+
+- `ci.yml` and `tests.yml` matrix updated to Python 3.10 / 3.11 / 3.12
+  (dropped EOL 3.8 / 3.9). Slow + GPU tests are now skipped on the
+  CPU runner via `-m "not slow and not gpu"`. Codecov upload runs with
+  `if: always()` so coverage uploads even when a row fails.
+- New `tests-gpu.yml` workflow stub guarded by `if: false`; the
+  operator wires it up to a self-hosted GPU runner later.
+- New `codecov.yml` pinning the unbranched badge to `develop` and
+  ignoring `tests/`, `examples/`, `benchmark/`, `paper/`, `docs/`,
+  and `src/gpac/dataset/` (data-generation helpers, exercised only
+  through integration tests).
+
 ## [0.4.0] - 2025-09-01
 
 ### Added

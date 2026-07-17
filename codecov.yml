@@ -1,0 +1,27 @@
+codecov:
+  require_ci_to_pass: false
+  # gPAC's de-facto default branch is `develop`; `main` is the
+  # release-mirror branch. This points the unbranched badge at develop.
+  branch: develop
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        target: 80%
+
+ignore:
+  - "src/gpac/dataset/**"
+  - "tests/**"
+  - "examples/**"
+  - "benchmark/**"
+  - "paper/**"
+  - "docs/**"
+
+comment:
+  layout: "diff, files"
+  require_changes: true
