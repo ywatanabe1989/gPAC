@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "gpu-pac"
 dynamic = ["version"]
 authors = [
-  { name="Yusuke Watanabe", email="ywatanabe@alumni.u-tokyo.ac.jp" },
+  { name="Yusuke Watanabe", email="ywatanabe@scitex.ai" },
 ]
 description = "GPU-Accelerated Phase-Amplitude Coupling calculation using PyTorch"
 readme = "README.md"
